@@ -7,22 +7,70 @@ faqs_class: active
   <div class="container">
     <div class="page-header">
       <h1>Frequently Asked Questions</h1>
-      <div class="lead">Last updated: October 29, 2014</div>
+      <div class="lead">Last updated: November 8, 2014</div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6">
+        <div>
+          <h4>General</h4>
+          <ul>
+            <li><a href="#faq-seiso-meaning">What does <i>Seiso</i> mean?</a></li>
+            <li><a href="#faq-seiso-binary">Where can I get the Seiso binary?</a></li>
+            <li><a href="#faq-production">How do I deploy Seiso to a production environment?</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Data schema</h4>
+          <ul>
+            <li><a href="#faq-additional-fields">Seiso doesn't support a data field I need. Can you add it?</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Importing data</h4>
+          <ul>
+            <li><a href="#faq-import-data">How do I get data into Seiso?</a></li>
+            <li><a href="#faq-ui-editing">Can I enter/update/delete data through the user interface?</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <h4>Integration</h4>
+          <ul>
+            <li><a href="#faq-client-language">Do Seiso clients have to be written in a specific language?</a></li>
+            <li><a href="#faq-service-integration">How do I integrate Seiso with other services?</a></li>
+            <li><a href="#faq-data-integration">Specifically, how should I integrate with data sources?</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contributing</h4>
+          <ul>
+            <li><a href="#faq-contributing">How can I contribute?</a></li>
+            <li><a href="#faq-enhancements-and-bugs">How can I request enhancements or report bugs?</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
     <section>
       <header>
-        <h1>General project questions</h1>
+        <h1>General</h1>
       </header>
+      
+      <a id="faq-seiso-meaning" class="anchor"></a>
       <div class="faq">
-        <h3>What does "Seiso" mean?</h3>
-        <p>Seiso (清掃) is a Japanese word meaning "clean, shiny, tidy". The idea is that we can enable better automation by organizing and maintaining our data in a clean, tidy and maybe even shiny way.</p>
-        
+        <h3>What does <i>Seiso</i> mean?</h3>
+        <p><i>Seiso</i> (清掃) is a Japanese word meaning "clean, shiny, tidy". The idea is that we can enable better automation by organizing and maintaining our data in a clean, tidy and maybe even shiny way.</p>
       </div>
+      
+      <a id="faq-seiso-binary" class="anchor"></a>
       <div class="faq">
         <h3>Where can I get the Seiso binary?</h3>
         <p>We haven't yet put a binary up since there are a few things we want to fix before doing that. You can expect a binary in January 2015. Until then please build from source.</p>
       </div>
+
+      <a id="faq-production" class="anchor"></a>
       <div class="faq">
         <h3>How do I deploy Seiso to a production environment?</h3>
         <p>We don't recommend this yet, as Seiso is currently alpha software. As the project matures we will provide an appropriate init script, Chef cookbook and documentation to support this.</p>
@@ -35,11 +83,15 @@ faqs_class: active
       <header>
         <h1>Importing data</h1>
       </header>
+
+      <a id="faq-import-data" class="anchor"></a>
       <div class="faq">
         <h3>How do I get data into Seiso?</h3>
         <p>Use the REST API. We have a <a href="{{ site.baseurl }}/docs/api-tutorial/">Seiso REST API v1 Tutorial</a> as well as a <a href="{{ site.baseurl }}/docs/api-reference/">Seiso REST API v1 Reference</a>.</p>
         <p>See also the <a href="#faq-data-integration">data integration FAQ</a> below.</p>
       </div>
+
+      <a id="faq-ui-editing" class="anchor"></a>
       <div class="faq">
         <h3>Can I enter/update/delete data through the user interface?</h3>
         <p>No. Seiso isn't intended to be a master for the data. Instead other systems master the data, and automation engineers create integrations&mdash;whether batch, real-time or a combination of the two&mdash;to keep Seiso in sync with the masters.</p>
@@ -48,11 +100,38 @@ faqs_class: active
     </section>
 
     <hr>
+
+    <section>
+      <header>
+        <h1>Data schema</h1>
+      </header>
+
+      <a id="faq-additional-fields" class="anchor"></a>
+      <div class="faq">
+        <h3>Seiso doesn't support a data field I need. Can you add it?</h3>
+        <p>Create a GitHub issue describing your idea. We generally prefer fields and item types that help with data organization and integration. For example:</p>
+        <ul>
+          <li>Service groups organize services, and status types organize health and rotation statuses; these are examples of organizational item types.</li>
+          <li>Services, nodes, machines and IP addresses integrate deployment and operational data.</li>
+        </ul>
+        <p>Sometimes users request fairly specialized and/or fine-grained fields and types, presumably because they'd like Seiso to be a one-stop shop for all of their automation data. Seiso isn't really designed for this. To offer a concrete example, when we sync Seiso with Chef server, we don't pull in every bit of Ohai node data, because it's too huge, and most of it isn't broadly useful. We try to focus on the key integration data.</p>
+        <p>We plan to support dynamic, user-defined properties and tags at some point, which should help in cases where the proposed fields are too specialized or fine-grained to be part of the data schema.</p>
+      </div>
+    </section>
     
     <section>
       <header>
         <h1>Integration</h1>
       </header>
+      
+      <a id="faq-client-language" class="anchor"></a>
+      <div class="faq">
+        <h3>Do Seiso clients have to be written in a specific language?</h3>
+        <p>Nope. Seiso is a REST API, so you can use whatever client language and/or platform you like. This is by design, as we intend Seiso to support large technology organizations, and such organizations often use a variety of technology platforms.</p>
+        <p>At Expedia we have Seiso clients written in Java, C#, JavaScript, Ruby, PowerShell, bash and Perl.</p>
+      </div>
+
+      <a id="faq-service-integration" class="anchor"></a>
       <div class="faq">
         <h3>How do I integrate Seiso with other services?</h3>
         <p>Seiso supports two complementary service integration approaches:</p>
@@ -84,6 +163,8 @@ faqs_class: active
       <header>
         <h1>Contributing</h1>
       </header>
+
+      <a id="faq-contributing" class="anchor"></a>
       <div class="faq">
         <h3>How can I contribute?</h3>
         <p>There are multiple ways to contribute:</p>
