@@ -1,0 +1,10 @@
+name:               "Seiso"
+description:        "Better automation through shiny data."
+encoding:           UTF-8
+highlighter:        rouge
+
+# Serving
+host:               0.0.0.0
+port:               4666
+baseurl:            "/seiso"
+detach:             false

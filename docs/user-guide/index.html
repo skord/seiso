@@ -1,0 +1,363 @@
+---
+layout: default
+title: Seiso User Guide
+docs_class: active
+---
+<div class="page-content">
+  <div class="container">
+    <div class="page-header">
+      <h1>Seiso User Guide <small>(0.2.0.SNAPSHOT)</small></h1>
+      <p class="lead">Willie Wheeler</p>
+      <p>Copyright &copy; 2014-2015 Expedia, Inc.</p>
+    </div>
+
+    <section>
+      <header>
+        <h1>1 Overview</h1>
+      </header>
+
+      <p>This guide explains Seiso from a user's perspective. If you want to understand how to use the web user interface, then this is the guide for you. We provide four guides in all:</p>
+
+      <div class="object-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Documentation</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><i class="fa fa-hand-o-right"></i></td>
+              <td><a href="{{ site.baseurl }}/docs/user-guide/">Seiso User Guide</a><br></td>
+              <td>For standard (non-administrative) users of the web UI. Explains the various item types and how they relate to one another.</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><a href="{{ site.baseurl }}/docs/api-tutorial/">Seiso API v1 Tutorial</a></td>
+              <td>For developers who want to learn how to use the Seiso REST API v1 to build applications.</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><a href="{{ site.baseurl }}/docs/api-reference/">Seiso API v1 Reference</a></td>
+              <td>This is the reference manual for the Seiso REST API v1. It explains how to use the API and documents the various endpoints.</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><a href="{{ site.baseurl }}/docs/admin-guide/">Seiso Administrator Guide</a></td>
+              <td>Guide for adminstrative users. Explains how to install, configure, start and operate Seiso.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>In this overview we'll explain what Seiso is and why you should care. To that end we'll explain how Seiso does what it does, and why it works. Finally we'll wrap up the overview with a very brief history of Seiso.</p>
+
+      <section>
+        <header>
+          <h2>1.1 What is Seiso?</h2>
+        </header>
+        <p>Seiso is a RESTful web service and accompanying user interface for collecting, normalizing, integrating and exposing data in the devops domain. There are a couple of major goals here:</p>
+        <ul>
+          <li><strong>Make the data more visible</strong> to technology specialists&mdash;such as developers, testers, release managers and operators&mdash;who need it.</li>
+          <li><strong>Provide a firm basis for automation</strong>, such as deployment automation, continuous delivery and automated incident response.</li>
+        </ul>
+        <p>Let's look at how Seiso accomplishes these things.</p>
+      </section>
+
+      <section>
+        <header>
+          <h2>1.2 How does Seiso work?</h2>
+        </header>
+        <p>We'll begin by going over Seiso from an architectural perspective. After that we'll take a more philosophical perspective and describe the design goals motivating Seiso's approach.</p>
+
+        <blockquote>
+          <p>Note that this section contains high-level technical information about Seiso. It's useful if you're trying to understand how Seiso plays with other systems. If however you simply want to know how to use the user interface, you can safely skip to section 1.3.</p>
+        </blockquote>
+
+        <section>
+          <header>
+            <h3>1.2.1 Seiso architecture</h3>
+          </header>
+          <p>Seiso is intended to be a foundational piece of a larger automation architecture:</p>
+
+          <div class="figure-wrapper">
+            <img src="{{ site.baseurl }}/resources/images/docs/user/big-arch.png?v=3" alt="Seiso in context">
+            <div class="caption">Figure 1.1. Process automation depends upon integrated tools, and integrated tools need integrated data.</div>
+          </div>
+
+          <p>At the very top of the architecture are various processes we want to automate, such as software delivery (e.g., continuous delivery) and web operations. Just below that we have the various tools and services providing the functional capabilities underlying those processes. Finally at the bottom we have the data stores and services supporting the tools.</p>
+
+          <p>Here is a list of <em>examples</em>&mdash;by no means comprehensive&mdash;to make the foregoing more concrete:</p>
+
+          <div class="table-wrapper">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">Process examples</h4>
+                  </div>
+                  <ul class="list-group">
+                    <li class="list-group-item">Build automation</li>
+                    <li class="list-group-item">Test automation</li>
+                    <li class="list-group-item">Deployment automation</li>
+                    <li class="list-group-item">Release management</li>
+                    <li class="list-group-item">Continuous delivery</li>
+                    <li class="list-group-item">Web operations</li>
+                    <li class="list-group-item">Capacity management</li>
+                    <li class="list-group-item">VM sprawl management</li>
+                    <li class="list-group-item">Financial tracking</li>
+                    <li class="list-group-item">Security (provisioning, auditing, etc.)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">Tool examples</h4>
+                  </div>
+                  <ul class="list-group">
+                    <li class="list-group-item"><b>Cloud:</b> AWS, Google, Heroku, Azure, Digital Ocean</li>
+                    <li class="list-group-item"><b>Configuration management:</b> Chef, Puppet, Docker</li>
+                    <li class="list-group-item"><b>Deployment:</b> Ansible, Deployit, uDeploy</li>
+                    <li class="list-group-item"><b>Orchestration:</b> System Center Orchestrator, Bamboo, Jenkins, Go</li>
+                    <li class="list-group-item"><b>Monitoring:</b> SCOM, Nagios, Ganglia, AppDynamics, New Relic</li>
+                    <li class="list-group-item"><b>Dashboards:</b> Graphene, Grafana, Splunk</li>
+                    <li class="list-group-item"><b>Log management:</b> Splunk, Loggly</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">Data source examples</h4>
+                  </div>
+                  <ul class="list-group">
+                    <li class="list-group-item"><b>IAM:</b> Active Directory, LDAP</li>
+                    <li class="list-group-item"><b>SCM:</b> GitHub, Subversion, Perforce</li>
+                    <li class="list-group-item"><b>Build systems:</b> Bamboo, Jenkins, Go</li>
+                    <li class="list-group-item"><b>Issue tracking:</b> Jira, Mingle, Trello, TFS</li>
+                    <li class="list-group-item"><b>Asset inventories:</b> Chef server, Cobbler</li>
+                    <li class="list-group-item"><b>ITSM suites:</b> ServiceNow, IBM, HP, CA</li>
+                    <li class="list-group-item"><b>Infrastructure:</b> Hosts (collectd, statsd), load balancers</li>
+                    <li class="list-group-item"><b>Monitoring/logging:</b> Graphite, Splunk</li>
+                    <li class="list-group-item"><b>Management:</b> SNMP, JMX</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="caption">Table 1.1. Examples of processes, tools and data sources that we might want to integrate.</div>
+          </div> <!-- end process/tools/data panels -->
+
+          <p>The arrow in figure 1.1 from the data sources to Seiso represents the fact that Seiso consumes data from external sources. This can be batched in, real-time, semi-real-time or any combination of those. Seiso provides a schema for normalizing and integrating the data, and then exposes it through a RESTful API so the tools can use it in a more comprehensive and pre-integrated fashion.</p>
+
+          <blockquote>
+            <p><b><i class="fa fa-hand-o-right"></i> Tip:</b> In practice, it generally makes sense to employ different data sync strategies for different types of data. For example, person data in Active Directory doesn't change that often, so running a nightly sync usually works just fine. On the other hand, node rotation changes (i.e., being in or out of the load balanced pool) usually need to sync in real time, since deployment orchestration tools need to work with current information.</p>
+          </blockquote>
+
+          <p>Note also that both Seiso and the original data sources remain available for use by the tools layer. Seiso isn't a facade sitting in front of the data; rather it is an additional source to consolidate what are otherwise difficult and duplicated data integration efforts.</p>
+          <p>Now that you know what Seiso is and how it works, it's time to cover the principles that drive Seiso's design.</p>
+        </section> <!-- end 1.2.1 -->
+        <section>
+          <header>
+            <h3>1.2.2 Seiso design goals</h3>
+          </header>
+          <p>In designing Seiso, we had a number of goals in mind. These goals reflect our views on automation best practices. We lay them out here to make our values and assumptions explicit.</p>
+
+          <p><b>Support self-service.</b> Organizations that embrace agile development and devops culture typically have a "get it done" ethic. Teams in such orgs need to be able to make changes themselves. So we've been careful not to preclude self-service approaches to data management. At the same time, some orgs may want to exercise more control over data changes, and Seiso supports that too. It's up to your org whether this is tightly managed via authorization, loosely managed by auditing, or wide open.</p>
+
+          <p><b>Closed-loop automation.</b> Among the major challenges surrounding efforts to collect automation data is data quality and completeness. There are different approaches to collecting the data, ranging from automated discovery to in-person interviews, and they have various strengths and weaknesses. Automated discovery tends to be less work, but the collected data tends to better lower in the tech stack than higher up. It can also produce too much data, at least for the typical software delivery and operations use cases.</p>
+          <p>Personal interviews are not particularly effective. They are a lot of work, especially on large teams, and it's hard to get good data. Over time, the quality of the data tends to degrade since people usually have better things to do than update their service information in a spreadsheet or database.</p>
+          <p>Seiso's approach is to connect data to automation in a mutually reinforcing way. On the one hand, the data enables the automation. On the other, the automation creates a real reason to keep the data current: if the data is wrong, then the automation doesn't work correctly. Moreover, as the automation delivers organization value, it tends to drive data completeness. We call this <em>closed-loop automation:</em></p>
+
+          <div class="figure-wrapper">
+            <img src="{{ site.baseurl }}/resources/images/docs/user/closed-loop.png?v=1" alt="Closed-loop automation">
+            <div class="caption">Figure 1.2. The data makes the automation possible, and the automation drives data quality.</div>
+          </div>
+
+          <p><strong>Closed-loop automation creates a situation in which data converges to correctness and completeness.</strong> Even if things don't start out that way. (Indeed they rarely if ever start out correct and complete.) It is the difference between data-as-enabler and data-as-shelfware.</p>
+
+          <blockquote>
+            <p>The closed-loop approach works. Your author has helped to implement the approach at two large development organizations. In both cases we started by onboarding a few dev teams ourselves, which gave them automated deployments (at the first org) and operations (at both orgs). It wasn't long before new teams began to seek us out, adding their own data to the system, and keeping it up-to-date so as to keep their automation working. (Self-service helps!)</p>
+          </blockquote>
+
+          <p><b>Automation-first design.</b> From a software architecture perspective, the REST API mediates all access to the database. In particular, the web UI has to go through the REST API to get at the data. <strong>This design ensures that the corresponding API exists before something can appear in the UI.</strong> This is what we mean by "automation-first". See figure 1.3 below.</p>
+
+          <div class="figure-wrapper">
+            <img src="{{ site.baseurl }}/resources/images/docs/user/automation-first.png" alt="Automation-first design" style="position:relative;left:67px">
+            <div class="caption">Figure 1.3. Automation-first design ensures that we can automate anything we can do in the UI.</div>
+          </div>
+
+          <p><b>Favor best-of-breed tools over the big vendor tool suite.</b> Broadly speaking, there are two approaches to automating the workplace:</p>
+          <ul>
+            <li><b>The big vendor approach.</b> Buy a "fully-integrated enterprise automation solution" from one of the big vendors.</li>
+            <li><b>Best-of-breed approach.</b> Adopt/buy/create specialized, best-of-breed tools and services, and integrate them.</li>
+          </ul>
+          <p>Though there are plausible arguments for going the big vendor route, <strong>Seiso adopts the best-of-breed philosophy toward devops automation.</strong> Various automation-related movements (devops, webops, continuous delivery, etc.) are evolving so quickly that it doesn't make sense to lock into a single vendor's tool suite. Moreover, nowadays most automation tools have REST APIs, so integration isn't the technical hurdle that it once was.</p>
+          <p>In our view Seiso works best when deployed as part of a set of loosely-coupled services. Seiso offers both a REST API and messaging support for integration.</p>
+
+          <p><b>Support data federation.</b> A moment's reflection makes it obvious that it's neither feasible nor desirable, on purely <em>technical</em> grounds, to have a "one-repo-to-rule-them-all" for automation data. Consider for example person data (name, contact information, etc.), source code data (commits, builds, etc.) and load balancer rotation data:</p>
+          <ul>
+            <li>If your organization is using Microsoft Exchange, then your Active Directory servers are likely to be the authoritative source for person data.</li>
+            <li>Your source code repositories are going to be authoritative for commits.</li>
+            <li>Your build servers are going to be authoritative for builds.</li>
+            <li>Your load balancers are going to be authoritative for rotation.</li>
+          </ul>
+          <p>It wouldn't make sense to try to make some single system authoritative for all of that data, since the tools that use the data wouldn't generally support that.</p>
+          <div class="figure-wrapper">
+            <img src="{{ site.baseurl }}/resources/images/docs/user/one-repo.png" alt="One-repo-to-rule-them-all">
+            <div class="caption">Figure 1.4. It's easy to see that "one-repo-to-rule-them-all" won't work.</div>
+          </div>
+          <p>Besides the technical reason, though, there's also an <em>organizational</em> reason that emerges in organizations of any size. Departments and teams often have their own favorite tools and data sources for their own data. One team might use JIRA for issue tracking where another uses TFS and a third uses Trello. One team uses Git and GitHub where another uses Subversion. This sort of technology fragmentation is the rule, not the exception, and any data integration approach needs to confront it head-on.</p>
+          <blockquote>
+            <p>In fairness, the "one-repo-to-rule-them-all" discussion above is a bit of a strawman. Nobody actually advocates managing person data and source code from a single authoritative repo. But in presenting the extreme view, we're highlighting the challenges that arise in more modest versions.</p>
+            <p>For instance, it is common for an organizational big wheel to say things like: "Wouldn't it be a lot better if everybody just used [whatever big wheel used at previous company]?" Some people resist, others block new tools because "they're not the standard", and so on.</p>
+            <p>We consider such behaviors to be dysfunctional. Why would any org intentionally cut itself off from the many new, high-quality and often <em>low cost or free</em> offerings that appear on a regular basis? While we should certainly harmonize toolsets where it's feasible, we should be prepared to integrate where appropriate.</p>
+          </blockquote>
+          <p><strong>A correct data integration approach presupposes data federation.</strong> That is, it assumes that there will be a multitude of systems, organized around data type, ownership and potentially other factors, authoritative for subsets of the data we care about. Seiso is designed to work in such a setting.</p>
+          <div class="figure-wrapper">
+            <img src="{{ site.baseurl }}/resources/images/docs/user/seiso-integration.png" alt="Seiso integration">
+            <div class="caption">Figure 1.5. Seiso provides an integrated view without trying to replace existing authoritative sources.</div>
+          </div>
+        </section> <!-- end 1.2.2 -->
+        
+        <p>That wraps up our discussion of Seiso's design goals. You should now have a better idea of some of the opinions that led us to create Seiso in the first place, and the rationale behind key elements of the design. Now let's turn our attention to the major concepts within the Seiso app itself.</p>
+          
+      </section> <!-- end 1.2 -->
+      <section>
+        <header>
+          <h2>1.3 Key concepts</h2>
+        </header>
+        <p>Seiso's main job is to manage service data. We use <em>item</em> as a generic way to refer to the things-being-managed. There are several item types, but the main ones are the following:</p>
+        
+        <div class="table-wrapper">
+          <table class="table">
+            <colgroup>
+              <col style="width:25%">
+              <col style="width:75%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Item type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Services</td>
+                <td>Services are the applications, web services, databases and so forth that we want to manage (e.g., develop, deploy, operate, etc.). As such they are the most fundamental item type in Seiso.</td>
+              </tr>
+              <tr>
+                <td>Environments</td>
+                <td>Environments are where you perform specific kinds of software lifecycle activity, such as development, testing, staging and production.</td>
+              </tr>
+              <tr>
+                <td>Service instances</td>
+                <td>Service instances are services as they exist in given environments, such as a hypothetical CRM service in a production environment. A service can have multiple instances in any given environment. Service instances are probably the focal point for most use cases.</td>
+              </tr>
+              <tr>
+                <td>Nodes</td>
+                <td>Nodes are service instances as they exist on given machines. A single machine can host multiple nodes from one or more service instances.</td>
+              </tr>
+              <tr>
+                <td>Machines</td>
+                <td>Machines are the infrastructure hosting the nodes. Machines can be physical or virtual.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="caption">Table 1.2. The key Seiso item types.</div>
+        </div>
+
+        <p>Figure 1.6 illustrates the relationships between the key item types.</p>
+        
+        <div class="figure-wrapper">
+          <img src="{{ site.baseurl }}/resources/images/docs/user/key-er.png" alt="E/R diagram for key entities">
+          <div class="caption">Figure 1.6. An entity/relationship diagram highlighting the key item types and their interrelationships. Service instances tie services to environments, and comprise nodes running on machines.</div>
+        </div>
+      </section> <!-- end 1.3 -->
+    </section> <!-- end 1 -->
+
+    <section>
+      <header>
+        <h1>2 Services</h1>
+      </header>
+      <p>Service management is a central activity in technology organizations. Accordingly, services occupy a central role in Seiso. In this section we dive into services and their associated notions, such as environments, services instances and nodes.</p>
+      <section>
+        <header>
+          <h2>2.1 Services</h2>
+        </header>
+        <section>
+          <header>
+            <h3>2.1.1 Services</h3>
+          </header>
+        </section>
+        <section>
+          <header>
+            <h3>2.1.2 Service groups</h3>
+          </header>
+        </section>
+      </section>
+      <section>
+        <header>
+          <h2>2.2 Service instances</h2>
+        </header>
+        <section>
+          <header>
+            <h3>2.2.1 Environments</h3>
+          </header>
+        </section>
+        <section>
+          <header>
+            <h3>2.2.1 Service instances</h3>
+          </header>
+        </section>
+        <section>
+          <header>
+            <h3>2.2.2 Service instance ports</h3>
+          </header>
+        </section>
+        <section>
+          <header>
+            <h3>2.2.3 IP address roles</h3>
+          </header>
+        </section>
+      </section>
+      <section>
+        <header>
+          <h2>2.3 Nodes</h2>
+        </header>
+        <section>
+          <header>
+            <h3>2.3.1 Nodes</h3>
+          </header>
+          <header>
+            <h3>2.3.2 Health statuses</h3>
+          </header>
+          <header>
+            <h3>2.3.3 Node IP addresses</h3>
+          </header>
+          <header>
+            <h3>2.3.4 Rotation statuses</h3>
+          </header>
+          <header>
+            <h3>2.3.5 Endpoints</h3>
+          </header>
+        </section>
+      </section>
+    </section> <!-- end 2 -->
+
+    <section>
+      <header>
+        <h1>3 Infrastructure</h1>
+      </header> <!-- end 3 -->
+    </section>
+
+    <section>
+      <header>
+        <h1>4 People</h1>
+      </header>
+    </section>
+
+  </div>
+</div>

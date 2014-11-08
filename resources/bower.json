@@ -1,0 +1,13 @@
+{
+  "name": "seiso-web",
+  "description": "Seiso web site",
+  "version": "0.1.0",
+  "homepage": "TBD",
+  "license": "Apache 2.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "3.2.0",
+    "components-font-awesome": "4.2.0",
+    "jquery": "1.9.1"
+  }
+}

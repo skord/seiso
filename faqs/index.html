@@ -1,0 +1,112 @@
+---
+layout: default
+title: Frequently Asked Questions
+faqs_class: active
+---
+<div class="page-content">
+  <div class="container">
+    <div class="page-header">
+      <h1>Frequently Asked Questions</h1>
+      <div class="lead">Last updated: October 29, 2014</div>
+    </div>
+
+    <section>
+      <header>
+        <h1>General project questions</h1>
+      </header>
+      <div class="faq">
+        <h3>What does "Seiso" mean?</h3>
+        <p>Seiso (清掃) is a Japanese word meaning "clean, shiny, tidy". The idea is that we can enable better automation by organizing and maintaining our data in a clean and tidy way.</p>
+        
+      </div>
+      <div class="faq">
+        <h3>Where can I get the Seiso binary?</h3>
+        <p>We haven't yet put a binary up since there are a few things we want to fix before doing that. You can expect a binary in January 2015. Until then please build from source.</p>
+      </div>
+      <div class="faq">
+        <h3>How do I deploy Seiso to a production environment?</h3>
+        <p>We don't recommend this yet, as Seiso is currently alpha software. As the project matures we will provide an appropriate init script, Chef cookbook and documentation to support this.</p>
+      </div>
+    </section>
+
+    <hr>
+    
+    <section>
+      <header>
+        <h1>Importing data</h1>
+      </header>
+      <div class="faq">
+        <h3>How do I get data into Seiso?</h3>
+        <p>Use the REST API. We have a <a href="{{ site.baseurl }}/docs/api-tutorial/">Seiso REST API v1 Tutorial</a> as well as a <a href="{{ site.baseurl }}/docs/api-reference/">Seiso REST API v1 Reference</a>.</p>
+        <p>See also the <a href="#faq-data-integration">data integration FAQ</a> below.</p>
+      </div>
+      <div class="faq">
+        <h3>Can I enter/update/delete data through the user interface?</h3>
+        <p>No. Seiso isn't intended to be a master for the data. Instead other systems master the data, and automation engineers create integrations&mdash;whether batch, real-time or a combination of the two&mdash;to keep Seiso in sync with the masters.</p>
+        <p>Here's why. Suppose that you're pulling data into Seiso from Active Directory, Chef server and your NetScaler load balancers. If we were to let users update such data through the Seiso UI, we would have to have a way to push this back to the source systems. While it could be done, it many cases it would be too complicated to resolve conflicts between the various entry points into the source systems. (Think of having to manage conflicts between Seiso and the Chef Ohai plugin, or between Seiso and data coming out of a version control system.) So by design the Seiso UI is read-only.</p>
+      </div>
+    </section>
+
+    <hr>
+    
+    <section>
+      <header>
+        <h1>Integration</h1>
+      </header>
+      <div class="faq">
+        <h3>How do I integrate Seiso with other services?</h3>
+        <p>Seiso supports two complementary service integration approaches:</p>
+        <ul>
+          <li><b>REST API:</b> Your services can call endpoints on the Seiso RESTful web service API. In general these are standard verbs (<code>GET</code>, <code>POST</code>, <code>PUT</code> and <code>DELETE</code>) on the various items that Seiso manages.</li>
+          <li><b>RabbitMQ messaging:</b> Seiso pushes AMQP messages into RabbitMQ following data changes. Your services can listen for such messages and respond in real time.</li>
+        </ul>
+      </div>
+      
+      <a id="faq-data-integration" class="anchor"></a>
+      <div class="faq">
+        <h3>Specifically, how should I integrate with data sources?</h3>
+        <p>This is a large topic, and the answer varies dependening on the nature of the data in question. Let's briefly cover some typical cases. We will write blog posts covering these topics in more detail.</p>
+        <p><b>Source system has semi-dynamic data.</b> Often there are already systems in place that manage the data you want to pull in, but the data isn't particularly dynamic. You might have person data in Active Directory, for instance. Here one option is to create batch jobs that sync the data on a regular period.</p>
+        <p><b>Source system has highly dynamic data.</b> Sometimes however you do need something more real-time. Launching and terminating cloud instances are one example, and endpoint rotation state in a load balancer are another. There are at least two common approaches here:</p>
+        <ul>
+          <li>Wrap access to the dynamic source, and then have the wrapper invoke Seiso's REST API when it generates relevant changes. Scripts that provision machines or deploy software might tell Seiso after they successfully complete.</li>
+          <li>Create a listener&mdash;or high-frequency poller if listening isn't an option&mdash;that can invoke Seiso's REST API when events come in. You might listen for SNMP traps coming out of the load balancer, for example, and then call Seiso.</li>
+        </ul>
+        <p><b>Multiple source systems.</b> Sometimes there are multiple source systems for the sort of data you care about. Maybe one part of the organization maintains its machine data in Chef, whereas another uses a custom database. Here you can just create separate jobs to import the data into Seiso for a consolidated, normalized view.</p>
+        <p><b>No existing source system.</b> Sometimes there isn't an existing system for the data you want to put in Seiso. Maybe you don't have master list of services (sometimes called a "service catalog") or a master list of environments. At Expedia we've found it effective to put this kind of data in files under version control, and then create continuous integration jobs (e.g., Bamboo or Jenkins jobs) that respond to changes by pushing the data into Seiso via the REST API. (We will likely open source these integration scripts at some future date.)</p>
+        <p>These are just some common approaches. No doubt you will think of others. Seiso is pretty flexible with respect to how you do this.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section>
+      <header>
+        <h1>Contributing</h1>
+      </header>
+      <div class="faq">
+        <h3>How can I contribute?</h3>
+        <p>There are multiple ways to contribute:</p>
+        <ul>
+          <li><b>Use Seiso and get the word out.</b> If you like Seiso, we'd <i class="fa fa-heart fa-lg"></i> your help in getting the word out through Twitter and other social media.</li>
+          <li><b>Request enhancements and report issues.</b> <a href="#faq-enhancements-and-bugs">See below.</a></li>
+          <li><b>Create blog posts, tutorials and documentation.</b> Did you figure out a cool way to integrate Seiso with your issue tracking system? Write a blog post or a tutorial and let us know about it so we can help socialize it.</li>
+          <li><b>Contribute integration scripts.</b> Even better, if your integration is something that others might use directly, put it on GitHub.</li>
+          <li><b>Contribute code.</b> We welcome code contributions. Start by creating an issue in GitHub so we can discuss your idea. After we work through the idea, write the code (please include unit tests) and create a pull request. We'll work with you to get it merged.</li>
+        </ul>
+      </div>
+
+      <a id="faq-enhancements-and-bugs" class="anchor"></a>
+      <div class="faq">
+        <h3>How can I request enhancements or report bugs?</h3>
+        <p>Just go to our GitHub page and create an issue there.</p>
+      </div>
+    </section>    
+    
+    <hr>
+    
+    <p class="text-center">
+      <i class="fa fa-question-circle fa-5x"></i>
+    </p>
+  </div>
+</div>

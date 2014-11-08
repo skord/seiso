@@ -1,0 +1,92 @@
+---
+layout: default
+title: Seiso API v1 Reference - Services
+docs_class: active
+---
+<div class="page-content">
+  <div class="container">
+    <nav>
+      <ul class="pagination">
+        <li><a href="../pagination/"><i class="fa fa-arrow-left"></i></a></li>
+        <li><a href=".."><i class="fa fa-arrow-up"></i></a></li>
+        <li><a href="../environments/"><i class="fa fa-arrow-right"></i></a></li>
+      </ul>
+    </nav>
+    <header class="page-header">
+      <ul class="breadcrumb">
+        <li><a href="{{ site.baseurl }}/">Home</a></li>
+        <li><a href="..">Seiso API v1 Reference</a></li>
+      </ul>
+      <h1 class="page-title">Services</h1>
+    </header>
+    <section>
+      <header>
+        <h2 class="endpoint-title">GET /v1/services{?page,size}</h2>
+      </header>
+      <section>
+        <header>
+          <h3>Response</h3>
+        </header>
+      </section>
+    </section>
+    <hr>
+    <section>
+      <header>
+        <h2 class="endpoint-title">GET /v1/services/:key</h2>
+      </header>
+      <section>
+        <header>
+          <h3>Response</h3>
+        </header>
+        <pre>{
+  "_self" : "https://seiso.example.com/v1/services/eos",
+  "description" : "Automated operational decisioning and response",
+  "group" : {
+    "_self" : "https://seiso.example.com/v1/service-groups/devops",
+    "key" : "devops",
+    "name" : "Devops"
+  },
+  "key" : "eos",
+  "name" : "Eos",
+  "owner" : {
+    "_self" : "https://seiso.example.com/v1/people/mnash",
+    "username" : "mnash",
+    
+    ...
+  },
+  "platform" : ".NET",
+  "scmRepository" : null,
+  "type" : {
+    "_self" : "https://seiso.example.com/v1/service-types/agent",
+    "key" : "agent",
+    "name" : "Agent"
+  }
+}</pre>
+      </section> <!-- end response -->
+    </section> <!-- end get one -->
+    <hr>
+    <section>
+      <header>
+        <h2 class="endpoint-title">PUT /v1/services/:key</h2>
+      </header>
+      <section>
+        <header>
+          <h3>Request</h3>
+        </header>
+      </section>
+    </section>
+    <hr>
+    <section>
+      <header>
+        <h2 class="endpoint-title">DELETE /v1/services/:key</h2>
+      </header>
+    </section>
+    <nav>
+      <ul class="pagination">
+        <li><a href="../pagination/"><i class="fa fa-arrow-left"></i></a></li>
+        <li><a href=".."><i class="fa fa-arrow-up"></i></a></li>
+        <li><a href="../environments/"><i class="fa fa-arrow-right"></i></a></li>
+      </ul>
+    </nav>
+  </div> <!-- end container -->
+</div> <!-- end page-content -->

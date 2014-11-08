@@ -1,0 +1,126 @@
+---
+layout: default
+title: Get Started with Seiso
+get_started_class: active
+---
+<div class="page-content">
+  <div class="container">
+    <div class="page-header">
+      <h1>Get Started with Seiso</h1>
+    </div>
+
+    <p>This is a no-nonsense guide to getting up and running with Seiso as quickly as possible. If you need a more general background to Seiso, see the <a href="{{ site.baseurl }}/about/">About Seiso</a> page.</p>
+
+    <div class="alert alert-warning">
+      <table>
+        <tr>
+          <td><i class="fa fa-exclamation-triangle fa-3x"></i></td>
+          <td>
+            <p>Seiso is alpha software.</p>
+            <p>For now, if you want to try it out, you'll have to do "dev mode" stuff, like building from source and running the app locally.</p>
+            <p>We'll provide binary downloads and more production-focused resources as the project matures.</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <hr>
+    
+    <section>
+      <header>
+        <h1><span class="section-number">1</span> Download Seiso</h1>
+      </header>
+
+      <p>For now, it's source only. So get the software by cloning the Git repo. As we get closer to bona fide releases, we'll make binary downloads available.</p>
+    </section>
+
+    <hr>
+    
+    <section>
+      <header>
+        <h1><span class="section-number">2</span> Set up your environment</h1>
+      </header>
+
+      <p>Here are some things you'll need to do before you can build and run Seiso.</p>
+
+      <h3>Java:</h3>
+      <ul>
+        <li>Install Java 8 if you don't already have it.</li>
+        <!--
+        <li><span class="label label-primary">Optional</span> If you're interested in contributing to Seiso development and you're using Eclipse Kepler SR2, you'll need to <a href="http://www.eclipse.org/downloads/java8/" target="_blank">enable Java 8 support</a>.</li>
+        <li><span class="label label-primary">Optional</span> Again, for potential contributors: download and install <a href="http://projectlombok.org/" target="_blank">Project Lombok</a>. The installation allows your IDE to understand Lombok constructions.</li>
+        -->
+      </ul>
+
+      <h3>Database:</h3>
+      <ul>
+        <li>Install MySQL 5.6.x. It may work with other versions; we haven't tried.</li>
+        <li>Create the Seiso database schema by running <code>src/main/sql/seiso-schema.sql</code>.</li>
+        <li>If you want to load some sample data, run <code>src/main/sql/seiso-data-sample.sql</code>. Eventually we'll make this a web service script instead of a SQL script, but for now it's a SQL script.</li>
+      </ul>
+
+      <h3>RabbitMQ:</h3>
+      <p>Seiso pushes data change notifications out over RabbitMQ. This allows other services to react to changes. It also allows us to push websocket messages to the UI in load-balanced Seiso deployments. So:</p>
+      <ul>
+        <li>Install RabbitMQ.</li>
+        <li><span class="label label-primary">Optional</span> For visibility we recommend installing the RabbitMQ management plugin as well.</li>
+      </ul>
+
+      <!--
+      <h3>Bower:</h3>
+      <p>Most people (even most contributors) won't require this, but if you plan to upgrade the web packages at <code>src/main/resources/static/bower</code>, then:</p>
+      <ol>
+        <li><span class="label label-primary">Optional</span> Install <a href="http://bower.io/">Bower</a>.</li>
+      </ol>
+      -->
+    </section> <!-- end development setup -->
+
+    <hr>
+    
+    <section>
+      <header>
+        <h1><span class="section-number">3</span> Configure Seiso</h1>
+      </header>
+
+      <p>Create copies of the following files from <code>conf-sample</code> and modify them as appropriate:
+      <ul>
+        <li><code>application.yml</code></li>
+        <li><code>keystore-dev.jks</code></li>
+        <li><code>log4j.xml</code></li>
+      </ul>
+      <p>To run Seiso in development mode, you can place them directly in <code>src/main/resources</code>.</p>
+    </section> <!-- end configuration -->
+    
+    <hr>
+    
+    <section>
+      <header>
+        <h1><span class="section-number">4</span> Build Seiso</h1>
+      </header>
+      
+      <p>Build Seiso using Gradle. On *nix:</p>
+      
+      <pre class="shell">$ ./gradlew clean build</pre>
+
+      <p>If the build succeeds, then you should see a fat, executable JAR at <code>build/libs/seiso-0.2.0.SNAPSHOT.jar</code>. That's the Seiso app.</p>
+    </section> <!-- end build -->
+    
+    <hr>
+        
+    <section>
+      <header>
+        <h1><span class="section-number">5</span> Run Seiso</h1>
+      </header>
+
+      <p>You can run Seiso from Gradle like this:</p>
+
+      <pre class="shell">$ ./gradlew bootRun</pre>
+
+      <p>Then point your HTML5-enabled browser to <b>https://localhost:8443</b> or whatever scheme/port combination you happened to choose during configuration.</p>
+
+      <p>You should see a home page with a list of services. Browse around.</p>
+
+      <p>If that worked, congratulations: Seiso is running. To learn how to use the app (whether UI, API or management features), check out the <a href="{{ site.baseurl }}/docs/user-guide/">Seiso User Guide</a>.</p>
+    </section>
+  </div>
+</div>

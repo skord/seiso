@@ -1,0 +1,249 @@
+@import "resources/bower/bootstrap/less/bootstrap.less";
+@import "_less/variables.less";
+@import "_less/rouge.less";
+@import "_less/extras.less";
+@import "resources/bower/bootstrap/less/utilities.less";
+@import url("http://fonts.googleapis.com/css?family=Roboto+Slab");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans:400,700");
+
+
+/* PAGE LAYOUT ====================================================================================================== */
+
+body {
+  font-family: "Droid Sans", sans-serif;
+}
+
+.navbar {
+  font-size: @font-size-small;
+}
+
+.page-content {
+  padding-top: 120px;
+  background-color: @white;
+//  background-color: @beige-white;
+  font-size: 125%;
+}
+
+.page-header {
+  margin-top: 0;
+  border-bottom: none;
+
+  h1 {
+    font-size: 320%;
+    color: @blood-red;
+  }
+}
+
+h1.page-title {
+  margin-top: 0;
+}
+
+footer {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  background-color: @footer-bg;
+  text-align: center;
+  color: @beige-white;
+
+  a, a:hover {
+    color: @white;
+
+     // Avoid underlining the gap between icon and text.
+    .fa { margin-right: 5px; }
+  }
+}
+
+
+/* COMMON ELEMENTS  ================================================================================================= */
+
+// http://stackoverflow.com/questions/10732690/offsetting-an-html-anchor-to-adjust-for-fixed-header
+a.anchor {
+  display: block;
+  position: relative;
+  top: -90px;
+  visibility: hidden;
+}
+
+blockquote {
+  margin: 30px 60px;
+  border-left: 6px solid @beige-gold;
+  background-color: @beige-white;
+}
+
+h1, h2 {
+  font-family: "Roboto Slab";
+  color: @brown-dark;
+}
+
+hr {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+nav {
+  text-align: center;
+}
+
+pre.shell {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-color: #000;
+  background-color: #333;
+  color: #0F0;
+}
+
+strong {
+  font-size: 140%;
+  background-color: @food-yellow;
+}
+
+
+/* COMMON CLASSES =================================================================================================== */
+
+.alert {
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  table {
+    margin: 0;
+    td {
+      padding: 5px 10px;
+      vertical-align: top;
+    }
+  }
+}
+
+.breadcrumb {
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+  background-color: @white;
+  border-radius: 0;
+  
+  > li {
+    display: inline-block;
+    
+    + li:before {
+      content: "";
+      padding: 0;
+    }
+    
+    &:after {
+      content: "\00a0@{breadcrumb-separator}\00a0"; // Unicode space added since inline-block means non-collapsing whitespace
+      padding: 0;
+      color: @breadcrumb-color;
+    }
+  }
+}
+
+.call-to-action {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  
+  a {
+    padding: 20px;
+    font-size: 125%;
+  }
+}
+
+.endpoint-title {
+  padding: 5px;
+  background-color: @brand-primary;
+  color: @white;
+}
+
+.panel-info {
+  .list-group-item {
+    border-top: 1px solid @panel-info-border;
+  }
+}
+
+.side-nav {
+  font-size: @font-size-small;
+}
+
+.well.side-panel {
+  border: none;
+  font-size: @font-size-small;
+  background-color: @art-blue;
+  color: @white;
+//  box-shadow: 0 5px 10px #999;
+
+  h4 {
+    text-align: center;
+    font-variant: small-caps;
+    color: @white;
+  }
+
+  a {
+    color: @white;
+    text-decoration: underline;
+  }
+
+  table {
+    td {
+      border-top: 0;
+    }
+  }
+}
+
+.section-number {
+  font-size: 80%;
+  font-family: monospace;
+  padding: 5px 15px;
+  background-color: @trad-green;
+  color: @white;
+  border-radius: 30px;
+}
+
+
+/* ICONS ============================================================================================================ */
+
+.fa-exclamation-triangle, .fa-star {
+  color: @brand-warning;
+}
+
+.fa-heart {
+  color: @blood-red;
+}
+
+.fa-github {
+  margin-right: 2px;
+  padding: 4px 2px;
+  border-radius: 2px;
+  background-color: @white;
+  color: @black;
+}
+
+.fa-twitter {
+  margin-right: 2px;
+  padding: 4px 2px;
+  border-radius: 2px;
+  background-color: @white;
+  color: @twitter-blue;
+}
+
+
+/* OBJECTS ========================================================================================================== */
+
+.figure-wrapper, .table-wrapper, .object-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 60px;
+  margin-right: 60px;
+  font-size: @font-size-small;
+
+  .caption {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.figure-wrapper {
+  text-align: center;
+}

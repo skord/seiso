@@ -1,4 +1,4 @@
 seiso
 =====
 
-Devops data service
+Seiso devops data repository
