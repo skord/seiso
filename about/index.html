@@ -1,86 +1,82 @@
 ---
-layout: default
+layout: simple
 title: About Seiso
 about_class: active
 ---
-<div class="page-content">
-  <div class="container">
-    <div class="page-header">
-      <h1>About Seiso</h1>
+<div class="page-header">
+  <h1>About Seiso</h1>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <section>
+      <p>Information about running services in various environments often is both decentralized and inaccessible programmatically&mdash;that is, what the environments and services are right now is something specific people in an organization will know in part but not in total. By aggregating this data into something that can be programmatically accessed <strong>you can build automation and other tools that improve the speed and reliability of a devops effort</strong>, particularly when applications suites are not monolithic.</p>
+      <p>Seiso builds upon these ideas by providing a centralized REST API for collecting, normalizing, integrating and exposing devops data to support programmatic access by automation. Moreover Seiso provides a user interface to make it easier for people and automation to have a shared view of the data. Seiso helps to move your organization away from the "tribal knowledge" model of information management to a shared-view model.</p>
+      <p>If you want to pull data together to support enhanced visibility and automation, give Seiso a try.</p>
+      <div class="call-to-action"><a class="btn btn-success btn-lg" href="{{ site.baseurl }}/get-started/">Get started &raquo;</a></div>
+    </section>
+  </div> <!-- end col-md-8 -->
+  <div class="col-md-4">
+    <div class="well well-sm side-panel">
+      <h4>Key Features</h4>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Easy to use JSON-based REST API</td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Intuitive HTML5 web UI</td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Pluggable actions (health checks, server bounces, etc.) </td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Message-based integration</td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Embedded Tomcat server, so you don't need to deploy one yourself</td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Built-in management support</td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-star"></i></td>
+            <td>Authentication, authorization, HTTPS</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="row">
-      <div class="col-md-8">
-        <section>
-          <p>Information about running services in various environments often is both decentralized and inaccessible programmatically&mdash;that is, what the environments and services are right now is something specific people in an organization will know in part but not in total. By aggregating this data into something that can be programmatically accessed <strong>you can build automation and other tools that improve the speed and reliability of a devops effort</strong>, particularly when applications suites are not monolithic.</p>
-          <p>Seiso builds upon these ideas by providing a centralized REST API for collecting, normalizing, integrating and exposing devops data to support programmatic access by automation. Moreover Seiso provides a user interface to make it easier for people and automation to have a shared view of the data. Seiso helps to move your organization away from the "tribal knowledge" model of information management to a shared-view model.</p>
-          <p>If you want to pull data together to support enhanced visibility and automation, give Seiso a try.</p>
-          <div class="call-to-action"><a class="btn btn-success btn-lg" href="{{ site.baseurl }}/get-started/">Get started &raquo;</a></div>
-        </section>
-      </div> <!-- end col-md-8 -->
-      <div class="col-md-4">
-        <div class="well well-sm side-panel">
-          <h4>Key Features</h4>
-          <table class="table">
-            <tbody>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Easy to use JSON-based REST API</td>
-              </tr>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Intuitive HTML5 web UI</td>
-              </tr>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Pluggable actions (health checks, server bounces, etc.) </td>
-              </tr>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Message-based integration</td>
-              </tr>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Embedded Tomcat server, so you don't need to deploy one yourself</td>
-              </tr>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Built-in management support</td>
-              </tr>
-              <tr>
-                <td><i class="fa fa-star"></i></td>
-                <td>Authentication, authorization, HTTPS</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="well well-sm side-panel">
-          <h4>Tech Stack</h4>
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="text-right">API</td>
-                <td>Java 8, <a href="http://projectlombok.org/">Project Lombok</a>, <a href="http://projects.spring.io/spring-framework/">Spring Framework</a> and <a href="http://projects.spring.io/spring-boot/">Spring Boot</a></td>
-              </tr>
-              <tr>
-                <td class="text-right">UI</td>
-                <td>JavaScript, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="https://angularjs.org/">AngularJS</a> and WebSockets</td>
-              </tr>
-              <tr>
-                <td class="text-right">Database</td>
-                <td><a href="http://www.mysql.com/">MySQL</a></td>
-              </tr>
-              <tr>
-                <td class="text-right">Messaging</td>
-                <td><a href="http://www.rabbitmq.com/">RabbitMQ</a></td>
-              </tr>
-              <tr>
-                <td class="text-right">Dev</td>
-                <td><a href="http://git-scm.com/">Git</a>, <a href="https://github.com/">GitHub</a>, <a href="http://www.gradle.org/">Gradle</a>, <a href="http://junit.org/">JUnit</a> and <a href="https://code.google.com/p/mockito/">Mockito</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> <!-- end col-md-4 -->
-    </div> <!-- end row -->
-  </div> <!-- end container -->
-</div> <!-- end page-content -->
+    <div class="well well-sm side-panel">
+      <h4>Tech Stack</h4>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="text-right">API</td>
+            <td>Java 8, <a href="http://projectlombok.org/">Project Lombok</a>, <a href="http://projects.spring.io/spring-framework/">Spring Framework</a> and <a href="http://projects.spring.io/spring-boot/">Spring Boot</a></td>
+          </tr>
+          <tr>
+            <td class="text-right">UI</td>
+            <td>JavaScript, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="https://angularjs.org/">AngularJS</a> and WebSockets</td>
+          </tr>
+          <tr>
+            <td class="text-right">Database</td>
+            <td><a href="http://www.mysql.com/">MySQL</a></td>
+          </tr>
+          <tr>
+            <td class="text-right">Messaging</td>
+            <td><a href="http://www.rabbitmq.com/">RabbitMQ</a></td>
+          </tr>
+          <tr>
+            <td class="text-right">Dev</td>
+            <td><a href="http://git-scm.com/">Git</a>, <a href="https://github.com/">GitHub</a>, <a href="http://www.gradle.org/">Gradle</a>, <a href="http://junit.org/">JUnit</a> and <a href="https://code.google.com/p/mockito/">Mockito</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> <!-- end col-md-4 -->
+</div> <!-- end row -->
