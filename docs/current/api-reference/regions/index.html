@@ -1,22 +1,22 @@
 ---
 layout: reference
-title: Seiso API v1 Reference - People
+title: Seiso API v1 Reference - Regions
 docs_class: active
 ---
 <nav>
   <ul class="pager">
-    <li><a href="../node-ip-addresses/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href="../people/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
     <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
     <li><a href="../rotation-statuses/" title="Next"><i class="fa fa-arrow-right"></i></a></li>
   </ul>
 </nav>
 <div class="page-header">
   <div class="lead">Seiso API v1 Reference</div>
-  <h1>People</h1>
+  <h1>Regions</h1>
 </div>
 <section>
   <header>
-    <h2 class="endpoint-title">GET /v1/people{?page,size}</h2>
+    <h2 class="endpoint-title">GET /v1/regions</h2>
   </header>
   <section>
     <header>
@@ -27,7 +27,7 @@ docs_class: active
 <hr>
 <section>
   <header>
-    <h2 class="endpoint-title">GET /v1/people/:username</h2>
+    <h2 class="endpoint-title">GET /v1/regions/:key</h2>
   </header>
   <section>
     <header>
@@ -38,23 +38,35 @@ docs_class: active
 <hr>
 <section>
   <header>
-    <h2 class="endpoint-title">PUT /v1/people/:username</h2>
+    <h2 class="endpoint-title">PUT /v1/regions/:key</h2>
   </header>
   <section>
     <header>
       <h3>Request</h3>
     </header>
   </section>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>204 No Content</pre>
+  </section>
 </section>
 <hr>
 <section>
   <header>
-    <h2 class="endpoint-title">DELETE /v1/people/:username</h2>
+    <h2 class="endpoint-title">DELETE /v1/regions/:key</h2>
   </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>204 No Content</pre>
+  </section>
 </section>
 <nav>
   <ul class="pager">
-    <li><a href="../node-ip-addresses/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href="../people/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
     <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
     <li><a href="../rotation-statuses/" title="Next"><i class="fa fa-arrow-right"></i></a></li>
   </ul>
