@@ -23,6 +23,23 @@ docs_class: active
       <h3>Response</h3>
     </header>
     <pre>200 OK</pre>
+    <pre>[ {
+  "_self" : "https://seiso.example.com/v1/environments/integration",
+  "aka" : "Maui, ProdNext",
+  "description" : "Functional integration testing, regression testing against upcoming versions of services.",
+  "key" : "integration",
+  "name" : "Integration"
+}, {
+  "_self" : "https://seiso.example.com/v1/environments/stable",
+  "aka" : "Milan, ProdStable",
+  "description" : "Hotfix testing.",
+  "key" : "stable",
+  "name" : "Stable"
+},
+
+... other environments ...
+
+]</pre>
   </section>
 </section>
 <hr>
@@ -35,6 +52,13 @@ docs_class: active
       <h3>Response</h3>
     </header>
     <pre>200 OK</pre>
+    <pre>{
+  "_self" : "https://seiso.example.com/v1/environments/integration",
+  "aka" : "Maui, ProdNext",
+  "description" : "Functional integration testing, regression testing against upcoming versions of services.",
+  "key" : "integration",
+  "name" : "Integration"
+}</pre>
   </section> <!-- end response -->
 </section> <!-- end get one -->
 <hr>
@@ -46,11 +70,22 @@ docs_class: active
     <header>
       <h3>Request</h3>
     </header>
+    <pre>{
+  "aka" : "Maui, ProdNext",
+  "description" : "Functional integration testing, regression testing against upcoming versions of services.",
+  "key" : "integration",
+  "name" : "Integration"
+}</pre>
   </section>
   <section>
     <header>
       <h3>Response</h3>
     </header>
+    
+    <h4>For creates:</h4>
+    <pre>201 Created</pre>
+    
+    <h4>For updates:</h4>
     <pre>204 No Content</pre>
   </section>
 </section>

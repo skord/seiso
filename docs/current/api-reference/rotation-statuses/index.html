@@ -23,6 +23,29 @@ docs_class: active
       <h3>Response</h3>
     </header>
     <pre>200 OK</pre>
+    <pre>[ {
+  "_self" : "https://seiso.example.com/v1/rotation-statuses/enabled",
+  "key" : "enabled",
+  "name" : "Enabled",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/success",
+    "key" : "success",
+    "name" : "Success"
+  }
+}, {
+  "_self" : "https://seiso.example.com/v1/rotation-statuses/disabled",
+  "key" : "disabled",
+  "name" : "Disabled",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/warning",
+    "key" : "warning",
+    "name" : "Warning"
+  }
+},
+
+... other rotation statuses ...
+
+]</pre>
   </section>
 </section>
 <hr>
@@ -35,6 +58,16 @@ docs_class: active
       <h3>Response</h3>
     </header>
     <pre>200 OK</pre>
+    <pre>{
+  "_self" : "https://seiso.example.com/v1/rotation-statuses/enabled",
+  "key" : "enabled",
+  "name" : "Enabled",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/success",
+    "key" : "success",
+    "name" : "Success"
+  }
+}</pre>
   </section> <!-- end response -->
 </section> <!-- end get one -->
 <hr>
@@ -46,11 +79,23 @@ docs_class: active
     <header>
       <h3>Request</h3>
     </header>
+    <pre>{
+  "key" : "enabled",
+  "name" : "Enabled",
+  "statusType" : {
+    "key" : "success"
+  }
+}</pre>
   </section>
   <section>
     <header>
       <h3>Response</h3>
     </header>
+    
+    <h4>For creates:</h4>
+    <pre>201 Created</pre>
+    
+    <h4>For updates:</h4>
     <pre>204 No Content</pre>
   </section>
 </section>
