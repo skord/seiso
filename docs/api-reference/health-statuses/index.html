@@ -1,0 +1,116 @@
+---
+layout: reference
+title: Seiso API v1 Reference - Health Statuses
+docs_class: active
+---
+<nav>
+  <ul class="pager">
+    <li><a href="../environments/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
+    <li><a href="../infrastructure-providers/" title="Next"><i class="fa fa-arrow-right"></i></a></li>
+  </ul>
+</nav>
+<div class="page-header">
+  <div class="lead">Seiso API v1 Reference</div>
+  <h1>Health Statuses</h1>
+</div>
+<section>
+  <header>
+    <h2 class="endpoint-title">GET /v1/health-statuses</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>200 OK</pre>
+    <pre>[ {
+  "_self" : "https://seiso.example.com/v1/health-statuses/healthy",
+  "key" : "healthy",
+  "name" : "Healthy",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/success",
+    "key" : "success",
+    "name" : "Success"
+  }
+}, {
+  "_self" : "https://seiso.example.com/v1/health-statuses/patch-needed",
+  "key" : "patch-needed",
+  "name" : "Patch Needed",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/info",
+    "key" : "info",
+    "name" : "Info"
+  }
+},
+
+... other health statuses ...
+
+]</pre>
+  </section>
+</section>
+<hr>
+<section>
+  <header>
+    <h2 class="endpoint-title">GET /v1/health-statuses/:key</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>200 OK</pre>
+    <pre>{
+  "_self" : "https://seiso.example.com/v1/health-statuses/patch-needed",
+  "key" : "patch-needed",
+  "name" : "Patch Needed",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/info",
+    "key" : "info",
+    "name" : "Info"
+  }
+}</pre>
+  </section> <!-- end response -->
+</section> <!-- end get one -->
+<hr>
+<section>
+  <header>
+    <h2 class="endpoint-title">PUT /v1/health-statuses/:key</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Request</h3>
+    </header>
+    <pre>{
+  "_self" : "https://seiso.example.com/v1/health-statuses/patch-needed",
+  "key" : "patch-needed",
+  "name" : "Patch Needed",
+  "statusType" : {
+    "_self" : "https://seiso.example.com/v1/status-types/warning"
+  }
+}</pre>
+  </section>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>204 No Content</pre>
+  </section>
+</section>
+<hr>
+<section>
+  <header>
+    <h2 class="endpoint-title">DELETE /v1/health-statuses/:key</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>204 No Content</pre>
+  </section>
+</section>
+<nav>
+  <ul class="pager">
+    <li><a href="../environments/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
+    <li><a href="../infrastructure-providers/" title="Next"><i class="fa fa-arrow-right"></i></a></li>
+  </ul>
+</nav>
