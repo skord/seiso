@@ -1,0 +1,118 @@
+---
+layout: reference
+title: Seiso API v1 Reference - Status Types
+docs_class: active
+---
+<nav>
+  <ul class="pager">
+    <li><a href="../service-types/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
+    <li class="disabled"><a href="#" title="Next"><i class="fa fa-arrow-right"></i></a></li>
+  </ul>
+</nav>
+<div class="page-header">
+  <div class="lead">Seiso API v1 Reference</div>
+  <h1>Status Types</h1>
+</div>
+<div class="alert alert-warning">
+  <table>
+    <tr>
+      <td><i class="fa fa-exclamation-triangle fa-3x"></i></td>
+      <td>
+        <p>Avoid modifying the status types, either individually or collectively. The reason is that the Seiso UI
+        formats the display based on the specific status type keys listed below.</p>
+        <p>If for example you were to change the <code>success</code> key to <code>ok</code>, the UI would not properly
+        color-code success statuses.</p>
+      </td>
+    </tr>
+  </table>
+</div>
+<section>
+  <header>
+    <h2 class="endpoint-title">GET /v1/status-types</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>200 OK</pre>
+    <pre>[ {
+  "_self" : "https://seiso.example.com/v1/status-types/default",
+  "key" : "default",
+  "name" : "Default"
+}, {
+  "_self" : "https://seiso.example.com/v1/status-types/primary",
+  "key" : "primary",
+  "name" : "Primary"
+}, {
+  "_self" : "https://seiso.example.com/v1/status-types/success",
+  "key" : "success",
+  "name" : "Success"
+}, {
+  "_self" : "https://seiso.example.com/v1/status-types/info",
+  "key" : "info",
+  "name" : "Info"
+}, {
+  "_self" : "https://seiso.example.com/v1/status-types/warning",
+  "key" : "warning",
+  "name" : "Warning"
+}, {
+  "_self" : "https://seiso.example.com/v1/status-types/danger",
+  "key" : "danger",
+  "name" : "Danger"
+} ]</pre>
+  </section>
+</section>
+<hr>
+<section>
+  <header>
+    <h2 class="endpoint-title">GET /v1/status-types/:key</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>200 OK</pre>
+    <pre>{
+  "_self" : "https://seiso.example.com/v1/status-types/danger",
+  "key" : "danger",
+  "name" : "Danger"
+}</pre>
+  </section> <!-- end response -->
+</section> <!-- end get one -->
+<hr>
+<section>
+  <header>
+    <h2 class="endpoint-title">PUT /v1/status-types/:key</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Request</h3>
+    </header>
+  </section>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>204 No Content</pre>
+  </section>
+</section>
+<hr>
+<section>
+  <header>
+    <h2 class="endpoint-title">DELETE /v1/status-types/:key</h2>
+  </header>
+  <section>
+    <header>
+      <h3>Response</h3>
+    </header>
+    <pre>204 No Content</pre>
+  </section>
+</section>
+<nav>
+  <ul class="pager">
+    <li><a href="../service-types/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
+    <li class="disabled"><a href="#" title="Next"><i class="fa fa-arrow-right"></i></a></li>
+  </ul>
+</nav>
