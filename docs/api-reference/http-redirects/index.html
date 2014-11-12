@@ -1,0 +1,43 @@
+---
+layout: reference
+title: Seiso API v1 Reference - HTTP Redirects
+docs_class: active
+---
+<nav>
+  <ul class="pager">
+    <li><a href="../projections/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
+    <li><a href="../hypermedia/" title="Next"><i class="fa fa-arrow-right"></i></a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="lead">Seiso API v1 Reference</div>
+  <h1>HTTP Redirects</h1>
+</div>
+
+<p>Clients should be prepared to handle HTTP <code>301 Moved Permanently</code> responses, as we may leverage this
+mechanism to effect URI migrations, especially between major API versions.</p>
+
+<p>A sample request might be the following:</p>
+
+<pre>GET /v1/infrastructure-regions HTTP/1.1
+Host: seiso.example.com</pre>
+
+<p>A sample response might be:</p>
+
+<pre>HTTP/1.1 301 Moved Permanently
+Location: https://seiso.example.com/v1/regions</pre>
+
+<p>To simplify client-side implementation, we recommend implementing redirect-handling code in a cross-cutting fashion
+so you don't have to implement it for every request.</p>
+
+<p>See the <a href="http://en.wikipedia.org/wiki/HTTP_301" target="_blank"><i class="fa fa-external-link"></i> Wikipedia article on HTTP 301</a> for more information.</p>
+
+<nav>
+  <ul class="pager">
+    <li><a href="../projections/" title="Previous"><i class="fa fa-arrow-left"></i></a></li>
+    <li><a href=".." title="Up"><i class="fa fa-arrow-up"></i></a></li>
+    <li><a href="../hypermedia/" title="Next"><i class="fa fa-arrow-right"></i></a></li>
+  </ul>
+</nav>
