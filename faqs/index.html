@@ -5,7 +5,7 @@ faqs_class: active
 ---
 <div class="page-header">
   <h1>Frequently Asked Questions</h1>
-  <div class="lead">Last updated: November 8, 2014</div>
+  <div class="lead">Last updated: November 12, 2014</div>
 </div>
 
 <section>
@@ -23,6 +23,7 @@ faqs_class: active
         <h4>Data schema</h4>
         <ul>
           <li><a href="#faq-additional-fields">Seiso doesn't support a data field I need. Can you add it?</a></li>
+      	  <li><a href="#faq-xml">My team doesn't know JSON. Can you add XML support?</a>
         </ul>
       </div>
       <div>
@@ -40,6 +41,7 @@ faqs_class: active
           <li><a href="#faq-client-language">Do Seiso clients have to be written in a specific language?</a></li>
           <li><a href="#faq-service-integration">How do I integrate Seiso with other services?</a></li>
           <li><a href="#faq-data-integration">Specifically, how should I integrate with data sources?</a></li>
+          <li><a href="#faq-wrong-rotation-status">Seiso says my endpoint is in rotation, but it's really not. What's up?</a></li>
         </ul>
       </div>
       <div>
@@ -119,6 +121,12 @@ faqs_class: active
     <p>Sometimes users request fairly specialized and/or fine-grained fields and types, presumably because they'd like Seiso to be a one-stop shop for all of their automation data. Seiso isn't really designed for this. To offer a concrete example, when we sync Seiso with Chef server, we don't pull in every bit of Ohai node data, because it's too huge, and most of it isn't broadly useful. We try to focus on the key integration data.</p>
     <p>We plan to support dynamic, user-defined properties and tags at some point, which should help in cases where the proposed fields are too specialized or fine-grained to be part of the data schema.</p>
   </div>
+  
+  <a id="faq-xml" class="anchor"></a>
+  <div class="faq">
+    <h3>My team doesn't know JSON. Can you add XML support?</h3>
+    <p>While it would be technically feasible to support XML, we've made a conscious decision not to, primarily because we consider XML an outdated web service format. Additionally, supporting XML would roughly double the number of endpoints to test and support. We'd prefer to dedicate our efforts to other features.</p>
+  </div>
 </section>
 
 <hr>
@@ -158,6 +166,19 @@ faqs_class: active
     <p><b>Multiple source systems.</b> Sometimes there are multiple source systems for the sort of data you care about. Maybe one part of the organization maintains its machine data in Chef, whereas another uses a custom database. Here you can just create separate jobs to import the data into Seiso for a consolidated, normalized view.</p>
     <p><b>No existing source system.</b> Sometimes there isn't an existing system for the data you want to put in Seiso. Maybe you don't have master list of services (sometimes called a "service catalog") or a master list of environments. At Expedia we've found it effective to put this kind of data in files under version control, and then create continuous integration jobs (e.g., Bamboo or Jenkins jobs) that respond to changes by pushing the data into Seiso via the REST API. (We will likely open source these integration scripts at some future date.)</p>
     <p>These are just some common approaches. No doubt you will think of others. Seiso is pretty flexible with respect to how you do this.</p>
+  </div>
+  
+  <a id="faq-wrong-rotation-status" class="anchor"></a>
+  <div class="faq">
+    <h3>Seiso says my endpoint is in rotation, but it's really not. What's up?</h3>
+    <p>Seiso is just a repository for the rotation status data (and all other automation data), meaning that it just reports what your integration code most recently told it. So check your integration approach and/or code.</p>
+    <p>For what it's worth, we've seen this kind of behavior in a variety of contexts:</p>
+    <ul>
+      <li>It arises in polling situations where the integration code uses a polling interval that's too large. We recommend using event-driven updates where feasible.</li>
+      <li>It can arise when dual-sourcing rotation data from primary/failover devices that disagree with one another.</li>
+      <li>It can happen if you have a race between a real-time update mechanism and a periodic batch mechanism. The race works like this: the batch job grabs a bunch of rotation status data, the rotation status changes, the real-time mechanism updates Seiso, and then the batch job updates Seiso with stale data, undoing the real-time update.</li>
+    </ul>
+    <p>Obviously there are lots of ways to put wrong data into Seiso. If you think that you've found a bug with Seiso itself, by all means create an issue in GitHub.</p>
   </div>
 </section>
 
