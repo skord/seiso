@@ -40,6 +40,14 @@ docs_class: active
   <p>We don't intend services to cover non-software IT offerings, like security training or technical support. Nor do we mean fine-grained things like code libraries (Hibernate, Nokogiri, log4j, AngularJS). Generally we mean software that either responds to client requests (whether human or machine), or else takes action on its own. Something that you might ask your <abbr title="network operations center">NOC</abbr> to manage.</p>
   <p>We noted that sometimes it's a judgment call. One kind of ambiguous case is a dedicated database: does it make sense to call it out as a service separate from the app it supports? Another fuzzy case is the so-called <a href="http://martinfowler.com/articles/microservices.html" target="_blank"><i class="fa fa-external-link"></i> microservice architecture</a>&mdash;is it a single service, or many?</p>
   <p>As a general rule, we recommend the conservative and simpler approach of treating such instances as cases of a single service, and then breaking them apart if and when you determine that you have use cases that would benefit from such a treatment.</p>
+  <p>You can get to the Seiso services view via <b>Services &rarr; Services</b>. See Figure 2.1 below.</p>
+  
+  <div class="figure-wrapper">
+    <div class="screenshot">
+      <img src="images/ss-services.png" class="img-responsive" alt="Services">
+    </div>
+    <div class="caption">Figure 2.1. The Seiso services view.</div>
+  </div>
 
   <section>
     <header>
@@ -47,6 +55,14 @@ docs_class: active
     </header>
     <p>Seiso allows you to classify your services by type. The types are up to you, but we intend these to be <strong>technology-related classifications</strong> like application, web service, database, batch job and so on, as opposed to business or product domain classifications. If it makes sense for your team, you can use even more refined categories like SOAP web service, REST web service, relational database, NoSQL database, etc. Again, up to you.</p>
     <p>A service can have at most one type.</p>
+    <p>Go to <b>Services &rarr; Types</b> to see the Seiso types view. See Figure 2.2.</p>
+    
+    <div class="figure-wrapper">
+      <div class="screenshot">
+        <img src="images/ss-service-types.png" class="img-responsive" alt="Service types">
+      </div>
+      <div class="caption">Figure 2.2. The Seiso types view. The types in the screenshot are just examples. You can create and use whichever types make sense for your organization.</div>
+    </div>
   </section>
   <section>
     <header>
@@ -55,6 +71,15 @@ docs_class: active
     <p>Besides types, Seiso has service groups, which allow you to <strong>categorize services by business or product domain</strong>. This could be very general categories like marketing, sales, support, administrative and so forth. Or they could be more specific, like lead generation or lead qualification. The categories might be industry-specific; at Expedia, we have groups for categories like flight and lodging inventory systems.</p>
     <p>As with service types, choose the categories and granularity that make sense for your organization.</p>
     <p>A service can have at most one group.</p>
+    <p>Figure 2.3 shows a list of service groups as it appears on the Seiso home page.</p>
+    
+    <div class="figure-wrapper">
+      <div class="screenshot">
+        <img src="images/ss-service-groups.png" class="img-responsive" alt="Service groups">
+      </div>
+      <div class="caption">Figure 2.3. Service groups on the Seiso home page. Click on a service group to see its member services.</div>
+    </div>
+    
   </section>
   <p>Though services are Seiso's foundational concept, in practice it's <em>service instances</em> that we really care about. Before we can get to those, though, we have to cover environments.</p>
 </section>

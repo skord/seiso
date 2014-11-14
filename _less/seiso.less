@@ -32,14 +32,11 @@ body {
   }
   
   h1 {
-    margin-top: 0;
+    margin: 0 0 20px;
     font-size: 320%;
     color: @blood-red;
+    line-height: 0.8;
   }
-}
-
-h1.page-title {
-  margin-top: 0;
 }
 
 .sidenav {
@@ -240,10 +237,7 @@ ul.breadcrumb {
 /* OBJECTS ========================================================================================================== */
 
 .figure-wrapper, .table-wrapper, .object-wrapper {
-  margin-top: 30px;
-  margin-bottom: 30px;
-//  margin-left: 60px;
-//  margin-right: 60px;
+  margin: 40px 0;
   font-size: @font-size-small;
 
   .caption {
@@ -256,3 +250,11 @@ ul.breadcrumb {
 .figure-wrapper {
   text-align: center;
 }
+
+.screenshot img {
+  margin: 10px auto;
+  border: solid 1px #EEE; 
+  padding: 10px;
+  box-shadow: 0 5px 10px #CCC;
+}
+
