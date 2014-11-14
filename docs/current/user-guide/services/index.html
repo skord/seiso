@@ -18,83 +18,68 @@ docs_class: active
 
 <p>Service management is a central activity in technology organizations. Accordingly, services occupy a central role in Seiso. In this section we dive into services and their associated notions, such as environments, services instances and nodes.</p>
 
-<a id="services" class="anchor"></a>
+<p>Before diving in, let's address an important issue regarding terminology.</p>
 
+<blockquote>
+  <p>In technology, <i>service</i> is a heavily overloaded term. To process people it might mean IT services in the <abbr title="IT Service Management">ITSM</abbr> sense. Network engineers might think of it as software processes listening on a port for requests. Developers might think "web service". Windows administrators might say it's software that runs in the background. There are probably several other senses that enjoy regular use.</p>
+  
+  <p>Indeed there are many other examples of overloaded terms: applications, nodes, instances, farms, clusters, endpoints, resources, etc. To be sure sometimes people simply misuse terms. (For example, I think that it's wrong to use <i>clustering</i> to refer to simple load balancing.) Usually, though, such terms have multiple legitimate meanings.</p>
+  
+  <p>But we're trying to explain how to use Seiso here, and it won't do for our purpose to be completely loose. So in what follows we'll explain <em>our</em> way of using the terminology, without suggesting that this is the only or even the best way of doing so. We're simply fixing terminology to facilitate communication.</p>
+</blockquote>
+
+<p>With that in place, let's learn about services in Seiso.</p>
+
+<!-- Services and service groups -->
+<a id="services" class="anchor"></a>
 <section>
   <header>
     <h2>2.1 Services</h2>
   </header>
+  <p>In Seiso, services are the software that technology organizations deploy to accomplish business and market goals. In many cases it's a judgment call, but <strong>for us, services are applications, web services, databases (especially when shared by multiple apps), message brokers, agents, batch processes and the like</strong>.</p>
+  <p>We don't intend services to cover non-software IT offerings, like security training or technical support. Nor do we mean fine-grained things like code libraries (Hibernate, Nokogiri, log4j, AngularJS). Generally we mean software that either responds to client requests (whether human or machine), or else takes action on its own. Something that you might ask your <abbr title="network operations center">NOC</abbr> to manage.</p>
+  <p>We noted that sometimes it's a judgment call. One kind of ambiguous case is a dedicated database: does it make sense to call it out as a service separate from the app it supports? Another fuzzy case is the so-called <a href="http://martinfowler.com/articles/microservices.html" target="_blank"><i class="fa fa-external-link"></i> microservice architecture</a>&mdash;is it a single service, or many?</p>
+  <p>As a general rule, we recommend the conservative and simpler approach of treating such instances as cases of a single service, and then breaking them apart if and when you determine that you have use cases that would benefit from such a treatment.</p>
+
   <section>
     <header>
-      <h3>2.1.1 Services</h3>
+      <h3>2.1.1 Service types</h3>
     </header>
+    <p>Seiso allows you to classify your services by type. The types are up to you, but we intend these to be <strong>technology-related classifications</strong> like application, web service, database, batch job and so on, as opposed to business or product domain classifications. If it makes sense for your team, you can use even more refined categories like SOAP web service, REST web service, relational database, NoSQL database, etc. Again, up to you.</p>
+    <p>A service can have at most one type.</p>
   </section>
   <section>
     <header>
       <h3>2.1.2 Service groups</h3>
     </header>
+    <p>Besides types, Seiso has service groups, which allow you to <strong>categorize services by business or product domain</strong>. This could be very general categories like marketing, sales, support, administrative and so forth. Or they could be more specific, like lead generation or lead qualification. The categories might be industry-specific; at Expedia, we have groups for categories like flight and lodging inventory systems.</p>
+    <p>As with service types, choose the categories and granularity that make sense for your organization.</p>
+    <p>A service can have at most one group.</p>
   </section>
+  <p>Though services are Seiso's foundational concept, in practice it's <em>service instances</em> that we really care about. Before we can get to those, though, we have to cover environments.</p>
 </section>
 
+<a id="environments" class="anchor"></a>
+<section>
+  <header>
+    <h2>2.2 Environments</h2>
+  </header>
+</section>
+
+<!-- Service instances, ports, IP address roles -->
 <a id="service-instances" class="anchor"></a>
-
 <section>
   <header>
-    <h2>2.2 Service instances</h2>
+    <h2>2.3 Service instances</h2>
   </header>
-  <section>
-    <header>
-      <h3>2.2.1 Environments</h3>
-    </header>
-  </section>
-  <section>
-    <header>
-      <h3>2.2.2 Service instances</h3>
-    </header>
-  </section>
-  <section>
-    <header>
-      <h3>2.2.3 Service instance ports</h3>
-    </header>
-  </section>
-  <section>
-    <header>
-      <h3>2.2.4 IP address roles</h3>
-    </header>
-  </section>
 </section>
 
+<!-- Nodes, node IP addresses, endpoints -->
 <a id="nodes" class="anchor"></a>
-
 <section>
   <header>
-    <h2>2.3 Nodes</h2>
+    <h2>2.4 Nodes</h2>
   </header>
-  <section>
-    <header>
-      <h3>2.3.1 Nodes</h3>
-    </header>
-    <header>
-      <h3>2.3.2 Health statuses</h3>
-    </header>
-    <header>
-      <h3>2.3.3 Node IP addresses</h3>
-    </header>
-    <header>
-      <h3>2.3.4 Rotation statuses</h3>
-    </header>
-    <header>
-      <h3>2.3.5 Endpoints</h3>
-    </header>
-  </section>
-</section> <!-- end 2.3 -->
-
-<a id="statuses" class="anchor"></a>
-
-<section>
-	<header>
-		<h2>2.4 Statuses</h2>
-	</header>
 </section>
 
 <nav>
