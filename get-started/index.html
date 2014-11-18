@@ -29,7 +29,7 @@ get_started_class: active
     <h1><span class="section-number">1</span> Download Seiso</h1>
   </header>
 
-  <p>For now, it's source only. So get the software by cloning the Git repo:</p>
+  <p>For now, it's <a href="https://github.com/ExpediaDotCom/seiso" target="_blank">source only <i class="fa fa-external-link"></i></a>. So get the software by cloning the Git repo:</p>
   
   <pre class="shell">$ git clone git@github.com:ExpediaDotCom/seiso.git</pre>
   
@@ -45,7 +45,7 @@ get_started_class: active
 
   <p>Here are some things you'll need to do before you can build and run Seiso.</p>
 
-  <h3>Java:</h3>
+  <h3>Java</h3>
   <ul>
     <li>Install Java 8 if you don't already have it.</li>
     <!--
@@ -54,14 +54,14 @@ get_started_class: active
     -->
   </ul>
 
-  <h3>Database:</h3>
+  <h3>MySQL</h3>
   <ul>
     <li>Install MySQL 5.6.x. It may work with other versions; we haven't tried.</li>
     <li>Create the Seiso database schema by running <code>src/main/sql/seiso-schema.sql</code>.</li>
     <li>If you want to load some sample data, run <code>src/main/sql/seiso-data-sample.sql</code>. Eventually we'll make this a web service script instead of a SQL script, but for now it's a SQL script.</li>
   </ul>
 
-  <h3>RabbitMQ:</h3>
+  <h3>RabbitMQ</h3>
   <p>Seiso pushes data change notifications out over RabbitMQ. This allows other services to react to changes. It also allows us to push websocket messages to the UI in load-balanced Seiso deployments. So:</p>
   <ul>
     <li>Install RabbitMQ.</li>
