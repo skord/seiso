@@ -106,10 +106,12 @@ docs_class: active
   "name": "Super Search Engine",
   "description": "A wonderful new search engine",
   "group": {
-    "_self":  "https://seiso.example.com/v1/service-groups/devops"
+    "_self": "https://seiso.example.com/v1/service-groups/devops",
+    "key": "devops" <span class="label label-info">TEMPORARY</span>
   },
   "type": {
-    "_self": "https://seiso.example.com/v1/service-types/application"
+    "_self": "https://seiso.example.com/v1/service-types/application",
+    "key": "application" <span class="label label-info">TEMPORARY</span>
   }
 }</pre>
 
@@ -122,7 +124,7 @@ docs_class: active
   </ul>
 
   <blockquote>
-    <p>In the current implementation we build references by specifying keys rather than by providing the <code>_self</code> link. The plan is to switch over to <code>_self</code> links in the very near future. To be safe you can use both the <code>_self</code> link and the key.</p>
+    <p>Regarding the <span class="label label-info">TEMPORARY</span> labels: in the current implementation we build references by specifying keys rather than by providing the <code>_self</code> link. The plan is to switch over to <code>_self</code> links in the very near future. To be safe you can use both the <code>_self</code> link and the key.</p>
   </blockquote>
 
   <p>Now that we have <tt>super-search-engine.json</tt>, we can issue a <tt>curl</tt> command to create the service:</p>
@@ -144,6 +146,38 @@ docs_class: active
   <header>
     <h1>4 Update items</h1>
   </header>
+  <p>Updating items is pretty much the same as creating them: you just do a <code>PUT</code> request to the relevant URI and pass the JSON data in the payload. The API returns HTTP <code>204 No Content</code> when the request is successful.</p>
+  <p>Note that REST semantics dictate that <code>PUT</code> completely replaces whatever was already there.</p>
+  <p>Try changing the description in the JSON:</p>
+  
+  <pre>{
+  "key": "super-search-engine",
+  "name": "Super Search Engine",
+  "description": "A search engine that we like to think of as Google on steroids",
+  "group": {
+    "_self":  "https://seiso.example.com/v1/service-groups/devops",
+    "key": "devops" <span class="label label-info">TEMPORARY</span>
+  },
+  "type": {
+    "_self": "https://seiso.example.com/v1/service-types/application",
+    "key": "application" <span class="label label-info">TEMPORARY</span>
+  }
+}</pre>
+
+  <p>Then just <tt>curl</tt> it in:</p>
+  
+  <pre class="shell">$ curl -X PUT \
+> -H "Content-Type: application/json" \
+> -d @super-search-engine.json \
+> https://seiso.example.com/v1/services/super-search-engine</pre>
+  
+  <p>Finally <code>GET</code> the updated item:</p>
+  
+  <pre class="shell">$ curl -H "Accept: application/json" \
+> https://seiso.example.com/v1/services/seiso-db \
+> | jsonlint</pre>
+
+  <p>You should see the updated description.</p>
 </section>
 
 <a id="delete-items" class="anchor"></a>
@@ -151,4 +185,10 @@ docs_class: active
   <header>
     <h1>5 Delete items</h1>
   </header>
+
+  <p>Alas, leadership cut funding to our Google competitor, and so it's time to delete Super Search Engine. It's exactly what you would expect:</p>
+
+  <pre class="shell">$ curl -X DELETE https://seiso.example.com/v1/services/super-search-engine</pre>
 </section>
+
+<p>That's it for our tutorial. See the <a href="{{ site.baseurl }}/docs/current/api-reference/">Seiso v1 API Reference</a> for more detailed information on using the API.</p>
