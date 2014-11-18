@@ -16,32 +16,137 @@ docs_class: active
   <header>
     <h1>1 Overview</h1>
   </header>
-  <p>This tutorial explains how to use the API in a hands-on way. You can use any REST client you like. Here we'll use trusty old curl.</p>
+  <p>This tutorial explains how to use the API in a hands-on way. You can use any REST client you like. Here we'll use trusty old <tt>curl</tt> along with <tt>jsonlint</tt> for formatting purposes.</p>
   <p>We assume that you've already set everything up, including the data. The examples below come from the sample data. If you're using real data just modify the examples accordingly.</p>
 </section>
 
-<a id="get-items"></a>
+<a id="get-items" class="anchor"></a>
 <section>
   <header>
     <h1>2 Get items</h1>
   </header>
+  <p>The first thing we want to do is grab some data out of the API. Since services are the main item type, let's get the list of services. Here's how:</p>
+  <pre class="shell">$ curl -H "Accept: application/json" \
+> https://seiso.example.com/v1/services \
+> | jsonlint</pre>
+  <p>Note that we used the <code>Accept: application/json</code> request header to tell the API that we want a JSON response. The API supports only JSON output; see <a href="{{ site.baseurl }}/faqs/#faq-xml">this FAQ</a> for more information.</p>
+  <p>The result looks like this:</p>
+  <pre class="shell">[
+  {
+    "_self": "https://seiso.example.com/v1/services/seiso-db",
+    "description": "Database for configuration management data",
+    "group": {
+      "_self": "https://seiso.example.com/v1/service-groups/devops",
+      "key": "devops",
+      "name": "Devops"
+    },
+    "key": "seiso-db",
+    "name": "Seiso Database",
+    "owner": ... owner data ...
+    "platform": "MySQL 5.6.17",
+    "scmRepository": null,
+    "type": {
+      "_self": "https://seiso.example.com/v1/service-types/database",
+      "key": "database",
+      "name": "Database"
+    }
+  },
+
+  ... other services ...
+]</pre>
+
+  <p>If we want to get a single service, then we can do that by appending the service's unique key to the URI as follows:</p>
+  <pre class="shell">$ curl -H "Accept: application/json" \
+> https://seiso.example.com/v1/services/seiso-db \
+> | jsonlint</pre>
+
+  <p>This time the result is a single service:</p>
+  
+  <pre class="shell">{
+  "_self": "https://seiso.example.com/v1/services/seiso-db",
+  "description": "Database for configuration management data",
+  "group": {
+    "_self": "https://seiso.example.com/v1/service-groups/devops",
+    "key": "devops",
+    "name": "Devops"
+  },
+  "key": "seiso-db",
+  "name": "Seiso Database",
+  "owner": ... owner data ...
+  "platform": "MySQL 5.6.17",
+  "scmRepository": null,
+  "type": {
+    "_self": "https://seiso.example.com/v1/service-types/database",
+    "key": "database",
+    "name": "Database"
+  }
+}</pre>
+
+  <p>Now let's see how to create a new service.</p>
 </section>
 
-<a id="create-items"></a>
+<a id="create-items" class="anchor"></a>
 <section>
   <header>
     <h1>3 Create items</h1>
   </header>
+  <p>In general the API uses HTTP <code>PUT</code> for both creating new items and updating existing items. The reason is that the item URIs use meaningful keys as opposed to using arbitrary database identifiers. For example, a person URI looks like this:</p>
+  
+  <pre>https://seiso.example.com/v1/people/wwheeler</pre>
+  
+  <p>and <em>not</em> like this:</p>
+  
+  <pre>https://seiso.example.com/v1/people/14</pre>
+  
+  <p>Because we know the item URI in advance of creating it, we use <code>PUT</code>.</p>
+  <p>To create a new service with <tt>curl</tt>, we begin by putting the JSON data in a JSON file, which for the sake of example we'll call <tt>super-search-engine.json</tt>:</p>
+  
+  <pre>{
+  "key": "super-search-engine",
+  "name": "Super Search Engine",
+  "description": "A wonderful new search engine",
+  "group": {
+    "_self":  "https://seiso.example.com/v1/service-groups/devops"
+  },
+  "type": {
+    "_self": "https://seiso.example.com/v1/service-types/application"
+  }
+}</pre>
+
+  <p>There are a few points worth highlighting here.</p>
+
+  <ul>
+    <li>For the top-level object (i.e., the service that we're creating), we didn't provide a <code>_self</code> property. It's not needed because we're going to make a <code>PUT</code> request to the URI in question.</li>
+    <li>In this example we've omitted a number of properties, such as <code>owner</code> and <code>scmRepository</code>. The API will treat omitted properties as having <code>null</code> values.</li>
+    <li>When specifying properties whose values are objects in their own right, like <code>group</code> and <code>type</code>, we provide a <em>reference</em> to the object, as opposed to providing the entire object. We do this by specifying the object's <code>_self</code> link.</li>
+  </ul>
+
+  <blockquote>
+    <p>In the current implementation we build references by specifying keys rather than by providing the <code>_self</code> link. The plan is to switch over to <code>_self</code> links in the very near future. To be safe you can use both the <code>_self</code> link and the key.</p>
+  </blockquote>
+
+  <p>Now that we have <tt>super-search-engine.json</tt>, we can issue a <tt>curl</tt> command to create the service:</p>
+
+  <pre class="shell">$ curl -X PUT \
+> -H "Content-Type: application/json" \
+> -d @super-search-engine.json \
+> https://seiso.example.com/v1/services/super-search-engine</pre>
+
+  <p>This type we used <code>Content-Type: application/json</code> to tell the API that we're submitting JSON. Assuming that the object is in fact new, the result will be HTTP <code>201 Created</code>.</p>
+
+  <blockquote>
+    <p>Though we didn't indicate it above, currently <code>PUT</code> requests require basic authentication. We're still working through our approach to authentication and authorization, and we'll update the documentation as we have more information.</p>
+  </blockquote>
 </section>
 
-<a id="update-items"></a>
+<a id="update-items" class="anchor"></a>
 <section>
   <header>
     <h1>4 Update items</h1>
   </header>
 </section>
 
-<a id="delete-items"></a>
+<a id="delete-items" class="anchor"></a>
 <section>
   <header>
     <h1>5 Delete items</h1>
