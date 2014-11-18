@@ -5,7 +5,7 @@ faqs_class: active
 ---
 <div class="page-header">
   <h1>Frequently Asked Questions</h1>
-  <div class="lead">Last updated: November 12, 2014</div>
+  <div class="lead">Last updated: November 18, 2014</div>
 </div>
 
 <section>
@@ -71,13 +71,13 @@ faqs_class: active
   <a id="faq-seiso-binary" class="anchor"></a>
   <div class="faq">
     <h3>Where can I get the Seiso binary?</h3>
-    <p>We haven't yet put a binary up since there are a few things we want to fix before doing that. You can expect a binary in January 2015. Until then please build from source.</p>
+    <p>We haven't yet put a binary up since there are a few things we want to fix before doing that. You can expect a binary in January 2015. Until then please <a href="https://github.com/ExpediaDotCom/seiso" target="_blank">clone the repo <i class="fa fa-external-link"></i></a> and build from source.</p>
   </div>
 
   <a id="faq-production" class="anchor"></a>
   <div class="faq">
     <h3>How do I deploy Seiso to a production environment?</h3>
-    <p>We don't recommend this yet, as Seiso is currently alpha software. As the project matures we will provide an appropriate init script, Chef cookbook and documentation to support this.</p>
+    <p><strong>We don't recommend this yet, as Seiso is currently alpha software.</strong> As the project matures we will provide an appropriate init script, Chef cookbook and documentation to support this.</p>
   </div>
 </section>
 
@@ -113,7 +113,7 @@ faqs_class: active
   <a id="faq-additional-fields" class="anchor"></a>
   <div class="faq">
     <h3>Seiso doesn't support a data field I need. Can you add it?</h3>
-    <p>Create a GitHub issue describing your idea. We generally prefer fields and item types that help with data organization and integration. For example:</p>
+    <p><a href="https://github.com/ExpediaDotCom/seiso/issues" target="_blank">Create a GitHub issue <i class="fa fa-external-link"></i></a> describing your idea. We generally prefer fields and item types that help with data organization and integration. For example:</p>
     <ul>
       <li>Service groups organize services, and status types organize health and rotation statuses; these are examples of organizational item types.</li>
       <li>Services, nodes, machines and IP addresses integrate deployment and operational data.</li>
@@ -125,7 +125,7 @@ faqs_class: active
   <a id="faq-xml" class="anchor"></a>
   <div class="faq">
     <h3>My team doesn't know JSON. Can you add XML support?</h3>
-    <p>While it would be technically feasible to support XML, we've made a conscious decision not to, primarily because we consider XML an outdated web service format. Additionally, supporting XML would roughly double the number of endpoints to test and support. We'd prefer to dedicate our efforts to other features.</p>
+    <p>While it would be technically feasible to support XML, we've made a conscious decision not to. JSON is more concise and works more seamlessly with JavaScript clients, like our AngularJS web UI. Supporting XML would roughly double the number of endpoints to test and support. We'd prefer to dedicate our efforts to other features.</p>
   </div>
 </section>
 
@@ -178,7 +178,7 @@ faqs_class: active
       <li>It can arise when dual-sourcing rotation data from primary/failover devices that disagree with one another.</li>
       <li>It can happen if you have a race between a real-time update mechanism and a periodic batch mechanism. The race works like this: the batch job grabs a bunch of rotation status data, the rotation status changes, the real-time mechanism updates Seiso, and then the batch job updates Seiso with stale data, undoing the real-time update.</li>
     </ul>
-    <p>Obviously there are lots of ways to put wrong data into Seiso. If you think that you've found a bug with Seiso itself, by all means create an issue in GitHub.</p>
+    <p>Obviously there are lots of ways to put wrong data into Seiso. If you think that you've found a bug with Seiso itself, by all means <a href="https://github.com/ExpediaDotCom/seiso/issues" target="_blank">create an issue in GitHub <i class="fa fa-external-link"></i></a>.</p>
   </div>
 </section>
 
@@ -198,14 +198,14 @@ faqs_class: active
       <li><b>Request enhancements and report issues.</b> <a href="#faq-enhancements-and-bugs">See below.</a></li>
       <li><b>Create blog posts, tutorials and documentation.</b> Did you figure out a cool way to integrate Seiso with your issue tracking system? Write a blog post or a tutorial and let us know about it so we can help socialize it.</li>
       <li><b>Contribute integration scripts.</b> Even better, if your integration is something that others might use directly, put it on GitHub.</li>
-      <li><b>Contribute code.</b> We welcome code contributions. Start by creating an issue in GitHub so we can discuss your idea. After we work through the idea, write the code (please include unit tests) and create a pull request. We'll work with you to get it merged.</li>
+      <li><b>Contribute code.</b> We welcome code contributions. <a href="https://github.com/ExpediaDotCom/seiso/issues" target="_blank">Start by creating an issue in GitHub <i class="fa fa-external-link"></i></a> so we can discuss your idea. After we work through the idea, write the code (please include unit tests) and create a pull request. We'll work with you to get it merged.</li>
     </ul>
   </div>
 
   <a id="faq-enhancements-and-bugs" class="anchor"></a>
   <div class="faq">
     <h3>How can I request enhancements or report bugs?</h3>
-    <p>Just go to our <a href="https://github.com/expediadotcom/seiso">GitHub site</a> and create an issue there.</p>
+    <p>Just go to our GitHub site and <a href="https://github.com/ExpediaDotCom/seiso/issues" target="_blank">create an issue <i class="fa fa-external-link"></i></a> there.</p>
   </div>
 </section>    
 
