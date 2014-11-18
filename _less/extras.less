@@ -23,16 +23,24 @@
 }
 
 .jumbotron {
-  height: 600px;
-  margin-top: -100px;
-  margin-bottom: 0;
-  padding-top: 100px;
-  background: url("../images/sammy.png") @art-blue no-repeat 85% 90px;
+  margin: -100px 0 0 0;
+  padding: 100px 0 0 0;
   color: #FFF;
+}
+
+#jumbo-title {
+  padding: 40px 0 60px;
 }
 
 .tagline {
   opacity: 0.8;
+}
+
+#sammy {
+  height: 540px;
+  padding: 0;
+  background-image: url("../images/sammy.png");
+  background-repeat: no-repeat;
 }
 
 .blurbs {
@@ -56,6 +64,8 @@
     color: @art-blue;
     .fa { color: #333; }
   }
+
+  z-index: 10000;
 }
 
 .faq {
