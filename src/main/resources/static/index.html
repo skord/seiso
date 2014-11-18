@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="seiso">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seiso</title>
+<base href="/" />
+<link rel="icon" type="image/png" href="images/favicon.ico">
+<link rel="stylesheet" type="text/css" href="bower/components-font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif">
+<link rel="stylesheet" type="text/css" href="css/samurai/bootstrap.min.css?v=3">
+</head>
+<body>
+	<div ng-include src="'navbar.html'"></div>
+	<div class="page-content">
+		<div class="container">
+			<div ng-view></div>
+		</div>
+	</div>
+	<div ng-include src="'footer.html'"></div>
+
+	<!-- Need jQuery and Bootstrap JS for the rotation popovers -->
+	<script type="text/javascript" src="bower/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="bower/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="bower/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower/angular-route/angular-route.min.js"></script>
+	<script type="text/javascript" src="bower/angular-sanitize/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="bower/angular-bootstrap/ui-bootstrap.min.js"></script>
+	<script type="text/javascript" src="bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+	<!-- TODO Use ocLazyLoad to load the controllers dynamically -->
+	<!-- https://github.com/ocombe/ocLazyLoad -->
+	<!-- http://blog.getelementsbyidea.com/load-a-module-on-demand-with-angularjs/ -->
+	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="controller/controllers.js"></script>
+	<script type="text/javascript" src="controller/admin-controller.js"></script>
+	<script type="text/javascript" src="controller/data-center-list-controller.js"></script>
+	<script type="text/javascript" src="controller/home-controller.js"></script>
+	<script type="text/javascript" src="controller/machine-details-controller.js"></script>
+	<script type="text/javascript" src="controller/node-details-controller.js"></script>
+	<script type="text/javascript" src="controller/node-name-typeahead-controller.js"></script>
+	<script type="text/javascript" src="controller/node-search-controller.js"></script>
+	<script type="text/javascript" src="controller/person-details-controller.js"></script>
+	<script type="text/javascript" src="controller/service-details-controller.js"></script>
+	<script type="text/javascript" src="controller/service-instance-details-controller.js"></script>
+	<script type="text/javascript" src="controller/search-controller.js"></script>
+</body>
+</html>

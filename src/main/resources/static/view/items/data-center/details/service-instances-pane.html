@@ -1,0 +1,34 @@
+<section>
+	<header>
+		<h1>
+			Service Instances
+			<span ng-show="serviceInstances"><small>({{serviceInstances.length}})</small></span>
+		</h1>
+	</header>
+	<div ng-if="serviceInstances.length == 0">
+		<p>None.</p>
+	</div>
+	<div ng-if="serviceInstances.length &gt; 0">
+		<table class="table">
+			<colgroup>
+				<col style="width:33%">
+				<col style="width:33%">
+				<col style="width:33%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>Service Instance</th>
+					<th>Service</th>
+					<th>Environment</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="serviceInstance in serviceInstances">
+					<td><a ng-href="{{uri('service-instances', serviceInstance.key)}}">{{serviceInstance.key}}</a></td>
+					<td><a ng-href="{{uri('services', serviceInstance.service.key)}}">{{serviceInstance.service.name}}</a></td>
+					<td><a ng-href="{{uri('environments', serviceInstance.environment.key)}}">{{serviceInstance.environment.name}}</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

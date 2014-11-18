@@ -1,0 +1,124 @@
+<!-- http://stackoverflow.com/questions/21362712/html-file-as-content-in-bootstrap-popover-in-angularjs-directive -->
+<script id="rotationDetailsPopover.html" type="text/ng-template">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>IP Address</th>
+				<th>Port</th>
+				<th>Rotation</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="endpoint in ipAddress.endpoints">
+				<td>{{ipAddress.ipAddress}}</td>
+				<td>{{endpoint.port.number}}</td>
+				<td><span class="label label-{{endpoint.rotationStatus.statusType.key}}">{{endpoint.rotationStatus.name}}</span></td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+
+<section>
+	<header>
+		<h1>Nodes <small>({{nodes.length}})</small></h1>
+	</header>
+	<div ng-show="nodes.length == 0">
+		<p>None.</p>
+	</div>
+	<div ng-show="nodes.length &gt; 0">
+		<section>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="well well-sm">
+						<div class="metric">
+							<div class="metric-count">{{numHealthy}} of {{numNodes}}</div>
+							<div class="metric-percentage">{{percentHealthy | number : 1}}%</div>
+							<div class="metric-name">Healthy</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="well well-sm">
+						<div class="metric">
+							<div class="metric-count">{{numEnabled}} of {{numNodes}}</div>
+							<div class="metric-percentage">{{percentEnabled | number : 1}}%</div>
+							<div class="metric-name">Enabled</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="well well-sm">
+						<div class="metric">
+							<div class="metric-count">{{numHealthyGivenEnabled}} of {{numEnabled}}</div>
+							<div class="metric-percentage">
+								<span ng-if="numEnabled == 0">N/A</span>
+								<span ng-if="numEnabled &gt; 0">{{percentHealthyGivenEnabled | number : 1}}%</span>
+							</div>
+							<div class="metric-name">Healthy, given enabled</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section>
+			<!--
+			<div class="well well-sm">
+				<form class="form-inline">
+					<div class="form-group">
+						<label for="node-filter">Node filter:</label>
+						<input type="text" ng-model="nodeRow.name" class="form-control input-sm"></input>
+					</div>
+					<div class="form-group" style="margin-left:30px">
+						<label for="bulk-action">Bulk Actions:</label>
+						<select id="bulk-action" class="form-control input-sm">
+							<option>-- Choose one --</option>
+							<option>Convict (bounce)</option>
+							<option>Deploy</option>
+							<option>Maintenance mode</option>
+							<option>Set active channel</option>
+							<option>Interrogate</option>
+						</select>
+						<button class="btn btn-sm btn-primary" ng-click="interrogate()">Interrogate</button>
+						<button class="btn btn-sm btn-primary" ng-click="convict()">Convict</button>
+						<button class="btn btn-sm btn-primary" ng-click="deploy()">Deploy</button>
+						<button class="btn btn-sm btn-primary" ng-click="setMaintenanceMode()">Set Maintenance Mode</button>
+					</div>
+				</form>
+			</div>
+			-->
+			<table class="table">
+				<thead>
+					<tr>
+<!-- 						<th><input type="checkbox"></input></th> -->
+						<th style="width:20%">Node</th>
+						<th style="width:20%">Version</th>
+						<th style="width:20%">Health</th>
+						<th style="width:25%">IP Address</th>
+						<th style="width:15%" colspan="2">Rotation</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="nodeRow in nodeRows | filter:nodeRow:strict">
+						<!--
+						<td>
+							<div ng-if="nodeRow.showActions">
+								<input type="checkbox"></input>
+							</div>
+						</td>
+						-->
+						<td><a ng-href="{{uri('nodes', nodeRow.name)}}">{{nodeRow.displayName}}</a></td>
+						<td><span ng-show="nodeRow.version != null">{{nodeRow.version}}</span></td>
+						<td><span ng-show="nodeRow.healthStatus" class="label label-{{nodeRow.healthStatus.statusType.key}}">{{nodeRow.healthStatus.name}}</span></td>
+						<td>{{nodeRow.ipAddress}} ({{nodeRow.ipAddressRole}})</td>
+						<td style="width:0">
+							<span ng-if="nodeRow.aggregateRotationStatus" class="label label-{{nodeRow.aggregateRotationStatus.statusType.key}}">{{nodeRow.aggregateRotationStatus.name}}</span>
+						</td>
+						<td style="width:20%">
+							<span ng-if="nodeRow.aggregateRotationStatus"><a rotation-details-popover="/v1/nodes/{{nodeRow.name}}/ip-addresses/{{nodeRow.ipAddress}}">[Details]</a></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+</section>

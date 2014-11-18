@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="console" class="org.apache.log4j.ConsoleAppender"> 
+		<param name="Target" value="System.out" /> 
+		<layout class="org.apache.log4j.PatternLayout"> 
+<!-- 			<param name="ConversionPattern" value="%d %-5p %c - %m%n" />  -->
+
+			<!-- The %M is very slow, so this is just for development purposes -->
+			<!-- FIXME Right now we're using this in production. I think. [WLW] -->
+			<param name="ConversionPattern" value="%-6r %-5p [%t] [%c.%M] %m%n%n" /> 
+		</layout> 
+	</appender>
+	<logger name="com.expedia.seiso">
+		<level value="trace" />
+	</logger>
+	<logger name="org.springframework.security">
+		<level value="info" />
+	</logger>
+	<logger name="org.springframework.transaction">
+		<level value="info" />
+	</logger>
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="info" />
+	</logger>
+	<root> 
+		<priority value="info" /> 
+		<appender-ref ref="console" /> 
+	</root>
+</log4j:configuration>
+
+

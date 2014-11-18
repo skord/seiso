@@ -1,0 +1,118 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:1.2.0.M2"
+  }
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+group = 'com.expedia.seiso'
+version = '0.2.0.SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+/*
+sourceSets {
+  // Declaring this sourceset creates two configurations: intTestCompile and intTestRuntime.
+  // See http://stackoverflow.com/questions/11581419/how-do-i-add-a-new-sourceset-to-gradle
+  intTest {
+    java {
+      srcDir 'src/test-integration/java'
+      compileClasspath += main.output
+//      runtimeClasspath += main.output + files("${System.env.SEISO_API_CONF_DIR}/classes-test-integration")
+    }
+    resources {
+      srcDir 'src/test-integration/resources'
+    }
+  }
+}
+
+configurations {
+  // http://www.gradle.org/docs/current/dsl/org.gradle.api.artifacts.Configuration.html
+  intTestCompile.extendsFrom testCompile
+  intTestRuntime.extendsFrom testRuntime
+}
+*/
+
+repositories {
+  maven { url "https://repo.spring.io/milestone/" }
+  jcenter()
+}
+
+ext {
+  aspectJVersion = '1.8.2'
+  commonsCodecVersion = '1.9'
+  hikariVersion = '2.1.0'
+  jackson2Version = '2.4.3'
+  jodaTimeVersion = '2.5'
+  lombokVersion = '1.14.8'
+  mysqlConnectorJVersion = '5.1.33'
+  slf4jVersion = '1.7.7'
+  springBootVersion = '1.2.0.M2'
+  springVersion = '4.1.1.RELEASE'
+  springHateoasVersion = '0.16.0.RELEASE'
+  springPluginVersion = '1.1.0.RELEASE'
+}
+
+dependencies {
+  compile(
+    "com.fasterxml.jackson.core:jackson-annotations:${jackson2Version}",
+    "com.fasterxml.jackson.core:jackson-core:${jackson2Version}",
+    "com.fasterxml.jackson.core:jackson-databind:${jackson2Version}",
+    "com.zaxxer:HikariCP:${hikariVersion}",
+    "commons-codec:commons-codec:${commonsCodecVersion}",
+    "org.projectlombok:lombok:${lombokVersion}",
+    "org.slf4j:slf4j-ext:${slf4jVersion}",
+    "org.springframework:spring-context-support:${springVersion}",
+    "org.springframework:spring-web:${springVersion}",
+    "org.springframework.boot:spring-boot-starter:${springBootVersion}",
+    "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}",
+    "org.springframework.boot:spring-boot-starter-amqp:${springBootVersion}",
+    "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}",
+    "org.springframework.boot:spring-boot-starter-security:${springBootVersion}",
+    "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
+    "org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}",
+    "org.springframework.hateoas:spring-hateoas:${springHateoasVersion}",
+    "org.springframework.plugin:spring-plugin-core:${springPluginVersion}"
+  )
+  testCompile(
+    "org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
+  )
+  runtime(
+    "joda-time:joda-time:${jodaTimeVersion}",
+    "mysql:mysql-connector-java:${mysqlConnectorJVersion}",
+    "org.aspectj:aspectjweaver:${aspectJVersion}"
+  )
+}
+
+bootRun {
+  // http://stackoverflow.com/questions/25079244/how-to-pass-jvm-options-from-bootrun
+  // http://wiki.apache.org/tomcat/HowTo/FasterStartUp
+  jvmArgs = [ "-Djava.security.egd=file:/dev/./urandom", "-Xmx2048m" ]
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.2'
+}
+
+/*
+task printProfile() {
+  println "spring.profiles.default=${System.properties['spring.profiles.default']}"
+  println "spring.profiles.active=${System.properties['spring.profiles.active']}"
+}
+
+task intTest(type: Test) {
+  group 'Verification'
+  description "Runs integration tests in src/intTest."
+  testClassesDir = sourceSets.intTest.output.classesDir
+  classpath = sourceSets.intTest.runtimeClasspath
+}
+
+check.dependsOn intTest
+*/
+

@@ -1,0 +1,49 @@
+<div class="page-header" ng-show="serviceInstance">
+	<ul class="breadcrumb">
+		<li><a ng-href="{{uri()}}">Home</a></li>
+		<li><a ng-href="{{uri('service-instances')}}">Service Instances</a></li>
+	</ul>
+	<h1>{{serviceInstance.key}}</h1>
+</div>
+
+<div id="page-spinner" ng-hide="serviceInstance">
+	<i class="fa fa-spinner fa-spin fa-3x"></i>
+</div>
+
+<div ng-show="serviceInstance">
+	<ul class="field-list">
+		<li>
+			<div>Service:</div>
+			<div ng-if="service"><a ng-href="{{uri('services', service.key)}}">{{service.name}}</a></div>
+			<div ng-if="!service">-</div>
+		</li>
+		<li>
+			<div>Environment:</div>
+			<div ng-if="environment"><a ng-href="{{uri('environments', environment.key)}}">{{environment.name}}</a></div>
+			<div ng-if="!environment">-</div>
+		</li>
+		<li>
+			<div>Data Center:</div>
+			<div ng-if="dataCenter"><a ng-href="{{uri('data-centers', dataCenter.key)}}">{{dataCenter.name}}</a></div>
+			<div ng-if="!dataCenter">-</div>
+		</li>
+		<li>
+			<div>Load Balancer:</div>
+			<div ng-if="loadBalancer"><a ng-href="{{uri('load-balancers', loadBalancer.name)}}">{{loadBalancer.name}}</a></div>
+			<div ng-if="!loadBalancer">-</div>
+		</li>
+		<li>
+			<div>Owner:</div>
+			<span ng-if="owner"><a ng-href="{{uri('people', owner.username)}}">{{owner.firstName}} {{owner.lastName}}</a></span>
+			<span ng-if="!owner">-</span>
+		</li>
+	</ul>
+	<tabset>
+		<tab heading="Nodes">
+			<ng-include src="'view/items/service-instance/details/nodes-pane.html'" />
+		</tab>
+		<tab heading="Endpoint Info">
+			<ng-include src="'view/items/service-instance/details/endpoint-info-pane.html'" />
+		</tab>
+	</tabset>
+</div>

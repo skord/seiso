@@ -1,0 +1,30 @@
+<div class="page-header">
+	<ul class="breadcrumb">
+		<li><a ng-href="{{uri()}}">Home</a></li>
+	</ul>
+	<h1>
+		Search
+		<span ng-if="searchResults" ng-show="searchResults.length"><small>({{searchResults.length}})</small></span>
+		<span ng-hide="searchResults"><small><i class="fa fa-spinner fa-spin"></i></small></span>
+	</h1>
+</div>
+
+<!--
+  TODO 
+  - this view fragment is covering a few loose ends by manually manipulating the search results anchor hrefs so they correctly link to seiso ui instead of api (#/nodes/1234 vs v1/nodes/1234)
+  - improve this by either manipulating the _self attribute every search result should have, or improving the search api to return a ui link in the results
+ -->
+<div ng-controller="SearchController">
+	<div class="searchResultsContainer" ng-show="$root.searchResults.value">
+		<div ng-repeat="(resultsType, results) in $root.searchResults.value" class="searchResultsGroup">
+			<h4 ng-show="results.length">{{resultsType}}</h4>
+			<div ng-show="results.length" ng-repeat="result in results" ng-switch on="resultsType">
+				<a ng-switch-when="service" href="{{uri(resultsType+'s',result['key'])}}">{{result['key']}}</a>
+				<a ng-switch-when="loadbalancer" href="#/load-balancers/{{result['name']}}">{{result['name']}}</a>
+				<a ng-switch-default href="{{uri(resultsType+'s',result['name'])}}">{{result['name']}}</a>
+				<a ng-switch-when="vip" onclick="alert( 'not implemented yet' )">{{result['name']}}</a>
+				<!--<a href="{{result['_self']}}">{{result['name']}}</a>-->
+			</div>
+		</div>
+	</div>
+</div>
