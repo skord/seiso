@@ -37,49 +37,43 @@ import com.expedia.seiso.domain.repo.EndpointRepo;
  */
 @XSlf4j
 public class NodeIpAddressListener {
-	
+
 	// Supports Mockito dependency injection.
 	private ApplicationContext appContext;
-	
+
 	@PostPersist
 	public void postPersist(@NonNull NodeIpAddress nodeIpAddress) {
-		
+
 		// For JPA, since v2.0 doesn't support dependency injection.
 		if (appContext == null) {
 			this.appContext = ApplicationContextProvider.getApplicationContext();
 		}
-		
+
 		val endpointRepo = appContext.getBean(EndpointRepo.class);
 		val creator = new EndpointCreator(endpointRepo);
 		creator.createEndpointsForNodeIpAddress(nodeIpAddress);
 	}
-	
+
 	@AllArgsConstructor
 	static class EndpointCreator {
 		private EndpointRepo endpointRepo;
-		
+
 		public void createEndpointsForNodeIpAddress(NodeIpAddress nodeIpAddress) {
 			log.info("Post-processing node IP address: {}", nodeIpAddress);
-			
-//			val user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			// val user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			val user = (User) null;
 			val now = new Date();
-			
+
 			// For some reason, when we save the endpoint, it doesn't see the NIP ID (even though we're able to see it
 			// here). So we use a reference instead. [WLW]
 			val nipRef = new NodeIpAddress();
 			nipRef.setId(nodeIpAddress.getId());
-			
+
 			val ports = nodeIpAddress.getNode().getServiceInstance().getPorts();
 			log.trace("Found {} ports", ports.size());
 			for (val port : ports) {
-				val endpoint = new Endpoint()
-						.setIpAddress(nipRef)
-						.setPort(port);
-				endpoint.setCreatedBy(user)
-						.setCreatedDate(now)
-						.setUpdatedBy(user)
-						.setUpdatedDate(now);
+				val endpoint = new Endpoint().setIpAddress(nipRef).setPort(port);
 				log.info("Creating endpoint: {}", endpoint);
 				endpointRepo.save(endpoint);
 			}

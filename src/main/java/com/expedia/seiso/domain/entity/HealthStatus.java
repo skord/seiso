@@ -37,22 +37,26 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @ToString(of = { "key", "name", "statusType" })
 @EqualsAndHashCode(callSuper = false, of = { "key", "name" })
 @Entity
+//@formatter:off
 @Projections({
-		@Projection(cardinality = Cardinality.COLLECTION, paths = { "statusType" }),
-		@Projection(cardinality = Cardinality.SINGLE, paths = { "statusType" })
-})
+	@Projection(cardinality = Cardinality.COLLECTION, paths = { "statusType" }),
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "statusType" })
+	})
+//@formatter:on
 public class HealthStatus extends AbstractItem {
-	
+
 	@Key
 	@Column(name = "ukey")
 	private String key;
-	
+
 	private String name;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "status_type_id")
 	private StatusType statusType;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(HealthStatus.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(HealthStatus.class, key);
+	}
 }

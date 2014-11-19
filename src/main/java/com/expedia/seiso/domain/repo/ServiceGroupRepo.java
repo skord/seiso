@@ -30,7 +30,7 @@ import com.expedia.seiso.domain.entity.ServiceGroup;
  */
 @RestResource(path = RepoKeys.SERVICE_GROUPS)
 public interface ServiceGroupRepo extends CrudRepository<ServiceGroup, Long> {
-	
+
 	@Query("from ServiceGroup order by name")
 	List<ServiceGroup> findAll();
 

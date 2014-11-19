@@ -35,8 +35,9 @@ import com.expedia.seiso.gateway.model.BulkNodeActionRequest;
 @RequestMapping(Controllers.REQUEST_MAPPING_VERSION + "/actions")
 @XSlf4j
 public class ActionController {
-	@Autowired private ActionGateway actionGateway;
-	
+	@Autowired
+	private ActionGateway actionGateway;
+
 	// FIXME For now, just assume that requests are BulkNodeActionRequests. [WLW]
 	@RequestMapping(method = RequestMethod.POST)
 	public void post(@RequestBody BulkNodeActionRequest request) {

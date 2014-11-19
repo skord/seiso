@@ -29,23 +29,27 @@ import com.expedia.seiso.web.assembler.ProjectionNode;
 import com.expedia.seiso.web.dto.MapItemDto;
 
 public abstract class AbstractItemController {
-	@Autowired @Getter private ItemService itemService;
-	@Autowired @Getter private ItemAssembler itemAssembler;
-	
+	@Autowired
+	@Getter
+	private ItemService itemService;
+	@Autowired
+	@Getter
+	private ItemAssembler itemAssembler;
+
 	protected MapItemDto get(@NonNull ItemKey key) {
 		val item = itemService.find(key);
 		return itemAssembler.toDto(item);
 	}
-	
+
 	protected MapItemDto get(@NonNull ItemKey key, @NonNull ProjectionNode projectionNode) {
 		val item = itemService.find(key);
 		return itemAssembler.toDto(item, projectionNode);
 	}
-	
+
 	protected void put(@NonNull Item item) {
 		itemService.save(item);
 	}
-	
+
 	protected void delete(@NonNull ItemKey key) {
 		itemService.delete(key);
 	}

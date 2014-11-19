@@ -47,39 +47,32 @@ import com.expedia.seiso.web.dto.PEItemDto;
 @Transactional
 public class NodeIpAddressController extends AbstractItemController {
 	private static final String NODE_IP_ADDRESS_URI_TEMPLATE = "/nodes/{nodeName}/ip-addresses/{ipAddress}";
-	
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private NodeRepo nodeRepo;
-	
+
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private NodeRepo nodeRepo;
+
 	private ProjectionNode defaultSingleProjection;
-	
+
 	@PostConstruct
 	public void postConstruct() {
 		val itemMeta = itemMetaLookup.getItemMeta(NodeIpAddress.class);
 		this.defaultSingleProjection = itemMeta.getProjectionNode(Cardinality.SINGLE, Projection.DEFAULT);
 	}
-	
-	@RequestMapping(
-			value = NODE_IP_ADDRESS_URI_TEMPLATE,
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@RequestMapping(value = NODE_IP_ADDRESS_URI_TEMPLATE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public MapItemDto get(@PathVariable String nodeName, @PathVariable String ipAddress) {
 		return super.get(new NodeIpAddressKey(nodeName, ipAddress), defaultSingleProjection);
 	}
-	
-	@RequestMapping(
-			value = NODE_IP_ADDRESS_URI_TEMPLATE,
-			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+
+	@RequestMapping(value = NODE_IP_ADDRESS_URI_TEMPLATE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void put(
-			@PathVariable String nodeName,
-			@PathVariable String ipAddress,
-			PEItemDto peNipDto) {
-		
+	public void put(@PathVariable String nodeName, @PathVariable String ipAddress, PEItemDto peNipDto) {
+
 		val node = nodeRepo.findByName(nodeName);
 		val serviceInstance = node.getServiceInstance();
-		
+
 		// Enrich the node IP address so we can save it. [WLW]
 		val nipData = (NodeIpAddress) peNipDto.getItem();
 		nipData.setNode(node);
@@ -87,7 +80,7 @@ public class NodeIpAddressController extends AbstractItemController {
 		nipData.getIpAddressRole().setServiceInstance(serviceInstance);
 		super.put(nipData);
 	}
-	
+
 	@RequestMapping(value = NODE_IP_ADDRESS_URI_TEMPLATE, method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable String nodeName, @PathVariable String ipAddress) {

@@ -37,25 +37,38 @@ import com.expedia.seiso.domain.entity.User;
 @RequiredArgsConstructor
 @SuppressWarnings("serial")
 public class UserDetailsAdapter implements UserDetails {
-	@NonNull private User user;
+	@NonNull
+	private User user;
 
 	@Override
-	public String getUsername() { return user.getUsername(); }
+	public String getUsername() {
+		return user.getUsername();
+	}
 
 	@Override
-	public String getPassword() { return user.getPassword(); }
+	public String getPassword() {
+		return user.getPassword();
+	}
 
 	@Override
-	public boolean isEnabled() { return user.getEnabled(); }
+	public boolean isEnabled() {
+		return user.getEnabled();
+	}
 
 	@Override
-	public boolean isAccountNonExpired() { return true; }
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
 	@Override
-	public boolean isAccountNonLocked() { return true; }
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
 	@Override
-	public boolean isCredentialsNonExpired() { return true; }
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -22,11 +22,11 @@ import lombok.val;
  */
 public class ProjectionParser {
 	private String[] paths;
-	
+
 	public ProjectionParser(String[] paths) {
 		this.paths = paths;
 	}
-	
+
 	public ProjectionNode parse() {
 		ProjectionNode root = new ProjectionNode("/");
 		for (String path : paths) {
@@ -34,16 +34,16 @@ public class ProjectionParser {
 		}
 		return root;
 	}
-	
+
 	private void addPath(String[] segments, int index, ProjectionNode query) {
 		val currSegment = segments[index];
-		
+
 		ProjectionNode subquery = query.getChild(currSegment);
 		if (subquery == null) {
 			subquery = new ProjectionNode(currSegment);
 			query.add(subquery);
 		}
-		
+
 		if (++index < segments.length) {
 			addPath(segments, index, subquery);
 		}

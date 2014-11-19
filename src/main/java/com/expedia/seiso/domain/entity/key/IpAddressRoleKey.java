@@ -24,9 +24,13 @@ import com.expedia.seiso.domain.entity.IpAddressRole;
 @Data
 @RequiredArgsConstructor
 public class IpAddressRoleKey implements ItemKey {
-	@NonNull private String serviceInstanceKey;
-	@NonNull private String name;
-	
+	@NonNull
+	private String serviceInstanceKey;
+	@NonNull
+	private String name;
+
 	@Override
-	public Class<?> getItemClass() { return IpAddressRole.class; }
+	public Class<?> getItemClass() {
+		return IpAddressRole.class;
+	}
 }

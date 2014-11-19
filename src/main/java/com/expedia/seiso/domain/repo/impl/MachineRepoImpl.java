@@ -34,46 +34,42 @@ import com.expedia.seiso.domain.repo.custom.MachineRepoCustom;
 /**
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
-public class MachineRepoImpl implements MachineRepoCustom
-{
-    private static final String      ENTITY_NAME = "Machine";
-    private static final Set<String> FIELD_NAMES = new LinkedHashSet<String>( Arrays.asList( new String[]{ "name", "hostname", "ipAddress" } ) ); 
+public class MachineRepoImpl implements MachineRepoCustom {
+	private static final String ENTITY_NAME = "Machine";
+	private static final Set<String> FIELD_NAMES = new LinkedHashSet<String>(Arrays.asList(new String[] { "name",
+			"hostname", "ipAddress" }));
 
-    @PersistenceContext 
-    private EntityManager entityManager;
-    private RepoImplUtils repoUtils;
+	@PersistenceContext
+	private EntityManager entityManager;
+	private RepoImplUtils repoUtils;
 
-    // TODO @PersistenceContext can't be applied at the constructor level, reconcile for consistency https://jira.spring.io/browse/SPR-10443
-    public MachineRepoImpl()
-    {
-        this( null );
-    }    
-    
-    public MachineRepoImpl( @NotNull EntityManager entityManager )
-    {
-        this( entityManager, null );
-    }
-    
-    public MachineRepoImpl( @NotNull EntityManager entityManager, RepoImplUtils repoUtils )
-    {
-        this.entityManager = entityManager;
-        this.repoUtils = ( repoUtils == null ? RepoImplUtils.getInstance() : repoUtils );
-    }
-
-	@Override
-	public Class<Machine> getResultType()
-	{
-	    return Machine.class;
+	// TODO @PersistenceContext can't be applied at the constructor level, reconcile for consistency
+	// https://jira.spring.io/browse/SPR-10443
+	public MachineRepoImpl() {
+		this(null);
 	}
 
-    @Override
-	public Page<Machine> search( @NonNull Set<String> searchTokens, Pageable pageable )
-	{
-	    Page<Machine> searchPage = this.repoUtils.search( MachineRepoImpl.ENTITY_NAME, this.entityManager, MachineRepoImpl.FIELD_NAMES, searchTokens, pageable );;
-	    
-	    return searchPage;
+	public MachineRepoImpl(@NotNull EntityManager entityManager) {
+		this(entityManager, null);
+	}
+
+	public MachineRepoImpl(@NotNull EntityManager entityManager, RepoImplUtils repoUtils) {
+		this.entityManager = entityManager;
+		this.repoUtils = (repoUtils == null ? RepoImplUtils.getInstance() : repoUtils);
+	}
+
+	@Override
+	public Class<Machine> getResultType() {
+		return Machine.class;
+	}
+
+	@Override
+	public Page<Machine> search(@NonNull Set<String> searchTokens, Pageable pageable) {
+		Page<Machine> searchPage = this.repoUtils.search(MachineRepoImpl.ENTITY_NAME, this.entityManager,
+				MachineRepoImpl.FIELD_NAMES, searchTokens, pageable);
+		;
+
+		return searchPage;
 	}
 
 }
-
-

@@ -49,29 +49,34 @@ import com.expedia.seiso.domain.entity.listener.ServiceInstancePortListener;
 @ToString(of = { "serviceInstance", "number", "protocol", "description" })
 @Entity
 @EntityListeners(ServiceInstancePortListener.class)
+//@formatter:off
 @Projections({
-	
+
 	// FIXME Blech, we shouldn't have to pull in the entire service instance here. [WLW]
 	// For now leave the default COLLECTION and SINGLE queries in place because one of the unit tests expects them.
 	// But I don't think we want these if the repo isn't exported. [WLW]
 	@Projection(cardinality = Cardinality.COLLECTION, paths = "serviceInstance"),
+	
+	// TODO Assembles the ports without their respective service instances. Are we using this? [WLW]
 	@Projection(cardinality = Cardinality.COLLECTION, name = "serviceInstancePorts"),
+	
 	@Projection(cardinality = Cardinality.SINGLE, paths = { "serviceInstance", "endpoints" }),
 	
-	// FIXME What is this one for? Also, seems that it has a crummy name. And now a service instance has multiple ports.
+	// TODO Assembles a port without its service instance. Are we using this? [WLW]
 	@Projection(cardinality = Cardinality.SINGLE, name = "serviceInstancePort")
-})
+	})
+//@formatter:on
 @XSlf4j
 public class ServiceInstancePort extends AbstractItem {
-	
+
 	@ManyToOne
 	@JoinColumn(name = "service_instance_id")
 	private ServiceInstance serviceInstance;
-	
+
 	private Integer number;
 	private String protocol;
 	private String description;
-	
+
 	// FIXME For some reason, this is not cascade deleting endpoints. I get a constraint violation when calling it from
 	// ServiceInstancePortController.deletePort(). [WLW]
 	@NonNull
@@ -79,15 +84,19 @@ public class ServiceInstancePort extends AbstractItem {
 	private List<Endpoint> endpoints = new ArrayList<>();
 
 	@Override
-	public ItemKey itemKey() { return new ServiceInstancePortKey(serviceInstance.getKey(), number); }
-	
+	public ItemKey itemKey() {
+		return new ServiceInstancePortKey(serviceInstance.getKey(), number);
+	}
+
 	// TODO Adopt this pattern for bidirectional associations throughout. [WLW]
 	public ServiceInstancePort setServiceInstance(ServiceInstance serviceInstance) {
 		log.trace("Setting service instance");
 		this.serviceInstance = serviceInstance;
 		if (serviceInstance != null) {
 			val ports = serviceInstance.getPorts();
-			if (!ports.contains(this)) { ports.add(this); }
+			if (!ports.contains(this)) {
+				ports.add(this);
+			}
 		}
 		return this;
 	}

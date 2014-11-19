@@ -24,9 +24,13 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class SimpleItemKey implements ItemKey {
-	@NonNull private Class<?> itemClass;
-	@NonNull private Serializable value;
-	
+	@NonNull
+	private Class<?> itemClass;
+	@NonNull
+	private Serializable value;
+
 	@Override
-	public Class<?> getItemClass() { return itemClass; }
+	public Class<?> getItemClass() {
+		return itemClass;
+	}
 }

@@ -32,15 +32,17 @@ import com.expedia.seiso.domain.service.response.SaveAllResponse;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface ItemService {
-	
+
 	/**
-	 * <p>Saves a list of items.</p>
+	 * <p>
+	 * Saves a list of items.
+	 * </p>
 	 * 
 	 * @param items
 	 *            items to save
 	 */
 	SaveAllResponse saveAll(List<? extends Item> items);
-	
+
 	/**
 	 * <p>
 	 * Saves the given item to the database, either creating or updating as necessary. In the case of updates, this
@@ -51,13 +53,13 @@ public interface ItemService {
 	 *            item to save
 	 */
 	void save(Item item);
-	
+
 	@SuppressWarnings("rawtypes")
 	List findAll(Class itemClass);
-	
+
 	@SuppressWarnings("rawtypes")
 	Page findAll(Class itemClass, Pageable pageable);
-	
+
 	/**
 	 * Finds an item based on an arbitrary key.
 	 * 
@@ -68,8 +70,8 @@ public interface ItemService {
 	 *             if the specified item doesn't exist
 	 */
 	Item find(ItemKey key);
-	
+
 	void delete(Item item);
-	
+
 	void delete(ItemKey key);
 }

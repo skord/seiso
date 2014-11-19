@@ -34,46 +34,41 @@ import com.expedia.seiso.domain.repo.custom.ServiceRepoCustom;
 /**
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
-public class ServiceRepoImpl implements ServiceRepoCustom
-{
-    private static final String      ENTITY_NAME = "Service";
-    private static final Set<String> FIELD_NAMES = new LinkedHashSet<String>( Arrays.asList( new String[]{ "name" } ) ); 
+public class ServiceRepoImpl implements ServiceRepoCustom {
+	private static final String ENTITY_NAME = "Service";
+	private static final Set<String> FIELD_NAMES = new LinkedHashSet<String>(Arrays.asList(new String[] { "name" }));
 
-    @PersistenceContext 
-    private EntityManager entityManager;
-    private RepoImplUtils repoUtils;
+	@PersistenceContext
+	private EntityManager entityManager;
+	private RepoImplUtils repoUtils;
 
-    // TODO @PersistenceContext can't be applied at the constructor level, reconcile for consistency https://jira.spring.io/browse/SPR-10443
-    public ServiceRepoImpl()
-    {
-        this( null );
-    }    
-    
-    public ServiceRepoImpl( @NotNull EntityManager entityManager )
-    {
-        this( entityManager, null );
-    }
-    
-    public ServiceRepoImpl( @NotNull EntityManager entityManager, RepoImplUtils repoUtils )
-    {
-        this.entityManager = entityManager;
-        this.repoUtils = ( repoUtils == null ? RepoImplUtils.getInstance() : repoUtils );
-    }
-
-	@Override
-	public Class<Service> getResultType()
-	{
-	    return Service.class;
+	// TODO @PersistenceContext can't be applied at the constructor level, reconcile for consistency
+	// https://jira.spring.io/browse/SPR-10443
+	public ServiceRepoImpl() {
+		this(null);
 	}
 
-    @Override
-    public Page<Service> search( @NonNull Set<String> searchTokens, Pageable pageable )
-    {
-        Page<Service> searchPage = this.repoUtils.search( ServiceRepoImpl.ENTITY_NAME, this.entityManager, ServiceRepoImpl.FIELD_NAMES, searchTokens, pageable );;
-        
-        return searchPage;
-    }
+	public ServiceRepoImpl(@NotNull EntityManager entityManager) {
+		this(entityManager, null);
+	}
+
+	public ServiceRepoImpl(@NotNull EntityManager entityManager, RepoImplUtils repoUtils) {
+		this.entityManager = entityManager;
+		this.repoUtils = (repoUtils == null ? RepoImplUtils.getInstance() : repoUtils);
+	}
+
+	@Override
+	public Class<Service> getResultType() {
+		return Service.class;
+	}
+
+	@Override
+	public Page<Service> search(@NonNull Set<String> searchTokens, Pageable pageable) {
+		Page<Service> searchPage = this.repoUtils.search(ServiceRepoImpl.ENTITY_NAME, this.entityManager,
+				ServiceRepoImpl.FIELD_NAMES, searchTokens, pageable);
+		;
+
+		return searchPage;
+	}
 
 }
-
-

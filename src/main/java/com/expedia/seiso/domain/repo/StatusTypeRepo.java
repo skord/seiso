@@ -27,9 +27,9 @@ import com.expedia.seiso.domain.entity.StatusType;
  */
 @RestResource(path = RepoKeys.STATUS_TYPES)
 public interface StatusTypeRepo extends PagingAndSortingRepository<StatusType, Long> {
-	
+
 	@FindByKey
 	StatusType findByKey(@Param("key") String key);
-	
+
 	StatusType findByName(@Param("name") String name);
 }

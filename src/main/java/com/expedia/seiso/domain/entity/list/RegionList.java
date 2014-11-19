@@ -13,25 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.expedia.seiso.web.dto;
+package com.expedia.seiso.domain.entity.list;
 
-import java.util.Date;
+import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.expedia.seiso.domain.entity.Region;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-@Data
-@AllArgsConstructor
-public class AuditData {
-	private String createdBy;
-	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ssZ", timezone = "America/Los_Angeles")
-	private Date createdDate;
-	
-	private String updatedBy;
-	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ssZ", timezone = "America/Los_Angeles")
-	private Date updatedDate;
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RegionList extends ArrayList<Region> {
 }

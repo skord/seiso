@@ -50,35 +50,35 @@ public class ItemMetaImpl implements ItemMeta {
 	private Method findByKeyMethod;
 	private final Map<Key, ProjectionNode> projections = new HashMap<>();
 	private final Map<String, String> propNamesByPropKey = new HashMap<>();
-	
+
 	public ItemMetaImpl(Class<?> itemClass, Class<?> repoInterface, boolean pagingRepo) {
 		log.trace("Initializing resource mapping for {}", itemClass);
-		
+
 		this.itemClass = itemClass;
 		this.itemRepoInterface = repoInterface;
 		this.pagingRepo = pagingRepo;
-		
+
 		val ann = AnnotationUtils.findAnnotation(repoInterface, RestResource.class);
 		if (ann != null) {
 			this.exported = ann.exported();
 			this.repoKey = ann.path();
-			
+
 			// Not sure this is how we want this to work, but ItemLinks.linkToSingleResource() doesn't like null rels.
 			boolean emptyRel = ("".equals(ann.rel()));
 			this.rel = (emptyRel ? ann.path() : ann.rel());
-			
+
 			// TODO Take steps to ensure that neither repoKey nor rel is null.
 		}
-		
+
 		// Initialize the findByKey method no matter whether we're exporting the repo or not. For instance, we don't
 		// want to export the UserRepo, but we do want to be able to serialize and deserialize createdBy/updatedBy
 		// users using the generic machinery. [WLW]
 		initFindByKeyMethod();
-		
+
 		initProjections();
 		initPropertyNames();
 	}
-	
+
 	private void initFindByKeyMethod() {
 		val methods = itemRepoInterface.getMethods();
 		for (val method : methods) {
@@ -89,12 +89,14 @@ public class ItemMetaImpl implements ItemMeta {
 			}
 		}
 	}
-	
+
 	private void initProjections() {
 		val projectionsAnn = AnnotationUtils.findAnnotation(itemClass, Projections.class);
-		
-		if (projectionsAnn == null) { return; }
-		
+
+		if (projectionsAnn == null) {
+			return;
+		}
+
 		val projectionsAnnArr = projectionsAnn.value();
 		for (val projectionAnn : projectionsAnnArr) {
 			val key = new Key(projectionAnn.cardinality(), projectionAnn.name());
@@ -103,7 +105,7 @@ public class ItemMetaImpl implements ItemMeta {
 			projections.put(key, projection);
 		}
 	}
-	
+
 	private void initPropertyNames() {
 		// Annotations are on the fields, not the getters. [WLW]
 		val fields = itemClass.getDeclaredFields();
@@ -114,32 +116,44 @@ public class ItemMetaImpl implements ItemMeta {
 			}
 		}
 	}
-	
+
 	@Override
-	public Class<?> getRepositoryInterface() { return itemRepoInterface; }
-	
+	public Class<?> getRepositoryInterface() {
+		return itemRepoInterface;
+	}
+
 	@Override
-	public boolean isExported() { return exported; }
-	
+	public boolean isExported() {
+		return exported;
+	}
+
 	@Override
-	public String getRel() { return rel; }
-	
+	public String getRel() {
+		return rel;
+	}
+
 	@Override
-	public String getRepoKey() { return repoKey; }
-	
+	public String getRepoKey() {
+		return repoKey;
+	}
+
 	@Override
-	public Method getRepositoryFindByKeyMethod() { return findByKeyMethod; }
-	
+	public Method getRepositoryFindByKeyMethod() {
+		return findByKeyMethod;
+	}
+
 	@Override
 	public Method getRepositorySearchMethod(String search) {
 		val methods = itemRepoInterface.getMethods();
 		for (val method : methods) {
 			val ann = AnnotationUtils.getAnnotation(method, RestResource.class);
-			if (ann != null && search.equals(ann.path())) { return method; }
+			if (ann != null && search.equals(ann.path())) {
+				return method;
+			}
 		}
 		return null;
 	}
-	
+
 	@Override
 	public ProjectionNode getProjectionNode(Projection.Cardinality cardinality, String projectionKey) {
 		Key key = new Key(cardinality, projectionKey);
@@ -147,7 +161,7 @@ public class ItemMetaImpl implements ItemMeta {
 		notNull(node, "No projection for key=" + key);
 		return node;
 	}
-	
+
 	@Override
 	public String getPropertyName(@NonNull String propertyKey) {
 		val propName = propNamesByPropKey.get(propertyKey);
@@ -156,15 +170,17 @@ public class ItemMetaImpl implements ItemMeta {
 		}
 		return propName;
 	}
-	
+
 	@Override
-	public boolean isPagingRepo() { return pagingRepo; }
-	
+	public boolean isPagingRepo() {
+		return pagingRepo;
+	}
+
 	@Data
 	private static class Key {
 		private Projection.Cardinality cardinality;
 		private String viewKey;
-		
+
 		public Key(Projection.Cardinality cardinality, String viewKey) {
 			this.cardinality = cardinality;
 			this.viewKey = viewKey;

@@ -36,53 +36,59 @@ import com.expedia.seiso.web.assembler.ProjectionNode;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ItemAssociationHandlerTests {
-	
+
 	// Class under test
 	private ItemAssociationHandler handler;
-	
+
 	// Dependencies
-	@Mock private ItemAssembler assembler;
-	
+	@Mock
+	private ItemAssembler assembler;
+
 	// Test data
-	@Mock private ProjectionNode query;
-	@Mock private BeanWrapper<Item> wrapper;
-	@Mock private Map<String, Object> model;
-	@Mock private Association assoc;
-	@Mock private PersistentProperty<?> prop;
-	
+	@Mock
+	private ProjectionNode query;
+	@Mock
+	private BeanWrapper<Item> wrapper;
+	@Mock
+	private Map<String, Object> model;
+	@Mock
+	private Association assoc;
+	@Mock
+	private PersistentProperty<?> prop;
+
 	@Before
 	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		this.handler = new ItemAssociationHandler(assembler, query, wrapper, model);
 		initTestData();
 	}
-	
+
 	private void initTestData() {
 		when(assoc.getInverse()).thenReturn(prop);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void requireAssembler() {
 		new ItemAssociationHandler(null, query, wrapper, model);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void requireQuery() {
 		new ItemAssociationHandler(assembler, null, wrapper, model);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void requireWrapper() {
 		new ItemAssociationHandler(assembler, query, null, model);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void requireModel() {
 		new ItemAssociationHandler(assembler, query, wrapper, null);
 	}
-	
-//	@Test
-//	public void doWithAssociation() {
-//		handler.doWithAssociation(assoc);
-//	}
+
+	// @Test
+	// public void doWithAssociation() {
+	// handler.doWithAssociation(assoc);
+	// }
 }

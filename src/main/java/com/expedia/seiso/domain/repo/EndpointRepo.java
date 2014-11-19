@@ -36,19 +36,19 @@ import com.expedia.seiso.domain.entity.ServiceInstance;
  */
 @RestResource(path = RepoKeys.ENDPOINTS)
 public interface EndpointRepo extends PagingAndSortingRepository<Endpoint, Long> {
-	
+
 	@RestResource(path = "find-by-service-instance")
 	@Query("from Endpoint e where e.port.serviceInstance = :serviceInstance")
 	List<Endpoint> findByServiceInstance(@Param("serviceInstance") ServiceInstance serviceInstance);
-	
+
 	@RestResource(path = "find-by-machine")
 	@Query("from Endpoint e where e.ipAddress.node.machine = :machine")
 	List<Endpoint> findByMachine(@Param("machine") Machine machine);
-	
+
 	@RestResource(path = "find-by-node")
 	@Query("from Endpoint e where e.ipAddress.node.name = :node")
 	List<Endpoint> findByNode(@Param("node") String node);
-	
+
 	// Not sure why Eclipse is raising this warning here:
 	// "Parameter type (String) does not match domain class property definition (NodeIpAddress)."
 	// e.ipAddress.machineIpAddress.ipAddress is a string.
@@ -56,10 +56,8 @@ public interface EndpointRepo extends PagingAndSortingRepository<Endpoint, Long>
 	@RestResource(path = "find-by-ip-address")
 	@Query("from Endpoint e where e.ipAddress.ipAddress = :ipAddress")
 	List<Endpoint> findByIpAddress(@Param("ipAddress") String ipAddress);
-	
+
 	@RestResource(path = "find-by-ip-address-and-port")
 	@Query("from Endpoint e where e.ipAddress.ipAddress = :ipAddress and e.port.number = :port")
-	Endpoint findByIpAddressAndPort(
-			@Param("ipAddress") String ipAddress,
-			@Param("port") int port);
+	Endpoint findByIpAddressAndPort(@Param("ipAddress") String ipAddress, @Param("port") int port);
 }

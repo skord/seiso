@@ -35,7 +35,8 @@ import com.expedia.seiso.domain.repo.IpAddressRoleRepo;
 @Component
 @Transactional
 public class IpAddressRoleRepoAdapter implements RepoAdapter {
-	@Autowired private IpAddressRoleRepo ipAddressRoleRepo;
+	@Autowired
+	private IpAddressRoleRepo ipAddressRoleRepo;
 
 	@Override
 	public boolean supports(@NonNull Class<?> itemClass) {

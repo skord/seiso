@@ -25,27 +25,29 @@ import org.springframework.amqp.core.AmqpTemplate;
 import com.expedia.seiso.gateway.model.ConfigManagementEvent;
 
 public class NotificationGatewayImplTests {
-	
+
 	// Class under test
-	@InjectMocks private NotificationGatewayImpl gateway;
-	
+	@InjectMocks
+	private NotificationGatewayImpl gateway;
+
 	// Dependencies
-	@Mock private AmqpTemplate amqpTemplate;
-	
+	@Mock
+	private AmqpTemplate amqpTemplate;
+
 	// Test data
 	private ConfigManagementEvent cme;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.gateway = new NotificationGatewayImpl();
 		MockitoAnnotations.initMocks(this);
 		initTestData();
 	}
-	
+
 	private void initTestData() {
 		this.cme = new ConfigManagementEvent();
 	}
-	
+
 	@Test
 	public void dummy() {
 	}

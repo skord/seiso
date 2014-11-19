@@ -50,27 +50,40 @@ import com.expedia.seiso.domain.repo.RepoKeys;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class PEItemDtoResolverTests {
-	
+
 	// Class under test
-	@InjectMocks private PEItemDtoResolver resolver;
-	
+	@InjectMocks
+	private PEItemDtoResolver resolver;
+
 	// Dependencies
 	private List<HttpMessageConverter<?>> messageConverters;
-	@Mock private ItemMetaLookup itemMetaLookup;
-	@Mock private Repositories repositories;
-	@Mock private HttpMessageConverter<?> messageConverter;
-	@Mock private ResolverUtils resolverUtils;
-	
+	@Mock
+	private ItemMetaLookup itemMetaLookup;
+	@Mock
+	private Repositories repositories;
+	@Mock
+	private HttpMessageConverter<?> messageConverter;
+	@Mock
+	private ResolverUtils resolverUtils;
+
 	// Test data
-	@Mock private MethodParameter param;
-	@Mock private ModelAndViewContainer mavContainer;
-	@Mock private NativeWebRequest nativeWebRequest;
-	@Mock private WebDataBinderFactory binderFactory;
-	@Mock private ItemMeta nodeRepoMeta;
-	@Mock private HttpServletRequest httpServletRequest;
-	@Mock private ServletServerHttpRequest servletServerHttpRequest;
-	@Mock private HttpHeaders httpHeaders;
-	
+	@Mock
+	private MethodParameter param;
+	@Mock
+	private ModelAndViewContainer mavContainer;
+	@Mock
+	private NativeWebRequest nativeWebRequest;
+	@Mock
+	private WebDataBinderFactory binderFactory;
+	@Mock
+	private ItemMeta nodeRepoMeta;
+	@Mock
+	private HttpServletRequest httpServletRequest;
+	@Mock
+	private ServletServerHttpRequest servletServerHttpRequest;
+	@Mock
+	private HttpHeaders httpHeaders;
+
 	@Before
 	public void init() {
 		this.resolver = new PEItemDtoResolver();
@@ -78,34 +91,34 @@ public class PEItemDtoResolverTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
-//		this.httpServletRequest = new MockHttpServletRequest();
-//		httpServletRequest.addHeader("Accept", "application/json");
-//		httpServletRequest.addHeader("Content-Type", "application/json");
-//		
+		// this.httpServletRequest = new MockHttpServletRequest();
+		// httpServletRequest.addHeader("Accept", "application/json");
+		// httpServletRequest.addHeader("Content-Type", "application/json");
+		//
 		when(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).thenReturn(httpServletRequest);
 		when(servletServerHttpRequest.getHeaders()).thenReturn(httpHeaders);
 		when(httpHeaders.getContentType()).thenReturn(MediaType.APPLICATION_JSON);
 	}
-	
+
 	private void initDependencies() {
 		when(itemMetaLookup.getItemClass(RepoKeys.NODES)).thenReturn(Node.class);
-		
+
 		this.messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(messageConverter);
 		ReflectionTestUtils.setField(resolver, "messageConverters", messageConverters);
-		
+
 		when(resolverUtils.wrapRequest(httpServletRequest)).thenReturn(servletServerHttpRequest);
 	}
-	
+
 	// TODO
 	@Test
 	@Ignore
 	public void resolveArgument() throws Exception {
 		val result = resolver.resolveArgument(param, mavContainer, nativeWebRequest, binderFactory);
-		
+
 		// Need to set the converter up to make this work.
-//		assertNotNull(result);
+		// assertNotNull(result);
 	}
 }

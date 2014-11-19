@@ -39,15 +39,15 @@ import com.expedia.seiso.web.assembler.ItemLinkBuilder;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ItemLinkBuilderTests {
-	
+
 	// Class under test
 	private ItemLinkBuilder linkBuilder;
-	
+
 	// Test data
 	private ItemMeta providerRepoMeta;
 	private URI baseUri;
 	private ServletRequestAttributes requestAttributes;
-	
+
 	@Before
 	public void init() throws Exception {
 		this.providerRepoMeta = new ItemMetaImpl(InfrastructureProvider.class, InfrastructureProviderRepo.class, false);
@@ -55,14 +55,14 @@ public class ItemLinkBuilderTests {
 		this.linkBuilder = new ItemLinkBuilder(baseUri, providerRepoMeta);
 		this.requestAttributes = new ServletRequestAttributes(new MockHttpServletRequest());
 	}
-	
+
 	@Test
 	public void createNewInstance() {
 		val uri = UriComponentsBuilder.fromUri(baseUri);
 		val result = linkBuilder.createNewInstance(uri);
 		assertNotNull(result);
 	}
-	
+
 	@Test
 	public void createNewInstance_nullBaseUri() {
 		try {
@@ -73,7 +73,7 @@ public class ItemLinkBuilderTests {
 			RequestContextHolder.resetRequestAttributes();
 		}
 	}
-	
+
 	@Test
 	public void getThis() {
 		assertSame(linkBuilder, linkBuilder.getThis());

@@ -32,16 +32,18 @@ import com.expedia.seiso.domain.service.ItemService;
 
 public class ItemConverterFactoryTests {
 	private static final String NODE_KEY = "my-node";
-	
+
 	// Class under test
-	@InjectMocks private ItemConverterFactory factory;
-	
+	@InjectMocks
+	private ItemConverterFactory factory;
+
 	// Dependencies
-	@Mock private ItemService itemService;
-	
+	@Mock
+	private ItemService itemService;
+
 	// Test data
 	private Node node;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.factory = new ItemConverterFactory();
@@ -49,15 +51,15 @@ public class ItemConverterFactoryTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		this.node = new Node();
 	}
-	
+
 	private void initDependencies() {
 		when(itemService.find(new SimpleItemKey(Node.class, NODE_KEY))).thenReturn(node);
 	}
-	
+
 	@Test
 	public void getConverter() {
 		val converterResult = factory.getConverter(Node.class);

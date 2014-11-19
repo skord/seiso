@@ -17,7 +17,6 @@ package com.expedia.seiso.core.exception;
 
 import com.expedia.seiso.domain.entity.key.ItemKey;
 
-
 /**
  * Exception indicating that either the requested resource doesn't exist, or else the client doesn't have permission to
  * access it. We don't indicate which of the two is the case since revealing existence to unauthorized clients can
@@ -27,11 +26,14 @@ import com.expedia.seiso.domain.entity.key.ItemKey;
  */
 @SuppressWarnings("serial")
 public class ResourceNotFoundException extends NotFoundException {
-	
-	public ResourceNotFoundException() { }
-	
-	public ResourceNotFoundException(String message) { super(message); }
-	
+
+	public ResourceNotFoundException() {
+	}
+
+	public ResourceNotFoundException(String message) {
+		super(message);
+	}
+
 	public ResourceNotFoundException(ItemKey itemKey) {
 		super(itemKey.toString());
 	}

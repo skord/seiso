@@ -34,42 +34,39 @@ import org.springframework.data.domain.Pageable;
 
 import com.expedia.seiso.domain.entity.LoadBalancer;
 
-
 /**
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
-public class LoadBalancerRepoImplUnitTest
-{
-          private Set<String>       searchTokens;
-          private Pageable          pageable;
-    @Mock private EntityManager     entityManager;
-          private MockRepoImplUtils mockRepoImplUtils;
-          private Page<LoadBalancer>     mockResultsPage;
-          private List<LoadBalancer>     mockResultList;
+public class LoadBalancerRepoImplTests {
+	private Set<String> searchTokens;
+	private Pageable pageable;
+	@Mock
+	private EntityManager entityManager;
+	private MockRepoImplUtils mockRepoImplUtils;
+	private Page<LoadBalancer> mockResultsPage;
+	private List<LoadBalancer> mockResultList;
 
-    @Before
-    public void setUp()
-    {
-        MockitoAnnotations.initMocks( this );
-        
-        this.searchTokens = new HashSet<String>();
-        searchTokens.add( "foo" );
-        this.pageable = new PageRequest( 1, 1 );
-        
-        this.mockResultList = new ArrayList<LoadBalancer>();
-        this.mockResultsPage = new PageImpl<LoadBalancer>( this.mockResultList );
-        this.mockRepoImplUtils = new MockRepoImplUtils( this.mockResultsPage );
-    }
-    
-    @Test
-    public void searchTest()
-    {
-        LoadBalancerRepoImpl loadBalancerRepoImpl = new LoadBalancerRepoImpl( this.entityManager, this.mockRepoImplUtils );
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 
-        Page<LoadBalancer> expected = this.mockResultsPage; 
-        Page<LoadBalancer>   actual = loadBalancerRepoImpl.search( this.searchTokens, pageable );
-        
-        Assert.assertEquals( expected, actual );
-    }
-    
+		this.searchTokens = new HashSet<String>();
+		searchTokens.add("foo");
+		this.pageable = new PageRequest(1, 1);
+
+		this.mockResultList = new ArrayList<LoadBalancer>();
+		this.mockResultsPage = new PageImpl<LoadBalancer>(this.mockResultList);
+		this.mockRepoImplUtils = new MockRepoImplUtils(this.mockResultsPage);
+	}
+
+	@Test
+	public void searchTest() {
+		LoadBalancerRepoImpl loadBalancerRepoImpl = new LoadBalancerRepoImpl(this.entityManager, this.mockRepoImplUtils);
+
+		Page<LoadBalancer> expected = this.mockResultsPage;
+		Page<LoadBalancer> actual = loadBalancerRepoImpl.search(this.searchTokens, pageable);
+
+		Assert.assertEquals(expected, actual);
+	}
+
 }

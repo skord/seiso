@@ -21,7 +21,7 @@ package com.expedia.seiso.gateway.model;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface ActionRequest {
-	
+
 	/**
 	 * Identifies the type of action being requested.
 	 * 

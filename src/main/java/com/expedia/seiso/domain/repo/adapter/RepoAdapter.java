@@ -27,9 +27,9 @@ import com.expedia.seiso.domain.entity.key.ItemKey;
  *            item type
  */
 public interface RepoAdapter {
-	
+
 	boolean supports(Class<?> itemClass);
-	
+
 	/**
 	 * Finds the corresponding persistent item.
 	 * 
@@ -38,6 +38,6 @@ public interface RepoAdapter {
 	 * @return persistent item, or null if it doesn't exist
 	 */
 	Item find(ItemKey key);
-	
+
 	void delete(ItemKey key);
 }

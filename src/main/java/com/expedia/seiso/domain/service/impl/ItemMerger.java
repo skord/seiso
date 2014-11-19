@@ -39,8 +39,9 @@ import com.expedia.seiso.domain.repo.adapter.RepoAdapters;
 @Component
 @XSlf4j
 public class ItemMerger {
-	@Autowired private RepoAdapters repoAdapters;
-	
+	@Autowired
+	private RepoAdapters repoAdapters;
+
 	/**
 	 * Merges a source item into a destination item. Thus this method modifies the destination item.
 	 * 
@@ -65,33 +66,33 @@ public class ItemMerger {
 					// FIXME I think we need to do this to avoid nulling out many-many associations. But we need to
 					// resolve the association data to persistent associations. Currently, including this leads to
 					// "detached entity passed to persist" exceptions. [WLW]
-//					mergeCollectionProperty(src, dest, propClass, propName);
+					// mergeCollectionProperty(src, dest, propClass, propName);
 				} else {
 					log.warn("Property '{}' has unrecognized class {}; skipping", propName, propClass.getSimpleName());
 				}
 			}
 		}
 	}
-	
+
 	private boolean isMergeable(String propName) {
 		// Reject client-provided IDs and audit data. Seiso sets this.
 		return !("class".equals(propName) || "id".equals(propName) || AuditUtils.isAuditProperty(propName));
 	}
-	
+
 	@SneakyThrows
 	private void mergeSimpleProperty(Item src, Item dest, PropertyDescriptor propDesc) {
 		val getter = propDesc.getReadMethod();
 		val setter = propDesc.getWriteMethod();
-		
+
 		if (getter == null || setter == null) {
 			log.trace("Skipping simple property: {}", propDesc.getName());
 			return;
 		}
-		
+
 		val propValue = getter.invoke(src);
 		setter.invoke(dest, propValue);
 	}
-	
+
 	/**
 	 * @param src
 	 *            non-persistent data we want to merge into the persistent entity
@@ -104,28 +105,29 @@ public class ItemMerger {
 	@SuppressWarnings("rawtypes")
 	private void mergeSingleAssociation(Item src, Item dest, Class assocClass, String assocName) {
 		val itemDesc = BeanUtils.getPropertyDescriptor(src.getClass(), assocName);
-		log.trace("src.class={}, dest.class={}, itemDesc={}", src.getClass().getName(), dest.getClass().getName(), itemDesc);
-		
+		log.trace("src.class={}, dest.class={}, itemDesc={}", src.getClass().getName(), dest.getClass().getName(),
+				itemDesc);
+
 		val getter = itemDesc.getReadMethod();
 		val setter = itemDesc.getWriteMethod();
-		
+
 		if (getter == null || setter == null) {
 			log.trace("Skipping single association: {}", itemDesc.getName());
 			return;
 		}
-		
+
 		val assocData = (Item) getter.invoke(src);
 		log.trace("assocData={}", assocData);
-		
+
 		Item persistentAssoc = null;
 		if (assocData != null) {
 			val assocKey = assocData.itemKey();
 			persistentAssoc = repoAdapters.getRepoAdapterFor(assocClass).find(assocKey);
 		}
-		
+
 		setter.invoke(dest, persistentAssoc);
 	}
-	
+
 	/**
 	 * @param src
 	 *            non-persistent data we want to merge into the persistent entity

@@ -30,15 +30,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MachineSearch {
 	private String fqdn;
-	
+
 	// Don't use this pattern, since we want to be able to handle wildcards.
-//	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$")
+	// @Pattern(regexp =
+	// "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$")
 	@Size(max = 15)
 	private String ipAddress;
-	
+
 	@Size(max = 80)
 	private String platform;
-	
+
 	@Size(max = 80)
 	private String os;
 }

@@ -32,7 +32,7 @@ angular.module('seisoControllers').controller('ServiceInstanceDetailsController'
 			}
 			
 			// FIXME Shouldn't hardcode what's currently an Eos-specific health status.
-			if (node.healthStatus.key == 'Healthy') { $scope.numHealthy++; }
+			if (node.healthStatus.key.toLowerCase() == 'healthy') { $scope.numHealthy++; }
 			
 			var ipAddresses = node.ipAddresses;
 			var nodeEnabled = true;

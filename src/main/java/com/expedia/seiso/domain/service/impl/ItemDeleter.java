@@ -33,8 +33,9 @@ import com.expedia.seiso.gateway.aop.NotificationAspect;
  */
 @Component
 public class ItemDeleter {
-	@Autowired private Repositories repositories;
-	
+	@Autowired
+	private Repositories repositories;
+
 	public void delete(@NonNull Item item) {
 		val repo = (CrudRepository) repositories.getRepositoryFor(item.getClass());
 		repo.delete(item);

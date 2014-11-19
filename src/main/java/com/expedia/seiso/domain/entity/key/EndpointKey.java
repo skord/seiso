@@ -24,10 +24,13 @@ import com.expedia.seiso.domain.entity.Endpoint;
 @Data
 @RequiredArgsConstructor
 public class EndpointKey implements ItemKey {
-	
+
 	// FIXME Don't think we really want to expose IDs to the client. [WLW]
-	@NonNull private Long id;
+	@NonNull
+	private Long id;
 
 	@Override
-	public Class<?> getItemClass() { return Endpoint.class; }
+	public Class<?> getItemClass() {
+		return Endpoint.class;
+	}
 }

@@ -31,10 +31,10 @@ import com.expedia.seiso.domain.repo.custom.NodeRepoCustom;
  */
 @RestResource(path = RepoKeys.NODES)
 public interface NodeRepo extends PagingAndSortingRepository<Node, Long>, NodeRepoCustom {
-	
+
 	@FindByKey
 	Node findByName(@Param("name") String name);
-	
+
 	@RestResource(path = "find-by-ip-address-and-port")
 	@Query("select n from Node n join n.ipAddresses nip join nip.endpoints e where nip.ipAddress = :ipAddress and e.port.number = :port")
 	List<Node> findByIpAddressAndPort(@Param("ipAddress") String ipAddress, @Param("port") Integer port);

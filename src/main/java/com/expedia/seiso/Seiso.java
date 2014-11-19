@@ -34,6 +34,7 @@ import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.expedia.seiso.core.config.DataSourceProperties;
@@ -46,53 +47,44 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableAutoConfiguration
 @EnableAspectJAutoProxy
 @EnableConfigurationProperties
-//@EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
+// @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableJpaRepositories(basePackageClasses = { RepoPackageMarker.class })
 @EnableScheduling
 @EnableTransactionManagement
 public class Seiso {
-    
-    public static final String VERSION = "v1";
-    
-	@Autowired private ListableBeanFactory beanFactory;
-	@Autowired private DataSourceProperties dataSourceSettings;
+	public static final String VERSION = "v1";
+
+	@Autowired
+	private ListableBeanFactory beanFactory;
 	
+	@Autowired
+	private DataSourceProperties dataSourceSettings;
+		
+	@Autowired
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Seiso.class, args);
 	}
-	
-	// Registered automatically
-//	@Configuration
-//	@Profile("default")
-//	@PropertySource("classpath:/spring/seiso-api-environment.properties")
-//	static class Defaults { }
-	
-	// Registered automatically
-//	@Configuration
-//	@Profile("continuous-integration")
-//	@PropertySource("classpath:/spring/seiso-api-environment-ci.properties")
-//	static class ContinuousIntegration { }
-	
+
 	@Bean
 	public SeisoRabbitConfig seisoIntegrationConfig() {
 		return new SeisoRabbitConfig();
 	}
-	
+
 	@Bean
 	public SeisoWebConfig seisoWebConfig() {
 		return new SeisoWebConfig();
 	}
-	
+
 	@Bean
 	public SeisoWebSecurityConfig seisoWebSecurityConfig() {
 		return new SeisoWebSecurityConfig();
 	}
-	
+
 	@Bean
 	public ApplicationContextProvider applicationContextProvider() {
 		return new ApplicationContextProvider();
 	}
-	
+
 	// FIXME DriverManagerDataSource isn't a proper JDBC connection pool. Indeed it is not a pool at all. OK for
 	// development but not for production. Use HikariCP, Tomcat-JDBC, C3P0, etc. instead. Also Apache Commons DBCP
 	// appears to be out of favor nowadays. [WLW]
@@ -100,18 +92,18 @@ public class Seiso {
 	// https://github.com/spring-projects/spring-boot/issues/418
 	@Bean
 	public HikariDataSource dataSource() {
-		
+
 		// FIXME Remove hardcodes
-//		val hikariConfig = new HikariConfig();
-//		hikariConfig.setMaximumPoolSize(10);
-//		hikariConfig.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-//		hikariConfig.addDataSourceProperty("serverName", "localhost");
-//		hikariConfig.addDataSourceProperty("port", 3306);
-//		hikariConfig.addDataSourceProperty("databaseName", "seiso");
-//		hikariConfig.addDataSourceProperty("user", env.getProperty(SEISO_DB_USERNAME_KEY));
-//		hikariConfig.addDataSourceProperty("password", env.getProperty(SEISO_DB_PASSWORD_KEY));
-//		return new HikariDataSource(hikariConfig);
-		
+		// val hikariConfig = new HikariConfig();
+		// hikariConfig.setMaximumPoolSize(10);
+		// hikariConfig.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+		// hikariConfig.addDataSourceProperty("serverName", "localhost");
+		// hikariConfig.addDataSourceProperty("port", 3306);
+		// hikariConfig.addDataSourceProperty("databaseName", "seiso");
+		// hikariConfig.addDataSourceProperty("user", env.getProperty(SEISO_DB_USERNAME_KEY));
+		// hikariConfig.addDataSourceProperty("password", env.getProperty(SEISO_DB_PASSWORD_KEY));
+		// return new HikariDataSource(hikariConfig);
+
 		// FIXME Legacy configuration.
 		// See https://github.com/brettwooldridge/HikariCP to upgrade.
 		val dataSource = new HikariDataSource();
@@ -119,15 +111,17 @@ public class Seiso {
 		dataSource.setJdbcUrl(dataSourceSettings.getUrl());
 		dataSource.setUsername(dataSourceSettings.getUsername());
 		dataSource.setPassword(dataSourceSettings.getPassword());
-		
+
 		// TODO Add other Hikari data source options.
-		
+
 		return dataSource;
 	}
-	
+
 	@Bean
-	public Repositories repositories() { return new Repositories(beanFactory); }
-	
+	public Repositories repositories() {
+		return new Repositories(beanFactory);
+	}
+
 	@Bean
 	@SuppressWarnings("rawtypes")
 	public PersistentEntities persistentEntities() {

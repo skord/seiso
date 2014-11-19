@@ -33,14 +33,17 @@ import com.expedia.seiso.domain.repo.adapter.RepoAdapters;
 import com.expedia.seiso.domain.repo.adapter.SimpleItemRepoAdapter;
 
 public class ItemMergerTests {
-	
+
 	// Class under test
-	@InjectMocks private ItemMerger itemMerger;
-	
+	@InjectMocks
+	private ItemMerger itemMerger;
+
 	// Dependencies
-	@Mock private RepoAdapters repoAdapters;
-	@Mock private SimpleItemRepoAdapter simpleItemRepoAdapter;
-	
+	@Mock
+	private RepoAdapters repoAdapters;
+	@Mock
+	private SimpleItemRepoAdapter simpleItemRepoAdapter;
+
 	// Test data
 	private ServiceGroup serviceGroup;
 	private Service srcService;
@@ -49,7 +52,7 @@ public class ItemMergerTests {
 	private Node destNode;
 	private IpAddressRole srcIpAddressRole;
 	private IpAddressRole destIpAddressRole;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.itemMerger = new ItemMerger();
@@ -57,33 +60,25 @@ public class ItemMergerTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		// @formatter:off
-		this.serviceGroup = new ServiceGroup()
-				.setKey("my-service-group")
-				.setName("My Service Group");
-		this.srcService = new Service()
-				.setKey("my-service")
-				.setName("My Service")
-				.setGroup(serviceGroup);
-		this.destService = new Service()
-				.setKey("my-service")
-				.setName("My Old Name")
+		this.serviceGroup = new ServiceGroup().setKey("my-service-group").setName("My Service Group");
+		this.srcService = new Service().setKey("my-service").setName("My Service").setGroup(serviceGroup);
+		this.destService = new Service().setKey("my-service").setName("My Old Name")
 				.setDescription("Some old description");
 		destService.setId(14L);
 		// @formatter:off
 	}
-	
+
 	private void initDependencies() {
 		// @formatter:off
-		when(repoAdapters.getRepoAdapterFor(ServiceGroup.class))
-				.thenReturn(simpleItemRepoAdapter);
-		when(simpleItemRepoAdapter.find(new SimpleItemKey(ServiceGroup.class, serviceGroup.getKey())))
-				.thenReturn(serviceGroup);
+		when(repoAdapters.getRepoAdapterFor(ServiceGroup.class)).thenReturn(simpleItemRepoAdapter);
+		when(simpleItemRepoAdapter.find(new SimpleItemKey(ServiceGroup.class, serviceGroup.getKey()))).thenReturn(
+				serviceGroup);
 		// @formatter:on
 	}
-	
+
 	@Test
 	public void mergeService() {
 		itemMerger.merge(srcService, destService);
@@ -91,14 +86,14 @@ public class ItemMergerTests {
 		assertEquals(srcService.getName(), destService.getName());
 		assertEquals(srcService.getDescription(), destService.getDescription());
 	}
-	
+
 	@Test
 	public void mergeNode() {
-		
+
 	}
-	
+
 	@Test
 	public void mergeIpAddressRole() {
-		
+
 	}
 }

@@ -45,60 +45,63 @@ import com.expedia.seiso.web.dto.PEItemDtoList;
  */
 @Component
 public class PEItemDtoListResolver implements HandlerMethodArgumentResolver {
-	@Autowired private List<HttpMessageConverter<?>> messageConverters;
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private Repositories repositories;
-	@Autowired private ResolverUtils resolverUtils;
-	
+	@Autowired
+	private List<HttpMessageConverter<?>> messageConverters;
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private Repositories repositories;
+	@Autowired
+	private ResolverUtils resolverUtils;
+
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return PEItemDtoList.class.isAssignableFrom(parameter.getParameterType());
 	}
-	
+
 	@Override
-	public Object resolveArgument(
-			MethodParameter param,
-			ModelAndViewContainer mavContainer,
-			NativeWebRequest nativeWebRequest,
-			WebDataBinderFactory binderFactory) throws Exception {
-		
+	public Object resolveArgument(MethodParameter param, ModelAndViewContainer mavContainer,
+			NativeWebRequest nativeWebRequest, WebDataBinderFactory binderFactory) throws Exception {
+
 		val nativeRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
 		return toItems(nativeRequest);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Object toItems(HttpServletRequest nativeRequest) throws IOException {
 		val parts = extractParts(nativeRequest);
-		
+
 		// parts[0] is the version identifier, so skip it.
 		val repoKey = parts[1];
-		
+
 		val itemClass = itemMetaLookup.getItemClass(repoKey);
 		val itemListClass = toItemListClass(itemClass);
 		val pEntity = repositories.getPersistentEntity(itemClass);
 		val request = resolverUtils.wrapRequest(nativeRequest);
 		val contentType = request.getHeaders().getContentType();
-		
+
 		for (HttpMessageConverter messageConverter : messageConverters) {
 			if (messageConverter.canRead(PEItemDtoList.class, contentType)) {
 				val itemList = (List<Item>) messageConverter.read(itemListClass, request);
 				val peItemDtoList = new PEItemDtoList(pEntity);
-				for (val item : itemList) { peItemDtoList.add(item); }
+				for (val item : itemList) {
+					peItemDtoList.add(item);
+				}
 				return peItemDtoList;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	private String[] extractParts(HttpServletRequest request) {
 		// substring() removes initial /
 		return request.getRequestURI().substring(1).split("/");
 	}
-	
+
 	private Class<?> toItemListClass(Class<?> itemClass) {
 		val packageName = EntityListPackageMarker.class.getPackage().getName();
-		val itemListClassName =  packageName + "." + itemClass.getSimpleName() + "List";
+		val itemListClassName = packageName + "." + itemClass.getSimpleName() + "List";
 		return ReflectionUtils.classForName(itemListClassName);
 	}
 }

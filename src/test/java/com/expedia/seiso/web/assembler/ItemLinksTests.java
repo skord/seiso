@@ -42,17 +42,20 @@ import com.expedia.seiso.web.assembler.ItemLinks;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ItemLinksTests {
-	
+
 	// Class under test
-	@InjectMocks private ItemLinks links;
-	
+	@InjectMocks
+	private ItemLinks links;
+
 	// Dependencies
-	@Mock private Repositories repositories;
-	@Mock private ItemMetaLookup itemMetaLookup;
-	
+	@Mock
+	private Repositories repositories;
+	@Mock
+	private ItemMetaLookup itemMetaLookup;
+
 	// Test data
 	private ItemMeta machineRepoMeta;
-	
+
 	@Before
 	public void init() throws Exception {
 		this.links = new ItemLinks(new URI("http://my-base-uri/"));
@@ -60,61 +63,61 @@ public class ItemLinksTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		this.machineRepoMeta = new ItemMetaImpl(Machine.class, MachineRepo.class, true);
 	}
-	
+
 	private void initDependencies() {
 		when(repositories.hasRepositoryFor(Machine.class)).thenReturn(true);
 		when(itemMetaLookup.getItemMeta(Machine.class)).thenReturn(machineRepoMeta);
 	}
-	
+
 	@Test
 	public void supports() {
 		val result = links.supports(Machine.class);
 		assertTrue(result);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void supports_nullType() {
 		links.supports(null);
 	}
-	
+
 	@Test
 	public void linkFor() {
 		val result = links.linkFor(Machine.class);
 		assertNotNull(result);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void linkFor_nullType() {
 		links.linkFor(null);
 	}
-	
+
 	@Test
 	public void linkForWithParams() {
 		// TODO Not sure what the params are for here. Need to look it up. Assume it's for the ID/key.
 		val result = links.linkFor(Machine.class, "my-machine");
 		assertNotNull(result);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void linkForWithParams_nullType() {
 		links.linkFor(null, "my-machine");
 	}
-	
+
 	@Test
 	public void linkToCollectionResource() {
 		val result = links.linkToCollectionResource(Machine.class);
 		assertNotNull(result);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void linkToCollectionResource_nullType() {
 		links.linkToCollectionResource(null);
 	}
-	
+
 	@Test
 	public void linkToSingleResource() {
 		val result = links.linkToSingleResource(Machine.class, "some-key");
@@ -122,12 +125,12 @@ public class ItemLinksTests {
 		val rel = result.getRel();
 		assertEquals("machines-single", rel);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void linkToSingleResource_nullType() {
 		links.linkToSingleResource(null, "some-key");
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void linkToSingleResource_nullKey() {
 		links.linkToSingleResource(Machine.class, null);

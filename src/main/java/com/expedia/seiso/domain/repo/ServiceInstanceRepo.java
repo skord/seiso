@@ -29,12 +29,11 @@ import com.expedia.seiso.domain.entity.ServiceInstance;
  */
 @RestResource(path = RepoKeys.SERVICE_INSTANCES)
 public interface ServiceInstanceRepo extends PagingAndSortingRepository<ServiceInstance, Long> {
-	
+
 	@FindByKey
 	ServiceInstance findByKey(@Param("key") String key);
-	
+
 	@RestResource(path = "find-by-environment-and-eos-managed")
-	List<ServiceInstance> findByEnvironmentKeyAndEosManaged(
-			@Param("env") String environmentKey,
+	List<ServiceInstance> findByEnvironmentKeyAndEosManaged(@Param("env") String environmentKey,
 			@Param("eos") Boolean eosManaged);
 }

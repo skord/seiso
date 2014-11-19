@@ -30,7 +30,8 @@ import com.expedia.seiso.domain.meta.RepoMeta;
  */
 @Component
 public class RepoConverter implements Converter<String, RepoMeta> {
-	@Autowired private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
 
 	@Override
 	public RepoMeta convert(@NonNull String repoKey) {

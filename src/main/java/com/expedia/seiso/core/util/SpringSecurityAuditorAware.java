@@ -30,7 +30,9 @@ public class SpringSecurityAuditorAware implements AuditorAware<User> {
 	public User getCurrentAuditor() {
 		val securityContext = SecurityContextHolder.getContext();
 		val auth = securityContext.getAuthentication();
-		if (auth == null || !auth.isAuthenticated()) { return null; }
+		if (auth == null || !auth.isAuthenticated()) {
+			return null;
+		}
 		return (User) auth.getPrincipal();
 	}
 }

@@ -35,19 +35,20 @@ import com.expedia.seiso.domain.repo.EndpointRepo;
 @Component
 @Transactional
 public class EndpointRepoAdapter implements RepoAdapter {
-	@Autowired private EndpointRepo endpointRepo;
+	@Autowired
+	private EndpointRepo endpointRepo;
 
 	@Override
 	public boolean supports(@NonNull Class<?> itemClass) {
 		return itemClass == Endpoint.class;
 	}
-	
+
 	@Override
 	public Item find(@NonNull ItemKey key) {
 		val endpointKey = (EndpointKey) key;
 		return endpointRepo.findOne(endpointKey.getId());
 	}
-	
+
 	@Override
 	public void delete(@NonNull ItemKey key) {
 		val endpointKey = (EndpointKey) key;

@@ -34,16 +34,18 @@ import com.expedia.seiso.domain.repo.UserRepo;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class UserDetailsServiceImplTests {
-	
+
 	// Class under test
-	@InjectMocks private UserDetailsServiceImpl service;
-	
+	@InjectMocks
+	private UserDetailsServiceImpl service;
+
 	// Dependencies
-	@Mock private UserRepo userRepo;
-	
+	@Mock
+	private UserRepo userRepo;
+
 	// Test data
 	private User existingUser;
-	
+
 	@Before
 	public void init() {
 		this.service = new UserDetailsServiceImpl();
@@ -51,27 +53,27 @@ public class UserDetailsServiceImplTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		this.existingUser = new User().setUsername("existing-user");
 	}
-	
+
 	private void initDependencies() {
 		when(userRepo.findByUsername(existingUser.getUsername())).thenReturn(existingUser);
 	}
-	
+
 	@Test
 	public void testLoadUserByUsername() {
 		val username = existingUser.getUsername();
 		val actualUserDetails = service.loadUserByUsername(username);
 		assertEquals(username, actualUserDetails.getUsername());
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void testLoadUserByNullUsername() {
 		service.loadUserByUsername(null);
 	}
-	
+
 	@Test(expected = UsernameNotFoundException.class)
 	public void testLoadNonExistentUserByUsername() {
 		service.loadUserByUsername("non-existing-user");

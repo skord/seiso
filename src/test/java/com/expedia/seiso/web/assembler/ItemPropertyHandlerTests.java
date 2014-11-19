@@ -35,17 +35,22 @@ import com.expedia.seiso.web.assembler.ItemPropertyHandler;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ItemPropertyHandlerTests {
-	
+
 	// Class under test
 	private ItemPropertyHandler handler;
-	
+
 	// Test data
-	@Mock private BeanWrapper<Item> wrapper;
-	@Mock private Map<String, Object> model;
-	@Mock private PersistentProperty<?> idProp;
-	@Mock private PersistentProperty<?> keyProp;
-	@Mock private Object wrappedProp;
-	
+	@Mock
+	private BeanWrapper<Item> wrapper;
+	@Mock
+	private Map<String, Object> model;
+	@Mock
+	private PersistentProperty<?> idProp;
+	@Mock
+	private PersistentProperty<?> keyProp;
+	@Mock
+	private Object wrappedProp;
+
 	@Before
 	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
@@ -56,23 +61,23 @@ public class ItemPropertyHandlerTests {
 		when(keyProp.getName()).thenReturn("key");
 		when(wrapper.getProperty(keyProp)).thenReturn(wrappedProp);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void requireBeanWrapper() {
 		new ItemPropertyHandler(null, model);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void requireModel() {
 		new ItemPropertyHandler(wrapper, null);
 	}
-	
+
 	@Test
 	public void doWithPersistentProperty_key() {
 		handler.doWithPersistentProperty(keyProp);
 		verify(model).put("key", wrappedProp);
 	}
-	
+
 	@Test
 	public void doWithPersistentProperty_id() {
 		handler.doWithPersistentProperty(idProp);

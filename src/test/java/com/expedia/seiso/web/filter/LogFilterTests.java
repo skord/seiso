@@ -33,41 +33,45 @@ import org.mockito.MockitoAnnotations;
 import com.expedia.seiso.web.filter.LogFilter;
 
 public class LogFilterTests {
-	
+
 	// Class under test
 	private LogFilter filter;
-	
+
 	// Test data
-	@Mock private FilterConfig filterConfig;
-	@Mock private HttpServletRequest request;
-	@Mock private HttpServletResponse response;
-	@Mock private FilterChain chain;
-	
+	@Mock
+	private FilterConfig filterConfig;
+	@Mock
+	private HttpServletRequest request;
+	@Mock
+	private HttpServletResponse response;
+	@Mock
+	private FilterChain chain;
+
 	@Before
 	public void setUp() throws Exception {
 		this.filter = new LogFilter();
 		MockitoAnnotations.initMocks(this);
 		filter.init(filterConfig);
 	}
-	
+
 	@Test
 	public void doFilter_2xx() throws IOException, ServletException {
 		when(response.getStatus()).thenReturn(201);
 		filter.doFilter(request, response, chain);
 	}
-	
+
 	@Test
 	public void doFilter_4xx() throws IOException, ServletException {
 		when(response.getStatus()).thenReturn(422);
 		filter.doFilter(request, response, chain);
 	}
-	
+
 	@Test
 	public void doFilter_5xx() throws IOException, ServletException {
 		when(response.getStatus()).thenReturn(500);
 		filter.doFilter(request, response, chain);
 	}
-	
+
 	@Test
 	public void destroy() {
 		filter.destroy();

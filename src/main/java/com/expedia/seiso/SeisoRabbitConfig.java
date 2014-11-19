@@ -39,8 +39,9 @@ import com.expedia.seiso.core.util.C;
 
 @XSlf4j
 public class SeisoRabbitConfig {
-	@Autowired private CachingConnectionFactory connectionFactory;
-	
+	@Autowired
+	private CachingConnectionFactory connectionFactory;
+
 	@Bean
 	public RabbitAdmin rabbitAdmin() {
 		log.trace("connectionFactory.host={}", connectionFactory.getHost());
@@ -49,21 +50,21 @@ public class SeisoRabbitConfig {
 		admin.declareExchange(seisoActionRequestsExchange());
 		return admin;
 	}
-	
+
 	@Bean
 	public Exchange seisoNotificationsExchange() {
 		val exchange = new TopicExchange(C.AMQP_EXCHANGE_SEISO_NOTIFICATIONS);
-//		exchange.setAdminsThatShouldDeclare(rabbitAdmin());
+		// exchange.setAdminsThatShouldDeclare(rabbitAdmin());
 		return exchange;
 	}
-	
+
 	@Bean
 	public Exchange seisoActionRequestsExchange() {
 		// Use a direct exchange since we want to route requests according to their request codes.
 		val exchange = new DirectExchange(C.AMQP_EXCHANGE_SEISO_ACTION_REQUESTS);
 		return exchange;
 	}
-	
+
 	@Bean
 	public MessageConverter jackson2JsonMessageConverter() {
 		return new Jackson2JsonMessageConverter();

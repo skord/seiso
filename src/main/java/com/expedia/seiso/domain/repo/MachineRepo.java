@@ -31,20 +31,20 @@ import com.expedia.seiso.domain.repo.custom.MachineRepoCustom;
 @Transactional(readOnly = true)
 @RestResource(path = RepoKeys.MACHINES)
 public interface MachineRepo extends PagingAndSortingRepository<Machine, Long>, MachineRepoCustom {
-	
+
 	@Query("from Machine m order by m.name")
 	@Override
 	Iterable<Machine> findAll();
-	
+
 	@FindByKey
 	Machine findByName(@Param("name") String name);
-	
+
 	// FIXME This won't work til ItemSearchController can handle single return values. [WLW]
-//	@RestResource(path = "find-by-fqdn")
+	// @RestResource(path = "find-by-fqdn")
 	Machine findByFqdn(@Param("fqdn") String fqdn);
-	
+
 	// FIXME This won't work til ItemSearchController can handle single return values. [WLW]
-//	@RestResource(path = "find-by-ip-address")
+	// @RestResource(path = "find-by-ip-address")
 	Machine findByIpAddress(@Param("ip") String ipAddress);
 
 }

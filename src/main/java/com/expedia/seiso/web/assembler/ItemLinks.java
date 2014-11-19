@@ -34,14 +34,16 @@ import com.expedia.seiso.domain.meta.ItemMetaLookup;
  */
 public class ItemLinks extends AbstractEntityLinks {
 	private URI baseUri;
-	
-	@Autowired private Repositories repositories;
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	
+
+	@Autowired
+	private Repositories repositories;
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+
 	public ItemLinks(@NonNull URI baseUri) {
 		this.baseUri = baseUri;
 	}
-	
+
 	@Override
 	public boolean supports(@NonNull Class<?> type) {
 		return repositories.hasRepositoryFor(type);
@@ -75,7 +77,7 @@ public class ItemLinks extends AbstractEntityLinks {
 	public Link linkToSingleResource(@NonNull Class<?> type, @NonNull Object key) {
 		val itemClass = (Class<? extends Item>) type;
 		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
-		
+
 		// SDR org.springframework.data.rest.webmvc.support.RepositoryEntityLinks uses getSingleResourceRel() here.
 		// FIXME For now, just temporarily affix "-single"
 		return linkFor(type).slash(key).withRel(itemMeta.getRel() + "-single");

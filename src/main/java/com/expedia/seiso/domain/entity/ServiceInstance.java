@@ -35,19 +35,15 @@ import lombok.experimental.Accessors;
 
 import com.expedia.seiso.core.ann.Key;
 import com.expedia.seiso.core.ann.Projection;
+import com.expedia.seiso.core.ann.Projection.Cardinality;
 import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.core.ann.RestResource;
-import com.expedia.seiso.core.ann.Projection.Cardinality;
 import com.expedia.seiso.domain.entity.key.ItemKey;
 import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 
 /**
  * <p>
  * An instance of a service in an environment.
- * </p>
- * <p>
- * By way of illustration, ExpWeb in Chandler is a single service instance. It doesn't matter that there are lots of
- * different VIPs (.com, .ca, etc.) coming into it.
  * </p>
  * 
  * @author Willie Wheeler (wwheeler@expedia.com)
@@ -58,6 +54,7 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = "key")
 @ToString(callSuper = true, of = { "key", "service", "environment", "dataCenter" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION, paths = {
 			"service.group",
@@ -65,20 +62,8 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 			"service.owner",
 			"environment",
 			"dataCenter.region.infrastructureProvider",
-			"loadBalancer",
-			"createdBy",
-			"updatedBy"
-	}),
-	
-	// TODO This is a very, very expensive call. Don't want people loading 100 service instances at a time here because
-	// that will grab almost the entire database. Need to be able to set limits on a per item type basis. [WLW]
-	// TODO Turning this off til we have that. The default page size of 100 is just too intense. [WLW]
-//	@Projection(cardinality = Cardinality.COLLECTION, name = "withEndpoints", paths = {
-//			"nodes.ipAddresses.ipAddressRole",
-//			"nodes.ipAddresses.endpoints.port",
-//			"nodes.ipAddresses.endpoints.rotationStatus"
-//	}),
-	
+			"loadBalancer"
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, paths = {
 			"service.group",
 			"service.type",
@@ -93,34 +78,20 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 			"nodes.ipAddresses.ipAddressRole",
 			"nodes.ipAddresses.rotationStatus.statusType",
 			"nodes.ipAddresses.aggregateRotationStatus.statusType",
-			"nodes.healthStatus.statusType",
-			"createdBy",
-			"updatedBy"
-	}),
+			"nodes.healthStatus.statusType"
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, name = "infrastructure", paths = {
 			"environment",
 			"dataCenter.region.infrastructureProvider",
-			"loadBalancer",
-			"createdBy",
-			"updatedBy"
-	}),
-	@Projection(cardinality = Cardinality.SINGLE, name = "dependencies", paths = {
-			"service.type",
-			"service.dependencies.source.type",
-			"service.dependencies.target.type",
-			"service.dependencies.type",
-			"service.dependents.source.type",
-			"service.dependents.target.type",
-			"service.dependents.type",
-			"nodes",
-			"createdBy",
-			"updatedBy"
+			"loadBalancer"
+			})
 	})
-})
+//@formatter:on
 public class ServiceInstance extends AbstractItem {
-	
+
 	@Key
-	@Column(name = "ukey") private String key;
+	@Column(name = "ukey")
+	private String key;
 
 	@ManyToOne
 	@JoinColumn(name = "service_id")
@@ -136,34 +107,31 @@ public class ServiceInstance extends AbstractItem {
 	@JoinColumn(name = "data_center_id")
 	@RestResource(path = "data-center")
 	private DataCenter dataCenter;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "load_balancer_id")
 	@RestResource(path = "load-balancer")
 	private LoadBalancer loadBalancer;
-	
+
 	@NonNull
 	@OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
 	@RestResource(path = "ip-address-roles")
 	private List<IpAddressRole> ipAddressRoles = new ArrayList<>();
-	
+
 	@NonNull
 	@OrderBy("number")
 	@OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
 	@RestResource(path = "ports")
 	private List<ServiceInstancePort> ports = new ArrayList<>();
-	
+
 	@NonNull
 	@OrderBy("name")
 	@OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
 	@RestResource(path = "nodes")
 	private List<Node> nodes = new ArrayList<>();
-	
+
 	private Boolean loadBalanced;
-	
-	@Column(name = "minimum_acceptable_capacity")
-	private Integer requiredCapacity;
-	
+
 	/**
 	 * Required capacity, in deployment contexts, as a percentage of available nodes to total nodes. For example, if
 	 * there are 10 nodes and we want at least 6 to be available at any given time, then the value here will be 60. Note
@@ -185,13 +153,14 @@ public class ServiceInstance extends AbstractItem {
 	 * DEPRECATED Don't want EOS-specific stuff here. [WLW]
 	 */
 	private Boolean eosManaged;
-	
+
 	@Deprecated
-	public Integer getRequiredCapacity() { return requiredCapacity; }
-	
-	@Deprecated
-	public Boolean getEosManaged() { return eosManaged; }
-	
+	public Boolean getEosManaged() {
+		return eosManaged;
+	}
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(ServiceInstance.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(ServiceInstance.class, key);
+	}
 }

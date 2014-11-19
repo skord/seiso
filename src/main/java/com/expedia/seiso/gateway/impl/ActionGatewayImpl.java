@@ -34,7 +34,8 @@ import com.expedia.seiso.gateway.model.ActionRequest;
  */
 @Component
 public class ActionGatewayImpl implements ActionGateway {
-	@Autowired private AmqpTemplate amqpTemplate;
+	@Autowired
+	private AmqpTemplate amqpTemplate;
 
 	// Asynchronous because we don't want failures here to impact the core app.
 	// TODO Verify that this actually works. [WLW]

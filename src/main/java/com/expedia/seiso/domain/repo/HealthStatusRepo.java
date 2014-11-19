@@ -27,9 +27,9 @@ import com.expedia.seiso.domain.entity.HealthStatus;
  */
 @RestResource(path = RepoKeys.HEALTH_STATUSES)
 public interface HealthStatusRepo extends PagingAndSortingRepository<HealthStatus, Long> {
-	
+
 	@FindByKey
 	HealthStatus findByKey(@Param("key") String key);
-	
+
 	HealthStatus findByName(@Param("name") String name);
 }

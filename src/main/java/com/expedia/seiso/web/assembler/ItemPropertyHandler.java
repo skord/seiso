@@ -36,13 +36,15 @@ import com.expedia.seiso.domain.entity.Item;
  */
 @RequiredArgsConstructor
 public class ItemPropertyHandler implements SimplePropertyHandler {
-	@NonNull private final BeanWrapper<Item> wrapper;
-	@NonNull private final Map<String, Object> model;
-	
+	@NonNull
+	private final BeanWrapper<Item> wrapper;
+	@NonNull
+	private final Map<String, Object> model;
+
 	@Override
 	public void doWithPersistentProperty(PersistentProperty<?> prop) {
 		val propName = prop.getName();
-		
+
 		// We handle IDs and audit properties separately.
 		if (!(prop.isIdProperty() || AuditUtils.isAuditProperty(propName))) {
 			val restResource = prop.findAnnotation(RestResource.class);

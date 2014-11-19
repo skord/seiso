@@ -39,11 +39,12 @@ import com.expedia.seiso.core.exception.NotFoundException;
 @SuppressWarnings("rawtypes")
 @XSlf4j
 public class ItemMetaLookup {
-	@Autowired private Repositories repositories;
-	
+	@Autowired
+	private Repositories repositories;
+
 	private final Map<String, Class> itemClassesByRepoKey = new HashMap<>();
 	private final Map<Class, ItemMeta> itemMetasByItemClass = new HashMap<>();
-	
+
 	@PostConstruct
 	public void postConstruct() {
 		for (val itemClass : repositories) {
@@ -54,7 +55,7 @@ public class ItemMetaLookup {
 			mapItemMeta(itemClass, repoInterface);
 		}
 	}
-	
+
 	private void mapItemClass(Class itemClass, Class repoInterface) {
 		val ann = AnnotationUtils.findAnnotation(repoInterface, RestResource.class);
 		if (ann == null) {
@@ -65,13 +66,13 @@ public class ItemMetaLookup {
 			itemClassesByRepoKey.put(repoKey, itemClass);
 		}
 	}
-	
+
 	private void mapItemMeta(Class itemClass, Class repoInterface) {
 		val repoInfo = repositories.getRepositoryInformationFor(itemClass);
 		val isPagingRepo = repoInfo.isPagingRepository();
 		itemMetasByItemClass.put(itemClass, new ItemMetaImpl(itemClass, repoInterface, isPagingRepo));
 	}
-	
+
 	public Class getItemClass(@NonNull String repoKey) {
 		val itemClass = itemClassesByRepoKey.get(repoKey);
 		if (itemClass == null) {
@@ -79,7 +80,7 @@ public class ItemMetaLookup {
 		}
 		return itemClass;
 	}
-	
+
 	public ItemMeta getItemMeta(@NonNull Class<?> itemClass) {
 		val meta = itemMetasByItemClass.get(itemClass);
 		if (meta == null) {

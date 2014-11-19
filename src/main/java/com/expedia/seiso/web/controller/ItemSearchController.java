@@ -56,24 +56,24 @@ import com.expedia.seiso.web.dto.MapItemDto;
 @XSlf4j
 @Transactional
 public class ItemSearchController {
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private Repositories repositories;
-	@Autowired private ConversionService conversionService;
-	@Autowired private ItemAssembler itemAssembler;
-	
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private Repositories repositories;
+	@Autowired
+	private ConversionService conversionService;
+	@Autowired
+	private ItemAssembler itemAssembler;
+
 	// FIXME Temporarily hand-coding this. See below.
-	@Autowired private NodeRepo nodeRepo;
-	
-	@RequestMapping(
-			value = "/{repoKey}/search/{search}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@Autowired
+	private NodeRepo nodeRepo;
+
+	@RequestMapping(value = "/{repoKey}/search/{search}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public PagedResources<MapItemDto> search(
-			@PathVariable String repoKey,
-			@PathVariable String search,
+	public PagedResources<MapItemDto> search(@PathVariable String repoKey, @PathVariable String search,
 			WebRequest request) {
-		
+
 		log.trace("Searching: repoKey={}, search={}", repoKey, search);
 		val itemClass = itemMetaLookup.getItemClass(repoKey);
 		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
@@ -82,7 +82,7 @@ public class ItemSearchController {
 		val projectionNode = itemMeta.getProjectionNode(Projection.Cardinality.COLLECTION, Projection.DEFAULT);
 		return itemAssembler.toDtoPage(itemPage, projectionNode);
 	}
-	
+
 	// FIXME For now we return a List, but we need to have a way to handle pagination too. [WLW]
 	// FIXME Also need to be able to handle single return values. Like finding a machine by IP address. See
 	// ItemPropertyController for an example. [WLW]
@@ -92,7 +92,7 @@ public class ItemSearchController {
 		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
 		val method = itemMeta.getRepositorySearchMethod(search);
 		notNull(method, "Unknown search: " + search);
-		
+
 		log.trace("Finding {} using method {}", itemClass.getSimpleName(), method.getName());
 		val repo = repositories.getRepositoryFor(itemClass);
 		val paramClasses = method.getParameterTypes();
@@ -116,33 +116,29 @@ public class ItemSearchController {
 				}
 			}
 		}
-		
+
 		log.trace("Invoking method {} on repo {} with {} params", method.getName(), repo.getClass(), paramVals.length);
 		// FIXME ClassCastException when this isn't a list. E.g. EndpointRepo.findByIpAddressAndPort. [WLW]
 		val result = (List<T>) ReflectionUtils.invokeMethod(method, repo, paramVals);
 		log.trace("Found {} results", result.size());
 		return result;
 	}
-	
+
 	// Hand-coding this one because we don't want to return PagedResources anymore, and don't want camel-case params,
 	// but also don't want to break existing code. Make this one the way we want it to be and then convert the other one
 	// over in coordination with Eos. Anyway in this case it's a single node we're returning, not a page. [WLW]
-	@RequestMapping(
-			value = "/nodes/search/find-by-ip-address-and-port",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public MapItemDto findNodeByIpAddressAndPort(
-			@RequestParam("ip-address") String ipAddress,
+	@RequestMapping(value = "/nodes/search/find-by-ip-address-and-port", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public MapItemDto findNodeByIpAddressAndPort(@RequestParam("ip-address") String ipAddress,
 			@RequestParam("port") Integer port) {
-		
+
 		val nodes = nodeRepo.findByIpAddressAndPort(ipAddress, port);
-		
+
 		if (nodes.isEmpty()) {
 			throw new ResourceNotFoundException("No such node: ipAddress=" + ipAddress + ", port=" + port);
 		} else if (nodes.size() > 1) {
 			throw new RuntimeException("Found " + nodes.size() + " nodes but expected only 1");
 		}
-		
+
 		val node = nodes.get(0);
 		val nodeMeta = itemMetaLookup.getItemMeta(Node.class);
 		val projectionNode = nodeMeta.getProjectionNode(Projection.Cardinality.SINGLE, Projection.DEFAULT);

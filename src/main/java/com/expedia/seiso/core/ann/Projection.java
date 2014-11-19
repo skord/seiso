@@ -26,14 +26,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Projection {
-	public enum Cardinality { SINGLE, COLLECTION };
-	
+	public enum Cardinality {
+		SINGLE, COLLECTION
+	};
+
 	/** Default view name */
 	public String DEFAULT = "default";
-	
+
 	Cardinality cardinality();
-	
+
 	String name() default DEFAULT;
-	
-	String[] paths() default { };
+
+	String[] paths() default {};
 }

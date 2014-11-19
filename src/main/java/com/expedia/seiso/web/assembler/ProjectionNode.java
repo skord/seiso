@@ -28,37 +28,47 @@ import lombok.val;
  */
 public class ProjectionNode {
 	public static final ProjectionNode FLAT_PROJECTION_NODE = new ProjectionNode("flat");
-	
+
 	private String name;
 	private final Map<String, ProjectionNode> children = new TreeMap<>();
-	
-	public ProjectionNode(@NonNull String name) { this.name = name; }
-	
-	public String getName() { return name; }
-	
+
+	public ProjectionNode(@NonNull String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	public ProjectionNode add(@NonNull ProjectionNode child) {
 		children.put(child.getName(), child);
 		return this;
 	}
-	
-	public List<ProjectionNode> getChildren() { return new ArrayList<>(children.values()); }
-	
+
+	public List<ProjectionNode> getChildren() {
+		return new ArrayList<>(children.values());
+	}
+
 	public ProjectionNode getChild(String name) {
 		return children.get(name);
 	}
-	
+
 	@Override
 	public String toString() {
 		val builder = new StringBuilder();
 		buildString(builder, 0);
 		return builder.toString();
 	}
-	
+
 	private void buildString(StringBuilder builder, int level) {
-		for (int i = 0; i < level; i++) { builder.append("  "); }
+		for (int i = 0; i < level; i++) {
+			builder.append("  ");
+		}
 		builder.append(name);
 		builder.append("\n");
 		val children = getChildren();
-		for (val child : children) { child.buildString(builder, level + 1); }
+		for (val child : children) {
+			child.buildString(builder, level + 1);
+		}
 	}
 }

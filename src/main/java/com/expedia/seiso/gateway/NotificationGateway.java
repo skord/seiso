@@ -23,6 +23,6 @@ import com.expedia.seiso.domain.entity.Item;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface NotificationGateway {
-	
+
 	void notify(Item item, String operation);
 }

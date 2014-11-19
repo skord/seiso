@@ -39,15 +39,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class PEItemDto {
 	private final PersistentEntity<?, ?> itemMeta;
 	private final Item item;
-	
+
 	public PEItemDto(PersistentEntity<?, ?> itemMeta, Item item) {
 		this.itemMeta = itemMeta;
 		this.item = item;
 	}
-	
+
 	@JsonIgnore
-	public PersistentEntity<?, ?> getItemMeta() { return itemMeta; }
-	
+	public PersistentEntity<?, ?> getItemMeta() {
+		return itemMeta;
+	}
+
 	@JsonAnyGetter
-	public Item getItem() { return item; }
+	public Item getItem() {
+		return item;
+	}
 }

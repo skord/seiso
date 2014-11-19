@@ -22,5 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class RepoMeta {
-	@NonNull private Class itemClass;
+	@NonNull
+	private Class itemClass;
 }

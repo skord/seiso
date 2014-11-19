@@ -47,24 +47,25 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @Entity
 @SuppressWarnings("serial")
 public class User extends AbstractItem implements Serializable {
-	@Key private String username;
 	
+	@Key
+	private String username;
+
 	// FIXME Need to suppress this field from the JSON serialized view!! [WLW]
 	// @JsonIgnore doesn't work. Need to avoid pulling it into the MapItemDto. Probably want something like this:
 	// FIXME Also need to suppress this from the Tomcat HTTP serialization. Can't use transient here because that
 	// prevents Spring Data from saving it. [WLW]
 	@RestResource(exported = false)
 	private String password;
-	
+
 	private Boolean enabled;
-	
+
 	@ManyToMany
-	@JoinTable(
-		name = "user_role",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Role> roles;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(User.class, username); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(User.class, username);
+	}
 }

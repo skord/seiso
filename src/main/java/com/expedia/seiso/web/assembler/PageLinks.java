@@ -28,47 +28,43 @@ import com.expedia.seiso.core.util.PageMetadataUtils;
 
 public class PageLinks {
 	private URI baseUri;
-	
+
 	public PageLinks(@NonNull URI baseUri) {
 		this.baseUri = baseUri;
 	}
-	
+
 	public Link firstLink(String repoKey, String projectionName, PageMetadata pageMeta) {
 		val firstPage = 0;
 		return link(repoKey, projectionName, pageMeta, firstPage, Link.REL_FIRST);
 	}
-	
+
 	public Link prevLink(String repoKey, String projectionName, PageMetadata pageMeta) {
 		val number = pageMeta.getNumber();
 		val firstPage = 0;
 		return (number <= firstPage ? null : link(repoKey, projectionName, pageMeta, number - 1, Link.REL_PREVIOUS));
 	}
-	
+
 	public Link nextLink(String repoKey, String projectionName, PageMetadata pageMeta) {
 		val number = pageMeta.getNumber();
 		val totalPages = PageMetadataUtils.getCorrectedTotalPages(pageMeta);
 		val lastPage = totalPages - 1;
 		return (number >= lastPage ? null : link(repoKey, projectionName, pageMeta, number + 1, Link.REL_NEXT));
 	}
-	
+
 	public Link lastLink(String repoKey, String projectionName, PageMetadata pageMeta) {
 		val totalPages = PageMetadataUtils.getCorrectedTotalPages(pageMeta);
 		val lastPage = totalPages - 1;
 		return link(repoKey, projectionName, pageMeta, lastPage, Link.REL_LAST);
 	}
-	
+
 	private Link link(String repoKey, String projectionName, PageMetadata pageMeta, long number, String rel) {
 		val path = new StringBuilder(repoKey).toString();
-		
+
 		// @formatter:off
-		val uriComponents = UriComponentsBuilder.fromUri(baseUri)
-				.path(path)
-				.queryParam("view", projectionName)
-				.queryParam("page", number)
-				.queryParam("size", pageMeta.getSize())
-				.build();
+		val uriComponents = UriComponentsBuilder.fromUri(baseUri).path(path).queryParam("view", projectionName)
+				.queryParam("page", number).queryParam("size", pageMeta.getSize()).build();
 		// @formatter:on
-		
+
 		return new Link(uriComponents.toString(), rel);
 	}
 }

@@ -20,10 +20,13 @@ import lombok.extern.slf4j.XSlf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,26 +51,29 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 @XSlf4j
 public class SeisoWebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired private UserDetailsService userDetailsService;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+
 	@Override
 	protected UserDetailsService userDetailsService() {
 		return userDetailsService;
 	}
-	
-	// FIXME Update to @Autowired configureGlobal() per docs.spring.io/spring-security/site/docs/3.2.x/reference/htmlsingle/#jc-authentication
+
+	// FIXME Update to @Autowired configureGlobal() per
+	// docs.spring.io/spring-security/site/docs/3.2.x/reference/htmlsingle/#jc-authentication
 	// See StackOverflow question 20651043 as well.
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		log.info("Creating AuthenticationManager with UserService {}", userDetailsService.getClass());
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-	
-//	@Override
-//	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//	}
-	
+
+	// @Override
+	// public void configure(AuthenticationManagerBuilder auth) throws Exception {
+	// auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	// }
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
@@ -93,13 +99,13 @@ public class SeisoWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.disable();
 		// @formatter:on
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		log.trace("Creating password encoder");
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public BasicAuthenticationEntryPoint entryPoint() {
 		val basicAuthEntryPoint = new BasicAuthenticationEntryPoint();

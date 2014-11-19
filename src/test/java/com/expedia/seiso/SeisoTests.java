@@ -24,24 +24,27 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.core.env.Environment;
 
 public class SeisoTests {
-	
+
 	// Class under test
-	@InjectMocks private Seiso config;
-	
+	@InjectMocks
+	private Seiso config;
+
 	// Dependencies
-	@Mock private ListableBeanFactory beanFactory;
-	@Mock private Environment env;
-	
+	@Mock
+	private ListableBeanFactory beanFactory;
+	@Mock
+	private Environment env;
+
 	@Before
 	public void setUp() throws Exception {
 		this.config = new Seiso();
 		MockitoAnnotations.initMocks(this);
 		initDependencies();
 	}
-	
+
 	private void initDependencies() {
 	}
-	
+
 	@Test
 	public void dataSource() {
 		// TODO

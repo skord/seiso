@@ -35,21 +35,23 @@ import com.expedia.seiso.gateway.model.ConfigManagementEvent;
 @Aspect
 @Component
 public class NotificationAspect {
-	@Autowired private NotificationGateway notificationGateway;
-	
+	@Autowired
+	private NotificationGateway notificationGateway;
+
 	@Pointcut("execution(* com.expedia.seiso.domain.service.impl.ItemDeleter.delete(com.expedia.seiso.domain.entity.Item))")
-	private void deleteItemOps() { }
-	
+	private void deleteItemOps() {
+	}
+
 	// TODO
 	public void notifyCreate(@NonNull Item item) {
 		notificationGateway.notify(item, ConfigManagementEvent.OP_CREATE);
 	}
-	
+
 	// TODO
 	public void notifyUpdate(@NonNull Item item) {
 		notificationGateway.notify(item, ConfigManagementEvent.OP_UPDATE);
 	}
-	
+
 	@AfterReturning(pointcut = "deleteItemOps() && args(item)")
 	public void notifyDelete(@NonNull Item item) {
 		notificationGateway.notify(item, ConfigManagementEvent.OP_DELETE);

@@ -36,31 +36,21 @@ import com.expedia.seiso.web.dto.PEItemDto;
 @RequestMapping(Controllers.REQUEST_MAPPING_VERSION)
 @XSlf4j
 public class IpAddressRoleController extends AbstractItemController {
-	private static final String SINGLE_URI_TEMPLATE =
-			"/service-instances/{serviceInstanceKey}/ip-address-roles/{name}";
-	
-	@RequestMapping(
-			value = SINGLE_URI_TEMPLATE,
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	private static final String SINGLE_URI_TEMPLATE = "/service-instances/{serviceInstanceKey}/ip-address-roles/{name}";
+
+	@RequestMapping(value = SINGLE_URI_TEMPLATE, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public MapItemDto get(@PathVariable String serviceInstanceKey, @PathVariable String name) {
 		return super.get(new IpAddressRoleKey(serviceInstanceKey, name));
 	}
-	
-	@RequestMapping(
-			value = SINGLE_URI_TEMPLATE,
-			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+
+	@RequestMapping(value = SINGLE_URI_TEMPLATE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void put(
-			@PathVariable String serviceInstanceKey,
-			@PathVariable String name, 
-			PEItemDto ipAddressRoleDto) {
-		
+	public void put(@PathVariable String serviceInstanceKey, @PathVariable String name, PEItemDto ipAddressRoleDto) {
+
 		log.trace("Putting IP address role: serviceInstanceKey={}, name={}", serviceInstanceKey, name);
 		super.put(ipAddressRoleDto.getItem());
 	}
-	
+
 	@RequestMapping(value = SINGLE_URI_TEMPLATE, method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable String serviceInstanceKey, @PathVariable String name) {

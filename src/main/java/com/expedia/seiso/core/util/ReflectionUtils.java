@@ -21,12 +21,12 @@ import lombok.SneakyThrows;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ReflectionUtils {
-	
+
 	@SneakyThrows
 	public static Class<?> classForName(String className) {
 		return Class.forName(className);
 	}
-	
+
 	@SneakyThrows
 	public static <T> T createInstance(Class<T> clazz) {
 		return clazz.newInstance();

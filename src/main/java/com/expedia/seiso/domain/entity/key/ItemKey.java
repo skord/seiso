@@ -16,6 +16,6 @@
 package com.expedia.seiso.domain.entity.key;
 
 public interface ItemKey {
-	
+
 	Class<?> getItemClass();
 }

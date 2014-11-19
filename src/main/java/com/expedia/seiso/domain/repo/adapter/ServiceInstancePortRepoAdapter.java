@@ -36,7 +36,8 @@ import com.expedia.seiso.domain.repo.ServiceInstancePortRepo;
 @Component
 @Transactional
 public class ServiceInstancePortRepoAdapter implements RepoAdapter {
-	@Autowired private ServiceInstancePortRepo serviceInstancePortRepo;
+	@Autowired
+	private ServiceInstancePortRepo serviceInstancePortRepo;
 
 	@Override
 	public boolean supports(@NonNull Class<?> itemClass) {

@@ -31,11 +31,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SuppressWarnings("serial")
 public class PEItemDtoList extends ArrayList<Item> {
 	private final PersistentEntity<?, ?> persistentEntity;
-	
+
 	public PEItemDtoList(PersistentEntity<?, ?> persistentEntity) {
 		this.persistentEntity = persistentEntity;
 	}
-	
+
 	@JsonIgnore
-	public PersistentEntity<?, ?> getPersistentEntity() { return persistentEntity; }
+	public PersistentEntity<?, ?> getPersistentEntity() {
+		return persistentEntity;
+	}
 }

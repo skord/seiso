@@ -41,8 +41,8 @@ import lombok.val;
 import lombok.experimental.Accessors;
 
 import com.expedia.seiso.core.ann.Projection;
-import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.core.ann.Projection.Cardinality;
+import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.domain.entity.key.ItemKey;
 import com.expedia.seiso.domain.entity.key.NodeIpAddressKey;
 import com.expedia.seiso.domain.entity.listener.NodeIpAddressListener;
@@ -53,33 +53,35 @@ import com.expedia.seiso.domain.entity.listener.NodeIpAddressListener;
 @ToString(callSuper = true, of = { "node", "ipAddressRole", "ipAddress" })
 @Entity
 @EntityListeners(NodeIpAddressListener.class)
+//@formatter:off
 @Projections({
-		@Projection(cardinality = Cardinality.COLLECTION, paths = {
-				"node",
-				"ipAddressRole",
-				"rotationStatus"
-		}),
-		@Projection(cardinality = Cardinality.SINGLE, paths = {
-				"node",
-				"ipAddressRole",
-				"endpoints.port",
-				"endpoints.rotationStatus.statusType",
-				"rotationStatus.statusType",
-				"aggregateRotationStatus.statusType"
-		})
-})
+	@Projection(cardinality = Cardinality.COLLECTION, paths = {
+			"node",
+			"ipAddressRole",
+			"rotationStatus"
+			}),
+	@Projection(cardinality = Cardinality.SINGLE, paths = {
+			"node",
+			"ipAddressRole",
+			"endpoints.port",
+			"endpoints.rotationStatus.statusType",
+			"rotationStatus.statusType",
+			"aggregateRotationStatus.statusType"
+			})
+	})
+//@formatter:on
 public class NodeIpAddress extends AbstractItem {
-	
+
 	@ManyToOne
 	@JoinColumn(name = "node_id")
 	private Node node;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "ip_address_role_id")
 	private IpAddressRole ipAddressRole;
-	
+
 	private String ipAddress;
-	
+
 	@NonNull
 	@OneToMany(mappedBy = "ipAddress", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Endpoint> endpoints = new ArrayList<>();
@@ -92,22 +94,24 @@ public class NodeIpAddress extends AbstractItem {
 	// ItemAssociationHandler.
 	@Transient
 	public RotationStatus getAggregateRotationStatus() {
-		
+
 		// Short-circuit the endpoint checks if appropriate.
 		if (DISABLED.equals(rotationStatus)) {
 			return DISABLED;
 		} else if (EXCLUDED.equals(rotationStatus)) {
 			return EXCLUDED;
 		}
-		
-		if (endpoints.isEmpty()) { return NO_ENDPOINTS; }
-		
+
+		if (endpoints.isEmpty()) {
+			return NO_ENDPOINTS;
+		}
+
 		int endpointCount = endpoints.size();
 		int enabledCount = 0;
 		int disabledCount = 0;
 		int excludedCount = 0;
 		int unknownCount = 0;
-		
+
 		for (val endpoint : endpoints) {
 			val endpointRotationStatus = endpoint.getRotationStatus();
 			if (ENABLED.equals(endpointRotationStatus)) {
@@ -120,7 +124,7 @@ public class NodeIpAddress extends AbstractItem {
 				unknownCount++;
 			}
 		}
-		
+
 		if (ENABLED.equals(rotationStatus)) {
 			if (enabledCount == endpointCount) {
 				return ENABLED;
@@ -150,16 +154,18 @@ public class NodeIpAddress extends AbstractItem {
 	}
 
 	@Override
-	public ItemKey itemKey() { return new NodeIpAddressKey(node.getName(), ipAddress); }
+	public ItemKey itemKey() {
+		return new NodeIpAddressKey(node.getName(), ipAddress);
+	}
 
 	// TODO Adopt this pattern for bidirectional associations throughout. [WLW]
-//	public NodeIpAddress setNode(Node node) {
-//		this.node = node;
-//		if (node != null) {
-//			// TODO Use a Set instead of a List so we don't have to do this check. [WLW]
-//			val ipAddresses = node.getIpAddresses();
-//			if (!ipAddresses.contains(this)) { ipAddresses.add(this); }
-//		}
-//		return this;
-//	}
+	// public NodeIpAddress setNode(Node node) {
+	// this.node = node;
+	// if (node != null) {
+	// // TODO Use a Set instead of a List so we don't have to do this check. [WLW]
+	// val ipAddresses = node.getIpAddresses();
+	// if (!ipAddresses.contains(this)) { ipAddresses.add(this); }
+	// }
+	// return this;
+	// }
 }

@@ -48,29 +48,31 @@ import com.expedia.seiso.web.dto.PEItemDto;
 public class PEItemDtoResolver implements HandlerMethodArgumentResolver {
 	private static final String SIMPLE_ITEM_FORMAT = "/v1/{repoKey}/{itemKey}";
 	private static final String SIMPLE_PROPERTY_FORMAT = "/v1/{repoKey}/{itemKey}/{propKey}/{propValue}";
-	
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private Repositories repositories;
-	@Autowired private List<SimplePropertyEntry> simplePropertyEntries;
-	@Autowired private List<HttpMessageConverter<?>> messageConverters;
-	@Autowired private ResolverUtils resolverUtils;
-	
+
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private Repositories repositories;
+	@Autowired
+	private List<SimplePropertyEntry> simplePropertyEntries;
+	@Autowired
+	private List<HttpMessageConverter<?>> messageConverters;
+	@Autowired
+	private ResolverUtils resolverUtils;
+
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		log.trace("Checking whether PEItemDtoResolver supports parameter");
 		return PEItemDto.class.isAssignableFrom(parameter.getParameterType());
 	}
-	
+
 	@Override
-	public Object resolveArgument(
-			MethodParameter param,
-			ModelAndViewContainer mavContainer,
-			NativeWebRequest nativeWebRequest,
-			WebDataBinderFactory binderFactory) throws Exception {
-		
+	public Object resolveArgument(MethodParameter param, ModelAndViewContainer mavContainer,
+			NativeWebRequest nativeWebRequest, WebDataBinderFactory binderFactory) throws Exception {
+
 		val nativeRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
 		val path = nativeRequest.getRequestURI();
-		
+
 		Class<?> itemClass = null;
 		val matcher = new AntPathMatcher();
 		if (matcher.match(SIMPLE_ITEM_FORMAT, path)) {
@@ -84,14 +86,13 @@ public class PEItemDtoResolver implements HandlerMethodArgumentResolver {
 		} else {
 			throw new RuntimeException("No resolver for requestUri=" + path);
 		}
-		
+
 		val persistentEntity = repositories.getPersistentEntity(itemClass);
 		val item = toItem(itemClass, nativeRequest);
-		filterUnwantedFields(item);
 		return new PEItemDto(persistentEntity, item);
-		
+
 	}
-	
+
 	private Class<?> findPropertyClass(String repoKey, String propKey) {
 		for (val entry : simplePropertyEntries) {
 			if (entry.getRepoKey().equals(repoKey) && entry.getPropKey().equals(propKey)) {
@@ -100,34 +101,19 @@ public class PEItemDtoResolver implements HandlerMethodArgumentResolver {
 		}
 		throw new RuntimeException("No simple property entry for repoKey=" + repoKey + ", propKey=" + propKey);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Item toItem(Class<?> itemClass, HttpServletRequest request) throws IOException {
 		val wrappedRequest = resolverUtils.wrapRequest(request);
 		val contentType = wrappedRequest.getHeaders().getContentType();
-		
+
 		for (HttpMessageConverter messageConverter : messageConverters) {
 			if (messageConverter.canRead(itemClass, contentType)) {
 				return (Item) messageConverter.read(itemClass, wrappedRequest);
 			}
 		}
-		
-		throw new RuntimeException(
-				"No converter for itemClass=" + itemClass.getName() + ", contentType=" + contentType.getType());
-	}
-	
-	// Suppress ID and audit columns from the incoming representation, since we support these only for outgoing
-	// representations. (Don't want clients setting audit info, and probably want to remove ID from the representation
-	// altogether.) [WLW]
-	private void filterUnwantedFields(Item item) {
-		
-		// FIXME For now, don't null this out, because we're updating Endpoints based on IDs. In the future we probably
-		// want to hide the database IDs and use a compound key for this. [WLW]
-//		item.setId(null);
-		
-		item.setCreatedBy(null);
-		item.setCreatedDate(null);
-		item.setUpdatedBy(null);
-		item.setUpdatedDate(null);
+
+		throw new RuntimeException("No converter for itemClass=" + itemClass.getName() + ", contentType="
+				+ contentType.getType());
 	}
 }

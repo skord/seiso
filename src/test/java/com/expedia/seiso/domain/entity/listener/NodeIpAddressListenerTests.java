@@ -40,18 +40,21 @@ import com.expedia.seiso.domain.entity.listener.NodeIpAddressListener;
 import com.expedia.seiso.domain.repo.EndpointRepo;
 
 public class NodeIpAddressListenerTests {
-	
+
 	// Class under test
-	@InjectMocks private NodeIpAddressListener listener;
-	
+	@InjectMocks
+	private NodeIpAddressListener listener;
+
 	// Dependencies
-	@Mock private ApplicationContext appContext;
-	@Mock private EndpointRepo endpointRepo;
-	
+	@Mock
+	private ApplicationContext appContext;
+	@Mock
+	private EndpointRepo endpointRepo;
+
 	// Test data
 	private List<ServiceInstancePort> ports;
 	private NodeIpAddress nodeIpAddress;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.listener = new NodeIpAddressListener();
@@ -59,28 +62,26 @@ public class NodeIpAddressListenerTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		this.ports = new ArrayList<>();
 		ports.add(new ServiceInstancePort());
 		ports.add(new ServiceInstancePort());
-		
-		this.nodeIpAddress = new NodeIpAddress()
-				.setIpAddressRole(new IpAddressRole())
-				.setNode(new Node().setServiceInstance(new ServiceInstance().setPorts(ports)))
-				.setIpAddress("1.1.1.1");
+
+		this.nodeIpAddress = new NodeIpAddress().setIpAddressRole(new IpAddressRole())
+				.setNode(new Node().setServiceInstance(new ServiceInstance().setPorts(ports))).setIpAddress("1.1.1.1");
 	}
-	
+
 	private void initDependencies() {
 		when(appContext.getBean(EndpointRepo.class)).thenReturn(endpointRepo);
 	}
-	
+
 	@Test
 	public void postPersist() {
 		listener.postPersist(nodeIpAddress);
 		verify(endpointRepo, times(ports.size())).save((Endpoint) anyObject());
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void postPersist_null() {
 		listener.postPersist(null);

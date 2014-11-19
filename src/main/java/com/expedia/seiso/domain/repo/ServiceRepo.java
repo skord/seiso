@@ -31,24 +31,24 @@ import com.expedia.seiso.domain.repo.custom.ServiceRepoCustom;
  */
 @RestResource(path = RepoKeys.SERVICES)
 public interface ServiceRepo extends PagingAndSortingRepository<Service, Long>, ServiceRepoCustom {
-	
+
 	@Query("from Service order by name")
 	List<Service> findAll();
-	
-//	@Query(
-//		"from Service s " +
-//		"left join fetch s.group " +
-//		"left join fetch s.type " +
-//		"left join fetch s.owner " +
-//		"order by s.name")
-//	Page<Service> findAllWithJoins(Pageable pageable);
-	
+
+	// @Query(
+	// "from Service s " +
+	// "left join fetch s.group " +
+	// "left join fetch s.type " +
+	// "left join fetch s.owner " +
+	// "order by s.name")
+	// Page<Service> findAllWithJoins(Pageable pageable);
+
 	@FindByKey
-//	@Query(
-//		"from Service s " +
-//		"left join fetch s.group " +
-//		"left join fetch s.type " +
-//		"left join fetch s.owner " +
-//		"where s.key = :key")
+	// @Query(
+	// "from Service s " +
+	// "left join fetch s.group " +
+	// "left join fetch s.type " +
+	// "left join fetch s.owner " +
+	// "where s.key = :key")
 	Service findByKey(@Param("key") String key);
 }

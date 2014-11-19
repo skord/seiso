@@ -30,10 +30,10 @@ import com.expedia.seiso.domain.entity.Environment;
  */
 @RestResource(path = RepoKeys.ENVIRONMENTS)
 public interface EnvironmentRepo extends CrudRepository<Environment, Long> {
-	
+
 	@Query("from Environment order by name")
 	List<Environment> findAll();
-	
+
 	@FindByKey
 	Environment findByKey(@Param("key") String key);
 }

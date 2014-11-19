@@ -19,14 +19,14 @@ import lombok.Getter;
 
 import org.springframework.validation.BindingResult;
 
-
 /**
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 @SuppressWarnings("serial")
 public class InvalidRequestException extends RuntimeException {
-	@Getter private BindingResult bindingResult;
-	
+	@Getter
+	private BindingResult bindingResult;
+
 	public InvalidRequestException(String message, BindingResult bindingResult) {
 		super(message);
 		this.bindingResult = bindingResult;

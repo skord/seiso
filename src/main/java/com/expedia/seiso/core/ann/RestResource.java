@@ -26,10 +26,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.FIELD })
 public @interface RestResource {
-	
+
 	boolean exported() default true;
-	
+
 	String rel() default "";
-	
+
 	String path() default "";
 }

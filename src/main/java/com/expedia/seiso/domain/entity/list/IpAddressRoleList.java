@@ -22,4 +22,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IpAddressRoleList extends ArrayList<IpAddressRole> { }
+public class IpAddressRoleList extends ArrayList<IpAddressRole> {
+}

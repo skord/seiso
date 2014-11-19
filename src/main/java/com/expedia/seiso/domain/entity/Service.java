@@ -38,18 +38,14 @@ import org.hibernate.annotations.FetchMode;
 
 import com.expedia.seiso.core.ann.Key;
 import com.expedia.seiso.core.ann.Projection;
-import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.core.ann.Projection.Cardinality;
+import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.domain.entity.key.ItemKey;
 import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 
 /**
  * <p>
  * A service.
- * </p>
- * <p>
- * By way of illustration, ExpWeb is a service. The separate points of sale based on different VIPs don't amount to
- * different services.
  * </p>
  * 
  * @author Willie Wheeler (wwheeler@expedia.com)
@@ -60,89 +56,63 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = "key")
 @ToString(callSuper = true, of = { "key", "name", "type" })
 @Entity
+//@formatter:off
 @Projections({
-	@Projection(cardinality = Cardinality.COLLECTION, paths = {
-			"group",
-			"type",
-			"owner",
-			"createdBy",
-			"updatedBy"
-	}),
-	@Projection(cardinality = Cardinality.SINGLE, paths = {
-			"group",
-			"type",
-			"owner",
-			"createdBy",
-			"updatedBy"
-	}),
+	@Projection(cardinality = Cardinality.COLLECTION, paths = { "group", "type", "owner" }),
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "group", "type", "owner", }),
 	@Projection(cardinality = Cardinality.SINGLE, name = "instances", paths = {
 			"serviceInstances.environment",
 			"serviceInstances.dataCenter.region.infrastructureProvider",
-			"serviceInstances.nodes",
-			"createdBy",
-			"updatedBy"
-	}),
-	@Projection(cardinality = Cardinality.SINGLE, name="dependencies", paths = {
+			"serviceInstances.nodes"
+			}),
+	@Projection(cardinality = Cardinality.SINGLE, name = "dependencies", paths = {
 			"dependencies.source.type",
 			"dependencies.target.type",
 			"dependencies.type",
 			"dependents.source.type",
 			"dependents.target.type",
-			"dependents.type",
-			"createdBy",
-			"updatedBy"
+			"dependents.type"
+			})
 	})
-})
+//@formatter:on
 public class Service extends AbstractItem {
-	@Key @Column(name = "ukey") private String key;
+	
+	@Key
+	@Column(name = "ukey")
+	private String key;
+	
 	private String name;
 	private String description;
 	private String platform;
 	private String scmRepository;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "group_id")
 	@Fetch(FetchMode.JOIN)
 	private ServiceGroup group;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	@Fetch(FetchMode.JOIN)
 	private ServiceType type;
-    
+
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	@Fetch(FetchMode.JOIN)
 	private Person owner;
-	
+
 	@NonNull
 	@OrderBy("name")
 	@OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<IpAddressRole> ipAddressRoles = new ArrayList<>();
-	
+
 	@NonNull
 	@OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("key")
 	private List<ServiceInstance> serviceInstances = new ArrayList<>();
-	
-	// FIXME This should be a query, not a property. We would expect to be able to page these, and we can't do that with
-	// properties.
-//	@NonNull
-//	@OneToMany(mappedBy = "service")
-//	private List<Commit> commits = new ArrayList<>();
-	
-	// The @OrderBys below don't work, because source and target aren't @Embedded. [WLW]
-	
-	@NonNull
-	@OneToMany(mappedBy = "source", cascade = CascadeType.ALL, orphanRemoval = true)
-//	@OrderBy("target.name")
-	private List<ServiceDependency> dependencies = new ArrayList<>();
-	
-	@NonNull
-	@OneToMany(mappedBy = "target", cascade = CascadeType.ALL, orphanRemoval = true)
-//	@OrderBy("source.name")
-	private List<ServiceDependency> dependents = new ArrayList<>();
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(Service.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(Service.class, key);
+	}
 }

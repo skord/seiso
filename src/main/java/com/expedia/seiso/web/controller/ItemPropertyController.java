@@ -54,20 +54,17 @@ import com.expedia.seiso.web.assembler.ProjectionNode;
 @Transactional
 @XSlf4j
 public class ItemPropertyController {
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private ItemService itemService;
-	@Autowired private ItemAssembler itemAssembler;
-	
-	@RequestMapping(
-			value = "/{repoKey}/{itemKey}/{propKey}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private ItemService itemService;
+	@Autowired
+	private ItemAssembler itemAssembler;
+
+	@RequestMapping(value = "/{repoKey}/{itemKey}/{propKey}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Object getProperty(
-			@PathVariable String repoKey,
-			@PathVariable String itemKey,
-			@PathVariable String propKey) {
-		
+	public Object getProperty(@PathVariable String repoKey, @PathVariable String itemKey, @PathVariable String propKey) {
+
 		log.trace("repoKey={}, itemKey={}, propKey={}", repoKey, itemKey, propKey);
 		val itemClass = itemMetaLookup.getItemClass(repoKey);
 		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
@@ -75,7 +72,7 @@ public class ItemPropertyController {
 		val dynaItem = new DynaItem(item);
 		val propName = itemMeta.getPropertyName(propKey);
 		val propValue = dynaItem.getPropertyValue(propName);
-		
+
 		if (propValue instanceof Item) {
 			val propItem = (Item) propValue;
 			val projectionNode = extractProjectionNode(propItem);
@@ -89,51 +86,51 @@ public class ItemPropertyController {
 			throw new UnsupportedOperationException(msg);
 		}
 	}
-	
-//	@RequestMapping(
-//			value = "/{repoKey}/{itemKey}/{propKey}/{elemKey}",
-//			method = RequestMethod.GET,
-//			produces = MediaType.APPLICATION_JSON_VALUE)
-//	public Object getPropertyElement(
-//			@PathVariable String repoKey,
-//			@PathVariable String itemKey,
-//			@PathVariable String propKey,
-//			@PathVariable String elemKey) {
-//		
-//		log.trace("repoKey={}, itemKey={}, propKey={}, elemKey={}", repoKey, itemKey, propKey, elemKey);
-//		val itemClass = itemMetaLookup.getItemClass(repoKey);
-//		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
-//		val item = itemService.findByKey(itemClass, itemKey);
-//		val dynaItem = new DynaItem(itemClass, item);
-//		val propName = itemMeta.getPropertyName(propKey);
-//		
-//		// TODO Use the property meta model (or contents, if I must) to figure out which repo I need to query for the
-//		// element. I envision something like repo.findByKeys(Serializable... keys). [WLW]
-//		
-//		throw new UnsupportedOperationException("Not yet implemented");
-//	}
-	
+
+	// @RequestMapping(
+	// value = "/{repoKey}/{itemKey}/{propKey}/{elemKey}",
+	// method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public Object getPropertyElement(
+	// @PathVariable String repoKey,
+	// @PathVariable String itemKey,
+	// @PathVariable String propKey,
+	// @PathVariable String elemKey) {
+	//
+	// log.trace("repoKey={}, itemKey={}, propKey={}, elemKey={}", repoKey, itemKey, propKey, elemKey);
+	// val itemClass = itemMetaLookup.getItemClass(repoKey);
+	// val itemMeta = itemMetaLookup.getItemMeta(itemClass);
+	// val item = itemService.findByKey(itemClass, itemKey);
+	// val dynaItem = new DynaItem(itemClass, item);
+	// val propName = itemMeta.getPropertyName(propKey);
+	//
+	// // TODO Use the property meta model (or contents, if I must) to figure out which repo I need to query for the
+	// // element. I envision something like repo.findByKeys(Serializable... keys). [WLW]
+	//
+	// throw new UnsupportedOperationException("Not yet implemented");
+	// }
+
 	private ProjectionNode extractProjectionNode(Item item) {
 		val propClass = item.getClass();
 		val propMeta = itemMetaLookup.getItemMeta(propClass);
-		
+
 		// Currently we just show the default projection. It would be easy enough to add support for other projections
 		// if we wanted to. [WLW]
 		return propMeta.getProjectionNode(Projection.Cardinality.SINGLE, Projection.DEFAULT);
 	}
-	
+
 	private ProjectionNode extractProjectionNode(List<?> list) {
-		
+
 		// Not sure I'm happy with this approach. Would it make more sense to require collection properties to declare
 		// their type param (e.g. List<NodeIpAddress> instead of List) and then use reflection to grab the type? [WLW]
 		if (list.isEmpty()) {
 			return ProjectionNode.FLAT_PROJECTION_NODE;
 		}
-		
+
 		val firstElem = list.get(0);
 		val elemClass = firstElem.getClass();
 		val elemMeta = itemMetaLookup.getItemMeta(elemClass);
-		
+
 		// Currently we just show the default projection. It would be easy enough to add support for other projections
 		// if we wanted to. [WLW]
 		return elemMeta.getProjectionNode(Projection.Cardinality.COLLECTION, Projection.DEFAULT);

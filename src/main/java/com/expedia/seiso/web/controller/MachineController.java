@@ -32,28 +32,28 @@ import com.expedia.seiso.domain.repo.RepoKeys;
 @XSlf4j
 public class MachineController {
 	private static final String SEARCH_URI_TEMPLATE = "search";
-	
-	@Autowired private MachineRepo machineRepo;
-	
-	
+
+	@Autowired
+	private MachineRepo machineRepo;
+
 	// TODO class still needed?
-	
-//	@RequestMapping(
-//			value = SEARCH_URI_TEMPLATE,
-//			method = RequestMethod.POST,
-//			produces = MediaType.APPLICATION_JSON_VALUE,
-//			consumes = MediaType.APPLICATION_JSON_VALUE)
-//	public Page<Machine> search(
-//			@RequestBody @Valid MachineSearch search,
-//			BindingResult bindingResult,
-//			@PageableDefault(page = C.DEFAULT_PAGE_NUMBER, size = C.DEFAULT_PAGE_SIZE) Pageable pageable) {
-//		
-//		log.trace("Searching: search={}, pageable={}", search, pageable);
-//		
-//		if (bindingResult.hasErrors()) {
-//			throw new InvalidRequestException("Invalid machine search", bindingResult);
-//		}
-//		
-//		return machineRepo.search(search, pageable);
-//	}
+
+	// @RequestMapping(
+	// value = SEARCH_URI_TEMPLATE,
+	// method = RequestMethod.POST,
+	// produces = MediaType.APPLICATION_JSON_VALUE,
+	// consumes = MediaType.APPLICATION_JSON_VALUE)
+	// public Page<Machine> search(
+	// @RequestBody @Valid MachineSearch search,
+	// BindingResult bindingResult,
+	// @PageableDefault(page = C.DEFAULT_PAGE_NUMBER, size = C.DEFAULT_PAGE_SIZE) Pageable pageable) {
+	//
+	// log.trace("Searching: search={}, pageable={}", search, pageable);
+	//
+	// if (bindingResult.hasErrors()) {
+	// throw new InvalidRequestException("Invalid machine search", bindingResult);
+	// }
+	//
+	// return machineRepo.search(search, pageable);
+	// }
 }

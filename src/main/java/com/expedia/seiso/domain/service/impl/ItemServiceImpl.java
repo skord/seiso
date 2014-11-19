@@ -59,13 +59,19 @@ import com.expedia.seiso.domain.service.response.SaveAllResponse;
 @Transactional(readOnly = true)
 @XSlf4j
 public class ItemServiceImpl implements ItemService {
-	@Autowired private Repositories repositories;
-	@Autowired private RepoAdapters repoAdapters;
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private ItemMerger itemMerger;
-	@Autowired private ItemDeleter itemDeleter;
-	@Autowired private ItemSaver itemSaver;
-	
+	@Autowired
+	private Repositories repositories;
+	@Autowired
+	private RepoAdapters repoAdapters;
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private ItemMerger itemMerger;
+	@Autowired
+	private ItemDeleter itemDeleter;
+	@Autowired
+	private ItemSaver itemSaver;
+
 	/**
 	 * Using {@link Propagation.NEVER} because we don't want a single error to wreck the entire operation.
 	 */
@@ -73,15 +79,15 @@ public class ItemServiceImpl implements ItemService {
 	@Transactional(propagation = Propagation.NEVER)
 	public SaveAllResponse saveAll(@NonNull List<? extends Item> items) {
 		val numItems = items.size();
-		
+
 		// We're assuming a homogeneous list here. [WLW]
 		val elemClass = CollectionsUtils.getElementClass(items);
 		val elemClassName = elemClass.getSimpleName();
-		
+
 		log.info("Batch saving {} items ({})", numItems, elemClassName);
-		
+
 		val errors = new ArrayList<SaveAllError>();
-		
+
 		for (val item : items) {
 			try {
 				save(item);
@@ -91,22 +97,23 @@ public class ItemServiceImpl implements ItemService {
 				errors.add(new SaveAllError(item.itemKey(), message));
 			}
 		}
-				
+
 		val numErrors = errors.size();
 		if (numErrors == 0) {
 			log.info("Batch saved {} items ({}) with no errors", numItems, elemClassName);
 		} else {
 			log.warn("Batch saved {} items ({}) with {} errors: {}", numItems, elemClassName, numErrors, errors);
 		}
-		
+
 		return new SaveAllResponse(numItems, numErrors, errors);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = false)
-	public void save(@NonNull Item itemData) { itemSaver.save(itemData); }
-	
-	
+	public void save(@NonNull Item itemData) {
+		itemSaver.save(itemData);
+	}
+
 	@Override
 	@SuppressWarnings("rawtypes")
 	public List findAll(@NonNull Class itemClass) {
@@ -114,14 +121,14 @@ public class ItemServiceImpl implements ItemService {
 		val items = repo.findAll();
 		return CollectionsUtils.toList(items);
 	}
-	
+
 	@Override
 	@SuppressWarnings("rawtypes")
 	public Page findAll(@NonNull Class itemClass, @NonNull Pageable pageable) {
 		val repo = (PagingAndSortingRepository) getRepositoryFor(itemClass);
 		return repo.findAll(pageable);
 	}
-	
+
 	@Override
 	public Item find(@NonNull ItemKey key) {
 		val item = doFind(key);
@@ -130,11 +137,13 @@ public class ItemServiceImpl implements ItemService {
 		}
 		return item;
 	}
-	
+
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(@NonNull Item item) { itemDeleter.delete(item); }
-	
+	public void delete(@NonNull Item item) {
+		itemDeleter.delete(item);
+	}
+
 	@Override
 	@Transactional(readOnly = false)
 	public void delete(@NonNull ItemKey key) {
@@ -142,12 +151,12 @@ public class ItemServiceImpl implements ItemService {
 		// a ResourceNotFoundException if the item doesn't exist.
 		itemDeleter.delete(find(key));
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private CrudRepository getRepositoryFor(Class<?> itemClass) {
 		return (CrudRepository<?, Long>) repositories.getRepositoryFor(itemClass);
 	}
-	
+
 	private Item doFind(ItemKey key) {
 		return repoAdapters.getRepoAdapterFor(key.getItemClass()).find(key);
 	}

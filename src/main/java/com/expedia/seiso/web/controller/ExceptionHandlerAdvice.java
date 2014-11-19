@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @ControllerAdvice
 @XSlf4j
 public class ExceptionHandlerAdvice {
-	
+
 	@ExceptionHandler(InvalidRequestException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	@ResponseBody
@@ -49,16 +49,16 @@ public class ExceptionHandlerAdvice {
 		// TODO Want to be able to report on the specific invalid fields. [WLW]
 		return new ErrorObject(C.EC_INVALID_REQUEST, e.getMessage());
 	}
-	
+
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ResponseBody
 	public ErrorObject handleNoSuchItemException(ResourceNotFoundException e, WebRequest request) {
 		return new ErrorObject(C.EC_RESOURCE_NOT_FOUND, e.getMessage());
 	}
-	
+
 	// TODO Handle other kinds of JSON issue, like illegal JSON, wrong schema, etc. [WLW]
-	
+
 	// FIXME Oh, this doesn't fire, because it's the deserializer that throws the exception, not the controller.
 	@ExceptionHandler(JsonMappingException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -66,7 +66,7 @@ public class ExceptionHandlerAdvice {
 	public ErrorObject handleJsonMappingException(JsonMappingException e, WebRequest request) {
 		return new ErrorObject(C.EC_INVALID_REQUEST_JSON_PAYLOAD, e.getMessage());
 	}
-	
+
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
@@ -75,14 +75,13 @@ public class ExceptionHandlerAdvice {
 		val fullMsg = e.getClass().getName() + ": " + e.getMessage();
 		return new ErrorObject(C.EC_INTERNAL_ERROR, fullMsg);
 	}
-	
-	
-    @ExceptionHandler(BindException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody ValidationErrorMap handleBindException(BindException bindException) {
-        
-        ValidationErrorMap validationErrorMap = ValidationErrorMapFactory.buildFrom( bindException );
-        
-        return validationErrorMap;
-    }
+
+	@ExceptionHandler(BindException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public @ResponseBody ValidationErrorMap handleBindException(BindException bindException) {
+
+		ValidationErrorMap validationErrorMap = ValidationErrorMapFactory.buildFrom(bindException);
+
+		return validationErrorMap;
+	}
 }

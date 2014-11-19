@@ -34,18 +34,19 @@ import com.expedia.seiso.domain.repo.UserRepo;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
-	@Autowired private UserRepo userRepo;
-	
+	@Autowired
+	private UserRepo userRepo;
+
 	@Override
 	public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
 		val user = userRepo.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("No such user: " + username);
 		}
-		
+
 		// Initialize these, as the Spring Security filter seems to be outside the OpenEntityManagerInView filter.
 		Hibernate.initialize(user.getRoles());
-		
+
 		return new UserDetailsAdapter(user);
 	}
 }

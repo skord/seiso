@@ -38,7 +38,6 @@ import com.expedia.seiso.core.ann.Projection.Cardinality;
 import com.expedia.seiso.domain.entity.key.ItemKey;
 import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 
-
 /**
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
@@ -49,32 +48,36 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @ToString(of = { "key", "name", "statusType" })
 @EqualsAndHashCode(callSuper = false, of = { "key", "name" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION, paths = { "statusType" }),
 	@Projection(cardinality = Cardinality.SINGLE, paths = { "statusType" })
-})
+	})
+//@formatter:on
 public class RotationStatus extends AbstractItem {
-	
-	// TODO We might want to replace the data-driven rotation statuses with fixed statuse, since we have hand-coded
+
+	// TODO We might want to replace the data-driven rotation statuses with fixed statuses, since we have hand-coded
 	// rotation status aggregation logic involving specific statuses. [WLW]
-	public static final RotationStatus ENABLED = new RotationStatus("enabled", "Enabled", SUCCESS); 
+	public static final RotationStatus ENABLED = new RotationStatus("enabled", "Enabled", SUCCESS);
 	public static final RotationStatus DISABLED = new RotationStatus("disabled", "Disabled", WARNING);
 	public static final RotationStatus EXCLUDED = new RotationStatus("excluded", "Excluded", INFO);
 	public static final RotationStatus NO_ENDPOINTS = new RotationStatus("no-endpoints", "No endpoints", INFO);
 	public static final RotationStatus PARTIAL = new RotationStatus("partial", "Partial", WARNING);
 	public static final RotationStatus UNKNOWN = new RotationStatus("unknown", "Unknown", WARNING);
-	
+
 	@Key
 	@Column(name = "ukey")
 	private String key;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "status_type_id")
 	private StatusType statusType;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(RotationStatus.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(RotationStatus.class, key);
+	}
 }

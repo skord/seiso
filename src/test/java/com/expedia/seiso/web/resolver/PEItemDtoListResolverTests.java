@@ -50,27 +50,40 @@ import com.expedia.seiso.web.dto.PEItemDtoList;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class PEItemDtoListResolverTests {
-	
+
 	// Class under test
-	@InjectMocks private PEItemDtoListResolver resolver;
-	
+	@InjectMocks
+	private PEItemDtoListResolver resolver;
+
 	// Dependencies
 	private List<HttpMessageConverter<?>> messageConverters;
-	@Mock private HttpMessageConverter<?> messageConverter;
-	@Mock private ItemMetaLookup itemMetaLookup;
-	@Mock private Repositories repositories;
-	@Mock private ResolverUtils resolverUtils;
-	
+	@Mock
+	private HttpMessageConverter<?> messageConverter;
+	@Mock
+	private ItemMetaLookup itemMetaLookup;
+	@Mock
+	private Repositories repositories;
+	@Mock
+	private ResolverUtils resolverUtils;
+
 	// Test data
-	@Mock private MethodParameter peItemDtoListParam;
-	@Mock private MethodParameter dummyParam;
-	@Mock private ModelAndViewContainer mavContainer;
-	@Mock private NativeWebRequest nativeWebRequest;
-	@Mock private WebDataBinderFactory binderFactory;
-	@Mock private HttpServletRequest httpServletRequest;
-	@Mock private ServletServerHttpRequest servletServerHttpRequest;
-	@Mock private HttpHeaders httpHeaders;
-	
+	@Mock
+	private MethodParameter peItemDtoListParam;
+	@Mock
+	private MethodParameter dummyParam;
+	@Mock
+	private ModelAndViewContainer mavContainer;
+	@Mock
+	private NativeWebRequest nativeWebRequest;
+	@Mock
+	private WebDataBinderFactory binderFactory;
+	@Mock
+	private HttpServletRequest httpServletRequest;
+	@Mock
+	private ServletServerHttpRequest servletServerHttpRequest;
+	@Mock
+	private HttpHeaders httpHeaders;
+
 	@Before
 	public void setUp() throws Exception {
 		this.resolver = new PEItemDtoListResolver();
@@ -78,7 +91,7 @@ public class PEItemDtoListResolverTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		when(peItemDtoListParam.getParameterType()).thenReturn((Class) PEItemDtoList.class);
 		when(dummyParam.getParameterType()).thenReturn((Class) Object.class);
@@ -87,28 +100,28 @@ public class PEItemDtoListResolverTests {
 		when(servletServerHttpRequest.getHeaders()).thenReturn(httpHeaders);
 		when(httpHeaders.getContentType()).thenReturn(MediaType.APPLICATION_JSON);
 	}
-	
+
 	private void initDependencies() {
 		this.messageConverters = new ArrayList<>();
 		messageConverters.add(messageConverter);
 		ReflectionTestUtils.setField(resolver, "messageConverters", messageConverters);
-		
+
 		when(itemMetaLookup.getItemClass("services")).thenReturn(Service.class);
 		when(resolverUtils.wrapRequest(httpServletRequest)).thenReturn(servletServerHttpRequest);
 	}
-	
+
 	@Test
 	public void supportsParameter_matching() {
 		val result = resolver.supportsParameter(peItemDtoListParam);
 		assertTrue(result);
 	}
-	
+
 	@Test
 	public void supportsParameter_no_match() {
 		val result = resolver.supportsParameter(dummyParam);
 		assertFalse(result);
 	}
-	
+
 	@Test
 	public void resolveArgument() throws Exception {
 		val result = resolver.resolveArgument(peItemDtoListParam, mavContainer, nativeWebRequest, binderFactory);

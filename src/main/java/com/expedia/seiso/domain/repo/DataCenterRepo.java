@@ -30,10 +30,10 @@ import com.expedia.seiso.domain.entity.DataCenter;
  */
 @RestResource(path = "data-centers")
 public interface DataCenterRepo extends CrudRepository<DataCenter, Long> {
-	
+
 	@Query("from DataCenter order by name")
 	List<DataCenter> findAll();
-	
+
 	@FindByKey
 	DataCenter findByKey(@Param("key") String key);
 }

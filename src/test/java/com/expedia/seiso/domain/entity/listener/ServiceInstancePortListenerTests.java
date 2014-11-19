@@ -43,18 +43,21 @@ import com.expedia.seiso.domain.repo.EndpointRepo;
 
 public class ServiceInstancePortListenerTests {
 	private static final int NUM_IP_ADDRESSES = 2;
-	
+
 	// Class under test
-	@InjectMocks private ServiceInstancePortListener listener;
-	
+	@InjectMocks
+	private ServiceInstancePortListener listener;
+
 	// Dependencies
-	@Mock private ApplicationContext appContext;
-	@Mock private EndpointRepo endpointRepo;
-	
+	@Mock
+	private ApplicationContext appContext;
+	@Mock
+	private EndpointRepo endpointRepo;
+
 	// Test data
 	private List<Node> nodes;
 	private ServiceInstancePort port;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.listener = new ServiceInstancePortListener();
@@ -62,17 +65,16 @@ public class ServiceInstancePortListenerTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		this.nodes = new ArrayList<>();
 		nodes.add(buildNode());
 		nodes.add(buildNode());
 		nodes.add(buildNode());
-		
-		this.port = new ServiceInstancePort()
-				.setServiceInstance(new ServiceInstance().setNodes(nodes));
+
+		this.port = new ServiceInstancePort().setServiceInstance(new ServiceInstance().setNodes(nodes));
 	}
-	
+
 	private Node buildNode() {
 		val ipAddresses = new ArrayList<NodeIpAddress>();
 		for (int i = 0; i < NUM_IP_ADDRESSES; i++) {
@@ -80,23 +82,23 @@ public class ServiceInstancePortListenerTests {
 		}
 		return new Node().setIpAddresses(ipAddresses);
 	}
-	
+
 	private void initDependencies() {
 		when(appContext.getBean(EndpointRepo.class)).thenReturn(endpointRepo);
 	}
-	
+
 	@Test
 	public void postPersist() {
 		listener.postPersist(port);
 		final int expectedNumEndpoints = nodes.size() * NUM_IP_ADDRESSES;
 		verify(endpointRepo, times(expectedNumEndpoints)).save((Endpoint) anyObject());
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void postPersist_null() {
 		listener.postPersist(null);
 	}
-	
+
 	@Test
 	public void postPersist_noNodes() {
 		port.getServiceInstance().setNodes(new ArrayList<Node>());

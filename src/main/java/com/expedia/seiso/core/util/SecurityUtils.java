@@ -26,11 +26,13 @@ import com.expedia.seiso.domain.entity.User;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class SecurityUtils {
-	
+
 	public static User getCurrentUser() {
 		val context = SecurityContextHolder.getContext();
 		val auth = context.getAuthentication();
-		if (auth == null) { return null; }
+		if (auth == null) {
+			return null;
+		}
 		val userAdapter = (UserDetailsAdapter) auth.getPrincipal();
 		return (userAdapter == null ? null : userAdapter.getUser());
 	}

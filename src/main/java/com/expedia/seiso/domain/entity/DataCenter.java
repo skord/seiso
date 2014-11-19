@@ -46,39 +46,43 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = "key")
 @ToString(of = { "key", "name", "region" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION, paths = {
 			"region.infrastructureProvider"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, paths = {
 			"region.infrastructureProvider",
 			"serviceInstances.service.type",
 			"serviceInstances.service.owner",
 			"serviceInstances.environment",
 			"loadBalancers"
+			})
 	})
-})
+//@formatter:on
 public class DataCenter extends AbstractItem {
-	
+
 	@Key
 	@Column(name = "ukey", nullable = false, unique = true)
 	private String key;
-	
+
 	private String name;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "region_id", nullable = false)
-	private InfrastructureProviderRegion region;
-	
+	private Region region;
+
 	@NonNull
 	@OneToMany(mappedBy = "dataCenter")
 	@OrderBy("key")
 	private List<ServiceInstance> serviceInstances = new ArrayList<>();
-	
+
 	@NonNull
 	@OneToMany(mappedBy = "dataCenter")
 	private List<LoadBalancer> loadBalancers = new ArrayList<>();
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(DataCenter.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(DataCenter.class, key);
+	}
 }

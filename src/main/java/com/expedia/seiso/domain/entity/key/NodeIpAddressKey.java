@@ -24,12 +24,16 @@ import com.expedia.seiso.domain.entity.NodeIpAddress;
 @Data
 @RequiredArgsConstructor
 public class NodeIpAddressKey implements ItemKey {
-	
+
 	// TODO Decide whether we want to do the lookup by IP address, or by role name. I think it's probably the latter.
 	// [WLW]
-	@NonNull private String nodeName;
-	@NonNull private String ipAddress;
-	
+	@NonNull
+	private String nodeName;
+	@NonNull
+	private String ipAddress;
+
 	@Override
-	public Class<?> getItemClass() { return NodeIpAddress.class; }
+	public Class<?> getItemClass() {
+		return NodeIpAddress.class;
+	}
 }

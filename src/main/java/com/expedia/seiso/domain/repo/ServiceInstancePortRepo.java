@@ -29,14 +29,13 @@ import com.expedia.seiso.domain.entity.ServiceInstancePort;
  */
 @RestResource(path = RepoKeys.SERVICE_INSTANCE_PORTS)
 public interface ServiceInstancePortRepo extends PagingAndSortingRepository<ServiceInstancePort, Long> {
-	
+
 	ServiceInstancePort findByServiceInstanceAndNumber(ServiceInstance serviceInstance, Integer number);
-	
+
 	ServiceInstancePort findByServiceInstanceKeyAndNumber(String serviceInstanceKey, Integer number);
-	
+
 	@Modifying
 	@Query("delete from ServiceInstancePort p where p.serviceInstance.key = :serviceInstanceKey and p.number = :number")
-	void deleteByServiceInstanceKeyAndNumber(
-			@Param("serviceInstanceKey") String serviceInstanceKey,
+	void deleteByServiceInstanceKeyAndNumber(@Param("serviceInstanceKey") String serviceInstanceKey,
 			@Param("number") Integer number);
 }

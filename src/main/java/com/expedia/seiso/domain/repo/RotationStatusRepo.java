@@ -27,9 +27,9 @@ import com.expedia.seiso.domain.entity.RotationStatus;
  */
 @RestResource(path = RepoKeys.ROTATION_STATUSES)
 public interface RotationStatusRepo extends CrudRepository<RotationStatus, Long> {
-	
+
 	@FindByKey
 	RotationStatus findByKey(@Param("key") String key);
-	
+
 	RotationStatus findByName(@Param("name") String name);
 }

@@ -23,6 +23,6 @@ import com.expedia.seiso.domain.entity.Role;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface RoleRepo extends CrudRepository<Role, Long> {
-	
+
 	Role findByName(String name);
 }

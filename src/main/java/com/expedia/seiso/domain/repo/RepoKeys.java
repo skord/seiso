@@ -25,16 +25,16 @@ public interface RepoKeys {
 	public static final String CONTENT_SWITCHING_VIPS = "content-switching-vips";
 	public static final String DATA_CENTERS = "data-centers";
 	public static final String DEFAULT_VIPS = "default-vips";
-    public static final String DEPLOYMENTS = "deployments";
-    public static final String ENDPOINTS = "endpoints";
+	public static final String DEPLOYMENTS = "deployments";
+	public static final String ENDPOINTS = "endpoints";
 	public static final String ENVIRONMENTS = "environments";
 	public static final String HEALTH_STATUSES = "health-statuses";
 	public static final String INFRASTRUCTURE_PROVIDERS = "infrastructure-providers";
-	
+
 	// TODO Change this to infrastructure-provider-regions, or else use infrastructure-provider/:key/regions. But do
 	// this after we establish the AngularJS UI to avoid disrupting the legacy Java UI.
 	public static final String INFRASTRUCTURE_PROVIDER_REGIONS = "regions";
-	
+
 	public static final String IP_ADDRESS_ROLES = "ip-address-roles";
 	public static final String LOAD_BALANCERS = "load-balancers";
 	public static final String MACHINE_ROLES = "machine-roles";

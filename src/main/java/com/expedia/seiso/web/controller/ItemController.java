@@ -73,12 +73,22 @@ import com.expedia.seiso.web.dto.PEItemDtoList;
 @RequestMapping(Controllers.REQUEST_MAPPING_VERSION)
 @XSlf4j
 public class ItemController {
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private ItemService itemService;
-	@Autowired private ItemAssembler itemAssembler;
-	@Autowired private EntityLinks entityLinks;
-	@Autowired private PageLinks pageLinks;
 	
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	
+	@Autowired
+	private ItemService itemService;
+	
+	@Autowired
+	private ItemAssembler itemAssembler;
+	
+	@Autowired
+	private EntityLinks entityLinks;
+	
+	@Autowired
+	private PageLinks pageLinks;
+
 	/**
 	 * Handles both paging and non-paging repositories, since we don't know in advance of processing the request whether
 	 * the relevant repository is paging.
@@ -90,57 +100,50 @@ public class ItemController {
 	 * @return items
 	 */
 	@Transactional
-	@RequestMapping(
-			value = "/{repoKey}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{repoKey}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public HttpEntity<?> getPage(
 			@PathVariable String repoKey,
-			@RequestParam(value = "view", defaultValue = Projection.DEFAULT) String projectionName,			
-			@PageableDefault(
-					page = C.DEFAULT_PAGE_NUMBER,
-					size = C.DEFAULT_PAGE_SIZE,
-					direction = Direction.ASC)
-			Pageable pageable) {
-		
+			@RequestParam(value = "view", defaultValue = Projection.DEFAULT) String projectionName,
+			@PageableDefault(page = C.DEFAULT_PAGE_NUMBER, size = C.DEFAULT_PAGE_SIZE, direction = Direction.ASC) Pageable pageable) {
+
 		log.trace("Getting items: /{}", repoKey);
 		val itemClass = itemMetaLookup.getItemClass(repoKey);
 		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
-		
+
 		if (itemMeta == null) {
 			throw new ResourceNotFoundException("Can't find resource " + repoKey);
 		}
-		
+
 		val projectionNode = itemMeta.getProjectionNode(Projection.Cardinality.COLLECTION, projectionName);
-		
+
 		if (!itemMeta.isPagingRepo()) {
-			
+
 			// Body
 			val items = itemService.findAll(itemClass);
 			val dtoList = itemAssembler.toDtoList(items, projectionNode);
-			
+
 			// Headers
 			val responseHeaders = new HttpHeaders();
 			val selfLink = entityLinks.linkFor(itemClass).withRel(Link.REL_SELF);
 			responseHeaders.add(ResponseHeaders.LINK, selfLink.toString());
 			responseHeaders.add(ResponseHeaders.X_SELF, selfLink.getHref());
-			
+
 			return new HttpEntity<List>(dtoList, responseHeaders);
-			
+
 		} else {
-			
+
 			// We have a paging repository.
 			val entityPage = itemService.findAll(itemClass, pageable);
 			val dtoPage = itemAssembler.toDtoPage(entityPage, projectionNode);
-			
+
 			// TODO Move this stuff to the assembler. We should still build the PagedResources. That doesn't mean we
 			// have to serialize it as a PagedResources. [WLW]
 			val pageMeta = dtoPage.getMetadata();
 			val totalElems = pageMeta.getTotalElements();
 			val totalPages = PageMetadataUtils.getCorrectedTotalPages(pageMeta);
 			val dtoCollection = dtoPage.getContent();
-			
+
 			// Hm, PagedResources has getPreviousLink() and getNextLink(). But it doesn't have first/last, which we
 			// need. [WLW]
 			// FIXME Include the projection name in the self link. [WLW]
@@ -149,18 +152,22 @@ public class ItemController {
 			val prevLink = pageLinks.prevLink(repoKey, projectionName, pageMeta);
 			val nextLink = pageLinks.nextLink(repoKey, projectionName, pageMeta);
 			val lastLink = pageLinks.lastLink(repoKey, projectionName, pageMeta);
-			
+
 			val responseHeaders = new HttpHeaders();
-			
+
 			// RFC 5988: http://tools.ietf.org/html/rfc5988
 			val links = new ArrayList<Link>();
 			links.add(selfLink);
 			links.add(firstLink);
-			if (prevLink != null) { links.add(prevLink); }
-			if (nextLink != null) { links.add(nextLink); }
+			if (prevLink != null) {
+				links.add(prevLink);
+			}
+			if (nextLink != null) {
+				links.add(nextLink);
+			}
 			links.add(lastLink);
 			responseHeaders.add(ResponseHeaders.LINK, links.toString());
-			
+
 			// Extension headers
 			responseHeaders.add(ResponseHeaders.X_SELF, selfLink.getHref());
 			responseHeaders.add(ResponseHeaders.X_PAGINATION_FIRST, firstLink.getHref());
@@ -173,53 +180,44 @@ public class ItemController {
 			responseHeaders.add(ResponseHeaders.X_PAGINATION_LAST, lastLink.getHref());
 			responseHeaders.add(ResponseHeaders.X_PAGINATION_TOTAL_ELEMENTS, String.valueOf(totalElems));
 			responseHeaders.add(ResponseHeaders.X_PAGINATION_TOTAL_PAGES, String.valueOf(totalPages));
-			
+
 			return new HttpEntity<Collection>(dtoCollection, responseHeaders);
 		}
 	}
-	
+
 	@Transactional
-	@RequestMapping(
-			value = "/{repoKey}/{itemKey}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{repoKey}/{itemKey}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@SuppressWarnings("rawtypes")
-	public MapItemDto getOne(
-			@PathVariable("repoKey") RepoMeta repoMeta,
-			@PathVariable String itemKey,
+	public MapItemDto getOne(@PathVariable("repoKey") RepoMeta repoMeta, @PathVariable String itemKey,
 			@RequestParam(value = "view", defaultValue = Projection.DEFAULT) String projectionName) {
-		
+
 		val itemClass = repoMeta.getItemClass();
 		val item = itemService.find(new SimpleItemKey(itemClass, itemKey));
-		
+
 		// TODO Use resolver here too
 		val itemTypeMeta = itemMetaLookup.getItemMeta(itemClass);
 		val projectionNode = itemTypeMeta.getProjectionNode(Projection.Cardinality.SINGLE, projectionName);
-		
+
 		return itemAssembler.toDto(item, projectionNode);
 	}
-	
-	@RequestMapping(
-			value = "/{repoKey}",
-			method = RequestMethod.POST,
-			params = "mode=batch",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@RequestMapping(value = "/{repoKey}", method = RequestMethod.POST, params = "mode=batch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public SaveAllResponse postAll(@PathVariable String repoKey, PEItemDtoList peItemDtos) {
 		log.trace("Batch saving {} items: repoKey={}", peItemDtos.size(), repoKey);
-		
+
 		// FIXME The SaveAllResponse contains a SaveAllError, which in turn contains an Item. If the Item has a cycle,
 		// then JSON serialization results in a stack overflow exception. [WLW]
-		// 
-		// See http://stackoverflow.com/questions/10065002/jackson-serialization-of-entities-with-birectional-relationships-avoiding-cyc
+		//
+		// See
+		// http://stackoverflow.com/questions/10065002/jackson-serialization-of-entities-with-birectional-relationships-avoiding-cyc
 		// for a possible solution. But do we really want to leave it up to Jackson to decide on the serialized
 		// representation, when in general we control that ourselves? We should be assembling a DTO here, or else just
 		// returning ID info. [WLW]
-		// 
+		//
 		// http://www.cowtowncoder.com/blog/archives/2012/03/entry_466.html [WLW]
 		return itemService.saveAll(peItemDtos);
 	}
-	
+
 	/**
 	 * Handles HTTP PUT requests against top-level resources. Following HTTP semantics, this creates the resource if it
 	 * doesn't already exist; otherwise, it completely replaces the existing resource (as opposed to merging it). With
@@ -229,20 +227,14 @@ public class ItemController {
 	 * @param itemDto
 	 *            item to save
 	 */
-	@RequestMapping(
-			value = "/{repoKey}/{itemKey}",
-			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{repoKey}/{itemKey}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void put(
-			@PathVariable String repoKey,
-			@PathVariable String itemKey,
-			PEItemDto itemDto) {
-		
+	public void put(@PathVariable String repoKey, @PathVariable String itemKey, PEItemDto itemDto) {
+
 		log.trace("Putting item: repoKey={}, itemKey={}", repoKey, itemKey);
 		itemService.save(itemDto.getItem());
 	}
-	
+
 	@RequestMapping(value = "/{repoKey}/{itemKey}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@SuppressWarnings("rawtypes")

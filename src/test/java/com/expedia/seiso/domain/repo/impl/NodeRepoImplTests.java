@@ -32,44 +32,41 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.expedia.seiso.domain.entity.Vip;
-
+import com.expedia.seiso.domain.entity.Node;
 
 /**
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
-public class VipRepoImplUnitTest
-{
-          private Set<String>       searchTokens;
-          private Pageable          pageable;
-    @Mock private EntityManager     entityManager;
-          private MockRepoImplUtils mockRepoImplUtils;
-          private Page<Vip>         mockResultsPage;
-          private List<Vip>         mockResultList;
+public class NodeRepoImplTests {
+	private Set<String> searchTokens;
+	private Pageable pageable;
+	@Mock
+	private EntityManager entityManager;
+	private MockRepoImplUtils mockRepoImplUtils;
+	private Page<Node> mockResultsPage;
+	private List<Node> mockResultList;
 
-    @Before
-    public void setUp()
-    {
-        MockitoAnnotations.initMocks( this );
-        
-        this.searchTokens = new HashSet<String>();
-        searchTokens.add( "foo" );
-        this.pageable = new PageRequest( 1, 1 );
-        
-        this.mockResultList = new ArrayList<Vip>();
-        this.mockResultsPage = new PageImpl<Vip>( this.mockResultList );
-        this.mockRepoImplUtils = new MockRepoImplUtils( this.mockResultsPage );
-    }
-    
-    @Test
-    public void searchTest()
-    {
-        VipRepoImpl vipRepoImpl = new VipRepoImpl( this.entityManager, this.mockRepoImplUtils );
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 
-        Page<Vip> expected = this.mockResultsPage; 
-        Page<Vip>   actual = vipRepoImpl.search( this.searchTokens, pageable );
-        
-        Assert.assertEquals( expected, actual );
-    }
-    
+		this.searchTokens = new HashSet<String>();
+		searchTokens.add("foo");
+		this.pageable = new PageRequest(1, 1);
+
+		this.mockResultList = new ArrayList<Node>();
+		this.mockResultsPage = new PageImpl<Node>(this.mockResultList);
+		this.mockRepoImplUtils = new MockRepoImplUtils(this.mockResultsPage);
+	}
+
+	@Test
+	public void searchTest() {
+		NodeRepoImpl nodeRepoImpl = new NodeRepoImpl(this.entityManager, this.mockRepoImplUtils);
+
+		Page<Node> expected = this.mockResultsPage;
+		Page<Node> actual = nodeRepoImpl.search(this.searchTokens, pageable);
+
+		Assert.assertEquals(expected, actual);
+	}
+
 }

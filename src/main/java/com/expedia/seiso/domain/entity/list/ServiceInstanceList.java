@@ -22,4 +22,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ServiceInstanceList extends ArrayList<ServiceInstance> { }
+public class ServiceInstanceList extends ArrayList<ServiceInstance> {
+}

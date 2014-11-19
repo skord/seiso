@@ -26,5 +26,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "custom")
 public class CustomProperties {
-	@NotNull private String apiBaseUri;
+	@NotNull
+	private String apiBaseUri;
 }

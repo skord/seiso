@@ -39,27 +39,24 @@ import com.expedia.seiso.domain.entity.key.ItemKey;
 @EqualsAndHashCode(callSuper = false, of = { "serviceInstance", "name" })
 @ToString(callSuper = true, of = { "serviceInstance", "name" })
 @Entity
+//@formatter:off
 @Projections({
-	@Projection(cardinality = Cardinality.COLLECTION, paths = {
-			"serviceInstance"
-	}),
-	@Projection(cardinality = Cardinality.SINGLE, paths = {
-			"serviceInstance",
-			"ipAddresses"
+	@Projection(cardinality = Cardinality.COLLECTION, paths = { "serviceInstance" }),
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "serviceInstance", "ipAddresses" })
 	})
-})
+//@formatter:on
 public class IpAddressRole extends AbstractItem {
-	
+
 	@ManyToOne
 	@JoinColumn(name = "service_instance_id")
 	private ServiceInstance serviceInstance;
-	
+
 	private String name;
 	private String description;
-	
+
 	@OneToMany(mappedBy = "ipAddressRole", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<NodeIpAddress> ipAddresses; 
-	
+	private List<NodeIpAddress> ipAddresses;
+
 	@Override
 	public ItemKey itemKey() {
 		if (serviceInstance == null) {

@@ -48,27 +48,25 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = { "name" })
 @ToString(callSuper = true, of = { "name", "serviceInstance", "machine" })
 @Entity
-
 // TODO Handle createdBy and updatedBy automatically in the assembler. [WLW]
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION, paths = {
 			"serviceInstance",
 			"machine",
-			"healthStatus.statusType",
-			"createdBy",
-			"updatedBy"
-	}),
+			"healthStatus.statusType"
+			}),
 	@Projection(cardinality = Cardinality.COLLECTION, name = "serviceInstanceNodes", paths = {
 			"machine"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.COLLECTION, name = "withEndpoints", paths = {
 			"serviceInstance",
 			"machine",
 			"ipAddresses.ipAddressRole",
 			"ipAddresses.endpoints.port",
 			"ipAddresses.endpoints.rotationStatus"
-	}),
-	
+			}),
+
 	// TODO Hm, maybe we should make the default single view show what we expect users to provide on a put. GET/PUT
 	// symmetry kind of thing. Then use the other projections to support specific automation/UI needs. [WLW]
 	@Projection(cardinality = Cardinality.SINGLE, paths = {
@@ -81,11 +79,9 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 			"ipAddresses.endpoints.port",
 			"ipAddresses.endpoints.rotationStatus.statusType",
 			"ipAddresses.ipAddressRole",
-			"healthStatus.statusType",
-			"createdBy",
-			"updatedBy"
-	}),
-	
+			"healthStatus.statusType"
+			}),
+
 	@Projection(cardinality = Cardinality.SINGLE, name = "state", paths = {
 			"serviceInstance.service.ipAddressRoles",
 			"serviceInstance.ports",
@@ -93,45 +89,45 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 			"ipAddresses.endpoints.port",
 			"ipAddresses.endpoints.rotationStatus.statusType",
 			"ipAddresses.ipAddressRole",
-			"healthStatus",
-			"createdBy",
-			"updatedBy"
+			"healthStatus"
+			})
 	})
-})
+//@formatter:on
 public class Node extends AbstractItem {
-	@Key private String name;
-	
+	@Key
+	private String name;
+
 	/**
 	 * Optional description to support cases where service instance nodes aren't entirely interchangeable. For instance
 	 * we have Splunk service instances where each service instance has its own purpose (ad hoc searches, summary
 	 * searches, alerts, dashboards, etc.).
 	 */
 	private String description;
-	
+
 	private String version;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "service_instance_id")
 	@RestResource(path = "service-instance")
 	private ServiceInstance serviceInstance;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "machine_id")
 	@RestResource(path = "machine")
 	private Machine machine;
-	
+
 	@NonNull
 	@OneToMany(mappedBy = "node", cascade = CascadeType.ALL, orphanRemoval = true)
 	@RestResource(path = "ip-addresses")
 	private List<NodeIpAddress> ipAddresses = new ArrayList<>();
-	
-	private String artifact;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "health_status_id")
 	@RestResource(path = "health-status")
 	private HealthStatus healthStatus;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(Node.class, name); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(Node.class, name);
+	}
 }

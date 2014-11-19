@@ -16,7 +16,6 @@
 package com.expedia.seiso.domain.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,10 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.expedia.seiso.core.ann.Projection;
-import com.expedia.seiso.core.ann.Projections;
-import com.expedia.seiso.domain.entity.key.ItemKey;
+import javax.persistence.OrderBy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,37 +31,47 @@ import lombok.NonNull;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import com.expedia.seiso.core.ann.Key;
+import com.expedia.seiso.core.ann.Projection;
+import com.expedia.seiso.core.ann.Projections;
+import com.expedia.seiso.core.ann.Projection.Cardinality;
+import com.expedia.seiso.domain.entity.key.ItemKey;
+import com.expedia.seiso.domain.entity.key.SimpleItemKey;
+
 /**
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
-
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = false, of = {"service", "revision"})
-@ToString(of = {"service", "revision"})
+@EqualsAndHashCode(callSuper = false, of = "key")
+@ToString(of = { "key", "name" })
 @Entity
+//@formatter:off
 @Projections({
-	@Projection(cardinality = Projection.Cardinality.COLLECTION, paths = { "service" }),
-	@Projection(cardinality = Projection.Cardinality.SINGLE, paths = { "service" })
-})
-public class Commit extends AbstractItem {
+	@Projection(cardinality = Cardinality.COLLECTION, paths = { "infrastructureProvider" }),
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "infrastructureProvider", "dataCenters" }) })
+//@formatter:on
+public class Region extends AbstractItem {
 
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private Service service;
+	@Key
+	@Column(name = "ukey")
+	private String key;
 
-    @Column(name = "revision")
-    private String revision;
+	private String name;
+
+	@ManyToOne
+	@JoinColumn(name = "provider_id")
+	private InfrastructureProvider infrastructureProvider;
+
+	private String regionKey;
 
 	@NonNull
-    @OneToMany(mappedBy = "commit")
-    private List<Build> builds = new ArrayList<>();
-
-    @Column(name = "date_created")
-    private Date dateCreated;
+	@OneToMany(mappedBy = "region")
+	@OrderBy("name, key")
+	private List<DataCenter> dataCenters = new ArrayList<>();
 
 	@Override
 	public ItemKey itemKey() {
-		throw new UnsupportedOperationException("Not yet implemented");
+		return new SimpleItemKey(Region.class, key);
 	}
 }

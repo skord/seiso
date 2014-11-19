@@ -22,5 +22,5 @@ import com.expedia.seiso.domain.repo.search.SearchableRepository;
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
 public interface ServiceRepoCustom extends SearchableRepository<Service, Long> {
-	
+
 }

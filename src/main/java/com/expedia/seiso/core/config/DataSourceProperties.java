@@ -26,10 +26,14 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceProperties {
-	@NotNull private String driverClassName;
-	@NotNull private String url;
-	@NotNull private String username;
-	@NotNull private String password;
-	
+	@NotNull
+	private String driverClassName;
+	@NotNull
+	private String url;
+	@NotNull
+	private String username;
+	@NotNull
+	private String password;
+
 	// TODO Add other data source settings here. [WLW]
 }

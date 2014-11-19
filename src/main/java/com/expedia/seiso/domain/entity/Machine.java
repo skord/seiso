@@ -33,9 +33,9 @@ import lombok.experimental.Accessors;
 
 import com.expedia.seiso.core.ann.Key;
 import com.expedia.seiso.core.ann.Projection;
+import com.expedia.seiso.core.ann.Projection.Cardinality;
 import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.core.ann.RestResource;
-import com.expedia.seiso.core.ann.Projection.Cardinality;
 import com.expedia.seiso.domain.entity.key.ItemKey;
 import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 
@@ -48,41 +48,48 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = { "name" })
 @ToString(callSuper = true, of = { "name", "fqdn", "ipAddress", "dataCenter" })
 @Entity
+//@formatter:off
 @Projections({
-	@Projection(cardinality = Cardinality.COLLECTION, paths = { }),
-	@Projection(cardinality = Cardinality.SINGLE, paths = {
-		"dataCenter",
-		"nodes.serviceInstance"
-	}),
-})
+	@Projection(cardinality = Cardinality.COLLECTION, paths = {}),
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "dataCenter", "nodes.serviceInstance" })
+	})
+//@formatter:on
 public class Machine extends AbstractItem {
-	@Key private String name;
+
+	@Key
+	private String name;
+
 	private String os;
 	private String osVersion;
 	private String platform;
 	private String platformVersion;
 	private String hostname;
-    private String domain;
+	private String domain;
 	private String fqdn;
 	private String ipAddress;
-	@Column(name = "ip6_address") private String ip6Address;
-    private String macAddress;
-    private String nativeMachineId;
-    private String machineType;
-    private String chefRole;
-    private String virtualSystem;
-    private String virtualRole;
-	
-    @ManyToOne
-    @JoinColumn(name = "data_center_id")
-    @RestResource(path = "data-center")
-    private DataCenter dataCenter;
-    
-    @NonNull
-    @OneToMany(mappedBy = "machine")
-    @RestResource(path = "nodes")
-    private List<Node> nodes = new ArrayList<Node>();
-	
+
+	@Column(name = "ip6_address")
+	private String ip6Address;
+
+	private String macAddress;
+	private String nativeMachineId;
+	private String machineType;
+	private String chefRole;
+	private String virtualSystem;
+	private String virtualRole;
+
+	@ManyToOne
+	@JoinColumn(name = "data_center_id")
+	@RestResource(path = "data-center")
+	private DataCenter dataCenter;
+
+	@NonNull
+	@OneToMany(mappedBy = "machine")
+	@RestResource(path = "nodes")
+	private List<Node> nodes = new ArrayList<Node>();
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(Machine.class, name); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(Machine.class, name);
+	}
 }

@@ -30,13 +30,13 @@ import lombok.experimental.Accessors;
 
 import com.expedia.seiso.core.ann.Key;
 import com.expedia.seiso.core.ann.Projection;
-import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.core.ann.Projection.Cardinality;
+import com.expedia.seiso.core.ann.Projections;
 import com.expedia.seiso.domain.entity.key.ItemKey;
 import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 
 /**
- * A group of services.
+ * A group of services. A service can be in at most one group.
  * 
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
@@ -45,28 +45,29 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = "key")
 @ToString(of = { "key", "name" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION),
-	@Projection(cardinality = Cardinality.SINGLE, paths = {
-			"services.type",
-			"services.owner"
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "services.type", "services.owner" })
 	})
-})
+//@formatter:om
 public class ServiceGroup extends AbstractItem {
-	
+
 	@Key
 	@Column(name = "ukey")
 	private String key;
-	
-	@Column(name = "name")
+
 	private String name;
+	private String description;
 	
 	// Don't want cascading here. If we delete a service group, then the former members are simply orphaned rather than
 	// being deleted. [WLW]
 	@NonNull
 	@OneToMany(mappedBy = "group")
 	private List<Service> services = new ArrayList<>();
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(ServiceGroup.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(ServiceGroup.class, key);
+	}
 }

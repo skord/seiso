@@ -39,26 +39,32 @@ import com.expedia.seiso.domain.entity.Item;
 @RequiredArgsConstructor
 @XSlf4j
 public class ItemAssociationHandler implements SimpleAssociationHandler {
-	@NonNull private final ItemAssembler assembler;
-	@NonNull private final ProjectionNode projectionNode;
-	@NonNull private final BeanWrapper<Item> wrapper;
-	@NonNull private final Map<String, Object> model;
-	
+	@NonNull
+	private final ItemAssembler assembler;
+	@NonNull
+	private final ProjectionNode projectionNode;
+	@NonNull
+	private final BeanWrapper<Item> wrapper;
+	@NonNull
+	private final Map<String, Object> model;
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void doWithAssociation(Association<? extends PersistentProperty<?>> assoc) {
-		
+
 		// Hm, val doesn't work here for some reason.
 		PersistentProperty<?> prop = assoc.getInverse();
-		
+
 		val propName = prop.getName();
-		
+
 		// We handle audit properties elsewhere.
-		if (AuditUtils.isAuditProperty(propName)) { return; }
-		
+		if (AuditUtils.isAuditProperty(propName)) {
+			return;
+		}
+
 		val propType = prop.getType();
 		val child = projectionNode.getChild(propName);
-		
+
 		if (child != null) {
 			if (Item.class.isAssignableFrom(propType)) {
 				val propEntity = (Item) wrapper.getProperty(prop);

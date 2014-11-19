@@ -25,7 +25,7 @@ import com.expedia.seiso.domain.entity.User;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface UserRepo extends CrudRepository<User, Long> {
-	
+
 	@FindByKey
 	User findByUsername(@Param("username") String username);
 }

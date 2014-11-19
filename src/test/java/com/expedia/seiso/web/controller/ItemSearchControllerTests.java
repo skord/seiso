@@ -42,21 +42,28 @@ import com.expedia.seiso.web.controller.ItemSearchController;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ItemSearchControllerTests {
-	
+
 	// Class under test
-	@InjectMocks private ItemSearchController controller;
-	
+	@InjectMocks
+	private ItemSearchController controller;
+
 	// Dependencies
-	@Mock private ItemMetaLookup itemMetaLookup;
-	@Mock private Repositories repositories;
-	@Mock private ConversionService conversionService;
-	@Mock private ItemAssembler itemAssembler;
-	@Mock private ServiceInstanceRepo serviceInstanceRepo;
-	
+	@Mock
+	private ItemMetaLookup itemMetaLookup;
+	@Mock
+	private Repositories repositories;
+	@Mock
+	private ConversionService conversionService;
+	@Mock
+	private ItemAssembler itemAssembler;
+	@Mock
+	private ServiceInstanceRepo serviceInstanceRepo;
+
 	// Test data
-	@Mock private WebRequest request;
+	@Mock
+	private WebRequest request;
 	private ItemMeta serviceInstanceMeta;
-	
+
 	@Before
 	public void init() throws Exception {
 		this.controller = new ItemSearchController();
@@ -64,17 +71,17 @@ public class ItemSearchControllerTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		this.serviceInstanceMeta = new ItemMetaImpl(ServiceInstance.class, ServiceInstanceRepo.class, true);
 	}
-	
+
 	private void initDependencies() {
 		when(itemMetaLookup.getItemClass(RepoKeys.SERVICE_INSTANCES)).thenReturn(ServiceInstance.class);
 		when(itemMetaLookup.getItemMeta(ServiceInstance.class)).thenReturn(serviceInstanceMeta);
 		when(repositories.getRepositoryFor(ServiceInstance.class)).thenReturn(serviceInstanceRepo);
 	}
-	
+
 	@Test
 	public void search() {
 		controller.search(RepoKeys.SERVICE_INSTANCES, "find-by-environment-and-eos-managed", request);

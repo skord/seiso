@@ -15,16 +15,11 @@
  */
 package com.expedia.seiso.domain.entity;
 
-import java.util.Date;
-
 import org.springframework.hateoas.Identifiable;
 
 import com.expedia.seiso.domain.entity.key.ItemKey;
 
 /**
- * <p>
- * A configuration item (CI) entity. CIs are the primary domain object in the configuration management (CM) domain.
- * </p>
  * <p>
  * Implements {@link Identifiable} so we can use Spring HATEOAS' link building capability.
  * </p>
@@ -32,24 +27,8 @@ import com.expedia.seiso.domain.entity.key.ItemKey;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface Item extends Identifiable<Long> {
-	
-	ItemKey itemKey();
-	
+
 	Item setId(Long id);
 	
-	User getCreatedBy();
-	
-	Item setCreatedBy(User createdBy);
-	
-	Date getCreatedDate();
-	
-	Item setCreatedDate(Date createdDate);
-	
-	User getUpdatedBy();
-	
-	Item setUpdatedBy(User updatedBy);
-	
-	Date getUpdatedDate();
-	
-	Item setUpdatedDate(Date updatedDate);
+	ItemKey itemKey();
 }

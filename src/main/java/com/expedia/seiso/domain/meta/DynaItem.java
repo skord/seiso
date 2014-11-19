@@ -35,17 +35,21 @@ import com.expedia.seiso.domain.entity.Item;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class DynaItem {
-	@Getter private final Class<?> itemClass;
-	@Getter private final Item item;
-	@Getter private PropertyDescriptor metaKeyProperty;
-	@Getter private Serializable metaKey;
-	
+	@Getter
+	private final Class<?> itemClass;
+	@Getter
+	private final Item item;
+	@Getter
+	private PropertyDescriptor metaKeyProperty;
+	@Getter
+	private Serializable metaKey;
+
 	public DynaItem(@NonNull Item item) {
 		this.item = item;
 		this.itemClass = item.getClass();
-		
+
 		String metaKeyFieldName = null;
-		
+
 		// Use currClass to search up the inheritance hierarchy. We need this for example to find the @Key for Vip
 		// subclasses, since the @Key is defined in Vip.
 		Class<?> currClass = itemClass;
@@ -60,22 +64,24 @@ public class DynaItem {
 				}
 			}
 		} while (metaKeyFieldName == null && (currClass = currClass.getSuperclass()) != null);
-		
+
 		// If there's no explicit @Key, then use the ID by default.
-		if (metaKeyFieldName == null) { metaKeyFieldName = "id"; }
-		
+		if (metaKeyFieldName == null) {
+			metaKeyFieldName = "id";
+		}
+
 		this.metaKeyProperty = BeanUtils.getPropertyDescriptor(itemClass, metaKeyFieldName);
 		val metaKeyGetter = metaKeyProperty.getReadMethod();
-		
+
 		try {
 			this.metaKey = (Serializable) metaKeyGetter.invoke(item);
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
-		
-//		log.trace("Using key {}={} for itemClass={}", metaKeyFieldName, metaKey, itemClass.getSimpleName());
+
+		// log.trace("Using key {}={} for itemClass={}", metaKeyFieldName, metaKey, itemClass.getSimpleName());
 	}
-	
+
 	@SneakyThrows
 	public Object getPropertyValue(@NonNull String propertyName) {
 		val desc = BeanUtils.getPropertyDescriptor(itemClass, propertyName);

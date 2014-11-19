@@ -35,26 +35,29 @@ import lombok.extern.slf4j.XSlf4j;
 public class LogFilter implements Filter {
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException { }
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+			ServletException {
+
 		chain.doFilter(request, response);
-		
+
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		
+
 		int statusCode = httpResponse.getStatus();
 		int series = (statusCode / 100) * 100;
 		if (series == 400 || series == 500) {
 			String xUserAgent = httpRequest.getHeader("X-User-Agent");
 			String requestInfo = httpRequest.getMethod() + " " + httpRequest.getRequestURI();
-			log.warn("X-User-Agent '{}' received HTTP status code {} for request {}", xUserAgent, statusCode, requestInfo);
+			log.warn("X-User-Agent '{}' received HTTP status code {} for request {}", xUserAgent, statusCode,
+					requestInfo);
 		}
 	}
 
 	@Override
-	public void destroy() { }
+	public void destroy() {
+	}
 }

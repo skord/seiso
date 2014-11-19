@@ -29,18 +29,18 @@ import com.expedia.seiso.domain.entity.Person;
  */
 @RestResource(path = RepoKeys.PEOPLE)
 public interface PersonRepo extends PagingAndSortingRepository<Person, Long> {
-	
+
 	Person findByLdapDn(@Param("dn") String ldapDn);
-	
+
 	@FindByKey
 	Person findByUsername(@Param("username") String username);
-	
+
 	@RestResource(path = "find-by-first-name")
 	List<Person> findByFirstName(@Param("name") String firstName);
-	
+
 	@RestResource(path = "find-by-last-name")
 	List<Person> findByLastName(@Param("name") String lastName);
-	
+
 	@RestResource(path = "find-by-email")
 	Person findByEmail(@Param("email") String email);
 }

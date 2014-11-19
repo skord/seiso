@@ -22,5 +22,5 @@ import com.expedia.seiso.domain.repo.search.SearchableRepository;
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
 public interface LoadBalancerRepoCustom extends SearchableRepository<LoadBalancer, Long> {
-	
+
 }

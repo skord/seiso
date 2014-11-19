@@ -39,12 +39,14 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @ToString(of = { "key", "name" })
 @EqualsAndHashCode(callSuper = false, of = { "key", "name" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION),
 	@Projection(cardinality = Cardinality.SINGLE)
-})
+	})
+//@formatter:on
 public class StatusType extends AbstractItem {
-	
+
 	// TODO We might want to replace the data-driven status types with fixed types, since we have hand-coded rotation
 	// status aggregation logic involving specific types. [WLW]
 	public static final StatusType DEFAULT = new StatusType("default", "Default");
@@ -53,14 +55,16 @@ public class StatusType extends AbstractItem {
 	public static final StatusType INFO = new StatusType("info", "Info");
 	public static final StatusType WARNING = new StatusType("warning", "Warning");
 	public static final StatusType DANGER = new StatusType("danger", "Danger");
-	
+
 	@Key
 	@Column(name = "ukey")
 	private String key;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(StatusType.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(StatusType.class, key);
+	}
 }

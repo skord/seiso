@@ -40,14 +40,16 @@ import com.expedia.seiso.domain.meta.ItemMetaLookup;
 @Component
 @Transactional
 public class SimpleItemRepoAdapter implements RepoAdapter {
-	@Autowired private ItemMetaLookup itemMetaLookup;
-	@Autowired private Repositories repositories;
+	@Autowired
+	private ItemMetaLookup itemMetaLookup;
+	@Autowired
+	private Repositories repositories;
 
 	@Override
 	public boolean supports(@NonNull Class<?> itemClass) {
 		return getFindByKeyMethod(itemClass) != null;
 	}
-	
+
 	@Override
 	public Item find(@NonNull ItemKey key) {
 		val itemClass = key.getItemClass();
@@ -62,9 +64,11 @@ public class SimpleItemRepoAdapter implements RepoAdapter {
 		val itemClass = key.getItemClass();
 		val repo = (CrudRepository) repositories.getRepositoryFor(itemClass);
 		val item = find(key);
-		if (item != null) { repo.delete(item); }
+		if (item != null) {
+			repo.delete(item);
+		}
 	}
-	
+
 	private Method getFindByKeyMethod(Class<?> itemClass) {
 		val itemMeta = itemMetaLookup.getItemMeta(itemClass);
 		return itemMeta.getRepositoryFindByKeyMethod();

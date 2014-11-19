@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResolverUtils {
-	
+
 	// Factory method to allow us to inject ServletServerHttpRequest mocks.
 	public ServletServerHttpRequest wrapRequest(HttpServletRequest request) {
 		return new ServletServerHttpRequest(request);

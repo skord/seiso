@@ -16,7 +16,6 @@
 package com.expedia.seiso.domain.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,18 +36,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Entity
 public class Role implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "date_created")
-	private Date dateCreated;
-	
-	@Column(name = "date_updated")
-	private Date dateUpdated;
 }

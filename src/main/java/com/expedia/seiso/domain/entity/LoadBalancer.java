@@ -46,49 +46,49 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = { "name" })
 @ToString(of = { "name", "type" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION, paths = {
 			"dataCenter.region.infrastructureProvider"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, paths = {
 			"dataCenter.region.infrastructureProvider",
 			"vips"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, name = "service-instances", paths = {
 			"serviceInstances.service",
 			"serviceInstances.environment"
+			})
 	})
-})
+//@formatter:on
 public class LoadBalancer extends AbstractItem {
-	
+
 	@Key
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "data_center_id")
 	private DataCenter dataCenter;
-	
+
 	// FIXME This is probably just temporary. Eventually we'll tie the service instance to a load balancer through a
 	// VIP. [WLW]
 	@NonNull
 	@OneToMany(mappedBy = "loadBalancer")
 	@OrderBy("key")
 	private List<ServiceInstance> serviceInstances = new ArrayList<>();
-	
-	@NonNull
-	@OneToMany(mappedBy = "loadBalancer")
-	private List<Vip> vips = new ArrayList<>();
-	
+
 	@Column(name = "type")
 	private String type;
-	
+
 	@Column(name = "ip_address")
 	private String ipAddress;
-	
+
 	@Column(name = "api_url")
 	private String apiUrl;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(LoadBalancer.class, name); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(LoadBalancer.class, name);
+	}
 }

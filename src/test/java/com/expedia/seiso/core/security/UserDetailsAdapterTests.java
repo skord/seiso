@@ -33,57 +33,53 @@ import com.expedia.seiso.domain.entity.User;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class UserDetailsAdapterTests {
-	
+
 	// Class under test
 	private UserDetailsAdapter adapter;
-	
+
 	// Test data
 	private User user;
-	
+
 	@Before
 	public void init() {
 		val roles = new ArrayList<Role>();
 		roles.add(new Role().setName("ROLE_USER"));
 		roles.add(new Role().setName("ROLE_ADMIN"));
-		
-		this.user = new User()
-				.setUsername("happy1")
-				.setPassword("p@ssw0rd")
-				.setEnabled(false)
-				.setRoles(roles);
+
+		this.user = new User().setUsername("happy1").setPassword("p@ssw0rd").setEnabled(false).setRoles(roles);
 		this.adapter = new UserDetailsAdapter(user);
 	}
-	
+
 	@Test
 	public void testUsername() {
 		assertEquals(user.getUsername(), adapter.getUsername());
 	}
-	
+
 	@Test
 	public void testPassword() {
 		assertEquals(user.getPassword(), adapter.getPassword());
 	}
-	
+
 	@Test
 	public void testEnabled() {
 		assertEquals(user.getEnabled(), adapter.isEnabled());
 	}
-	
+
 	@Test
 	public void testAccountNonExpired() {
 		assertTrue(adapter.isAccountNonExpired());
 	}
-	
+
 	@Test
 	public void testAccountNonLocked() {
 		assertTrue(adapter.isAccountNonLocked());
 	}
-	
+
 	@Test
 	public void testCredentialsNonExpired() {
 		assertTrue(adapter.isCredentialsNonExpired());
 	}
-	
+
 	@Test
 	public void testGetAuthorities() {
 		val actualAuthorities = adapter.getAuthorities();

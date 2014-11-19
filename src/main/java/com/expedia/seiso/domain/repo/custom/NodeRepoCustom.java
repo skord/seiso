@@ -21,7 +21,6 @@ import com.expedia.seiso.domain.repo.search.SearchableRepository;
 /**
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
-public interface NodeRepoCustom extends SearchableRepository<Node, Long> 
-{
-	
+public interface NodeRepoCustom extends SearchableRepository<Node, Long> {
+
 }

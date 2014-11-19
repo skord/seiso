@@ -29,27 +29,27 @@ import com.expedia.seiso.web.assembler.ProjectionNode;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface ItemMeta {
-	
+
 	Class<?> getRepositoryInterface();
-	
+
 	boolean isExported();
-	
+
 	String getRel();
-	
+
 	String getRepoKey();
-	
+
 	Method getRepositoryFindByKeyMethod();
-	
+
 	Method getRepositorySearchMethod(String query);
-	
+
 	ProjectionNode getProjectionNode(Projection.Cardinality cardinality, String projectionKey);
-	
+
 	/**
 	 * @param propKey
 	 *            as defined by {@link RestResource}
 	 * @return
 	 */
 	String getPropertyName(String propKey);
-	
+
 	boolean isPagingRepo();
 }

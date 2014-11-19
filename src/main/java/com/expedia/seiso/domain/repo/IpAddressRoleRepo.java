@@ -29,14 +29,13 @@ import com.expedia.seiso.domain.entity.ServiceInstance;
  */
 @RestResource(path = RepoKeys.IP_ADDRESS_ROLES)
 public interface IpAddressRoleRepo extends PagingAndSortingRepository<IpAddressRole, Long> {
-	
+
 	IpAddressRole findByServiceInstanceAndName(ServiceInstance serviceInstance, String name);
-	
+
 	IpAddressRole findByServiceInstanceKeyAndName(String serviceInstanceKey, String name);
-	
+
 	@Modifying
 	@Query("delete from IpAddressRole r where r.serviceInstance.key = :serviceInstanceKey and r.name = :name")
-	void deleteByServiceInstanceKeyAndName(
-			@Param("serviceInstanceKey") String serviceInstanceKey,
+	void deleteByServiceInstanceKeyAndName(@Param("serviceInstanceKey") String serviceInstanceKey,
 			@Param("name") String name);
 }

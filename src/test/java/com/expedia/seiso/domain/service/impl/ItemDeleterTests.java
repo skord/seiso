@@ -32,17 +32,21 @@ import com.expedia.seiso.domain.entity.Service;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ItemDeleterTests {
-	
+
 	// Class under test
-	@InjectMocks private ItemDeleter itemDeleter;
-	
+	@InjectMocks
+	private ItemDeleter itemDeleter;
+
 	// Dependencies
-	@Mock private Repositories repositories;
-	@Mock private CrudRepository serviceRepo;
-	
+	@Mock
+	private Repositories repositories;
+	@Mock
+	private CrudRepository serviceRepo;
+
 	// Test data
-	@Mock private Service service;
-	
+	@Mock
+	private Service service;
+
 	@Before
 	public void setUp() throws Exception {
 		this.itemDeleter = new ItemDeleter();
@@ -50,20 +54,20 @@ public class ItemDeleterTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 	}
-	
+
 	private void initDependencies() {
 		when(repositories.getRepositoryFor(service.getClass())).thenReturn(serviceRepo);
 	}
-	
+
 	@Test
 	public void delete() {
 		itemDeleter.delete(service);
 		verify(serviceRepo).delete(service);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void delete_null() {
 		itemDeleter.delete(null);

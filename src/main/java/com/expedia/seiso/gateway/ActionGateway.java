@@ -23,7 +23,7 @@ import com.expedia.seiso.gateway.model.ActionRequest;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public interface ActionGateway {
-	
+
 	/**
 	 * Publishes an action request to the messaging infrastructure.
 	 * 

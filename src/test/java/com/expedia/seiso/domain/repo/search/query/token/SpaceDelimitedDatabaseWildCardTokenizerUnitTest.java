@@ -8,52 +8,48 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-public class SpaceDelimitedDatabaseWildCardTokenizerUnitTest
-{
+public class SpaceDelimitedDatabaseWildCardTokenizerUnitTest {
 
-    @Test
-    public void testTokenize()
-    {
-        String termString = "this is a test";
-        Set<String> expected = new LinkedHashSet<String>( Arrays.asList( new String[]{ "%this%", "%is%", "%a%", "%test%" } ) );
-        SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
-        Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize( termString );
-        
-        Assert.assertEquals( expected, actual );
-        
-    }
-    
-    @Test
-    public void testEmptyTermString()
-    {
-        String termString = "";
-        Set<String> expected = new LinkedHashSet<String>( Arrays.asList( new String[]{} ) );
-        SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
-        Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize( termString );
-        
-        Assert.assertEquals( expected, actual );
-    }
-    
-    @Test
-    public void testNullTermString()
-    {
-        String termString = null;
-        Set<String> expected = new LinkedHashSet<String>( Arrays.asList( new String[]{} ) );
-        SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
-        Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize( termString );
-        
-        Assert.assertEquals( expected, actual );
-    }
-    
-    @Test
-    public void testBlankString()
-    {
-        String termString = "   ";
-        Set<String> expected = new LinkedHashSet<String>( Arrays.asList( new String[]{} ) );
-        SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
-        Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize( termString );
-        
-        Assert.assertEquals( expected, actual );
-    }
+	@Test
+	public void testTokenize() {
+		String termString = "this is a test";
+		Set<String> expected = new LinkedHashSet<String>(
+				Arrays.asList(new String[] { "%this%", "%is%", "%a%", "%test%" }));
+		SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
+		Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize(termString);
+
+		Assert.assertEquals(expected, actual);
+
+	}
+
+	@Test
+	public void testEmptyTermString() {
+		String termString = "";
+		Set<String> expected = new LinkedHashSet<String>(Arrays.asList(new String[] {}));
+		SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
+		Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize(termString);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testNullTermString() {
+		String termString = null;
+		Set<String> expected = new LinkedHashSet<String>(Arrays.asList(new String[] {}));
+		SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
+		Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize(termString);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testBlankString() {
+		String termString = "   ";
+		Set<String> expected = new LinkedHashSet<String>(Arrays.asList(new String[] {}));
+		SpaceDelimitedDatabaseWildCardTokenizer spaceDelimitedDatabaseWildCardTokenizer = new SpaceDelimitedDatabaseWildCardTokenizer();
+		Set<String> actual = spaceDelimitedDatabaseWildCardTokenizer.tokenize(termString);
+
+		Assert.assertEquals(expected, actual);
+	}
 
 }

@@ -33,6 +33,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BulkNodeActionRequest implements ActionRequest {
-	@NonNull private String code;
-	@NonNull private List<ItemKey> nodeKeys;
+	@NonNull
+	private String code;
+	@NonNull
+	private List<ItemKey> nodeKeys;
 }

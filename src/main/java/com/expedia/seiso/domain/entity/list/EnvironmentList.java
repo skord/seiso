@@ -22,4 +22,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EnvironmentList extends ArrayList<Environment> { }
+public class EnvironmentList extends ArrayList<Environment> {
+}

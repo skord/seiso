@@ -44,13 +44,18 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = "username")
 @ToString(of = { "username", "firstName", "lastName" })
 @Entity
+//@formatter:off
 @Projections({
-	@Projection(cardinality = Cardinality.COLLECTION, paths = { }),
+	@Projection(cardinality = Cardinality.COLLECTION, paths = {}),
 	@Projection(cardinality = Cardinality.SINGLE, paths = { "manager", "directReports" }),
 	@Projection(cardinality = Cardinality.SINGLE, name = "popover")
-})
-public class Person extends AbstractItem {	
-	@Key private String username;
+	})
+//@formatter:on
+public class Person extends AbstractItem {
+	
+	@Key
+	private String username;
+	
 	private String firstName;
 	private String lastName;
 	private String title;
@@ -62,25 +67,27 @@ public class Person extends AbstractItem {
 	private String streetAddress;
 	private String workPhone;
 	private String email;
-	
+
 	// Not sure we want this here for the long term, but maybe. After all we will want to store Amazon instance IDs
 	// with our own machines. [WLW]
 	private String ldapDn;
-	
+
 	// Setting this lazy. Otherwise Hibernate is issuing a separate select for it. :-O
 	// UGH, having lazy here means there will be a proxy, and this was causing an EntityLinks lookup to fail since it
 	// was doing that by classname. (The proxy has a funky classname.) [WLW]
-//	@ManyToOne(fetch = FetchType.LAZY)
+	// @ManyToOne(fetch = FetchType.LAZY)
 	@ManyToOne
 	@JoinColumn(name = "manager_id")
 	@RestResource(path = "manager")
 	private Person manager;
-	
+
 	@OrderBy("firstName, lastName, id")
 	@OneToMany(mappedBy = "manager")
 	@RestResource(path = "direct-reports")
 	private List<Person> directReports;
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(Person.class, username); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(Person.class, username);
+	}
 }

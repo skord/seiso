@@ -32,8 +32,11 @@ public class ConfigManagementEvent {
 	public static final String OP_CREATE = "create";
 	public static final String OP_UPDATE = "update";
 	public static final String OP_DELETE = "delete";
-	
-	@NonNull private String itemType;
-	@NonNull private Serializable itemKey;
-	@NonNull private String operation;
+
+	@NonNull
+	private String itemType;
+	@NonNull
+	private Serializable itemKey;
+	@NonNull
+	private String operation;
 }

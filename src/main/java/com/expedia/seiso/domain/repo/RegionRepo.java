@@ -17,22 +17,25 @@ package com.expedia.seiso.domain.repo;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.expedia.seiso.core.ann.FindByKey;
 import com.expedia.seiso.core.ann.RestResource;
-import com.expedia.seiso.domain.entity.ContentSwitchingVip;
-import com.expedia.seiso.domain.entity.Vip;
+import com.expedia.seiso.domain.entity.Region;
 
 /**
- * @author Willie Wheeler (willie.wheeler@expedia.com)
+ * @author Willie Wheeler (wwheeler@expedia.com)
  */
-@RestResource(path = RepoKeys.CONTENT_SWITCHING_VIPS)
-public interface ContentSwitchingVipRepo extends PagingAndSortingRepository<ContentSwitchingVip, Long> {
-	
+@RestResource(path = RepoKeys.INFRASTRUCTURE_PROVIDER_REGIONS)
+public interface RegionRepo extends
+		PagingAndSortingRepository<Region, Long> {
+
+	@Query("from Region order by name")
+	List<Region> findAll();
+
 	@FindByKey
-	Vip findByName(@Param("name") String name);
-	
-	List<Vip> findByLoadBalancerName(@Param("lb") String lbName);
+	@Query("from Region r left join fetch r.infrastructureProvider where r.key = :key")
+	Region findByKey(@Param("key") String key);
 }

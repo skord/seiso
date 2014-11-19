@@ -18,11 +18,9 @@ package com.expedia.seiso.core.util;
 import lombok.NonNull;
 
 public class AuditUtils {
-	
+
 	public static boolean isAuditProperty(@NonNull String propName) {
-		return ("createdBy".equals(propName) ||
-				"createdDate".equals(propName) ||
-				"updatedBy".equals(propName) ||
-				"updatedDate".equals(propName));
+		return ("createdBy".equals(propName) || "createdDate".equals(propName) || "updatedBy".equals(propName) || "updatedDate"
+				.equals(propName));
 	}
 }

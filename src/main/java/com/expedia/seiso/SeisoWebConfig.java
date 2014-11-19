@@ -30,8 +30,6 @@ import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.validation.Validator;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -62,62 +60,67 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  */
 @Configuration
 public class SeisoWebConfig extends WebMvcConfigurationSupport {
-	@Autowired private CustomProperties customSettings;
-	@Autowired private RepoConverter repoConverter;
-	@Autowired private ItemConverterFactory itemConverterFactory;
-	@Autowired private PEItemDtoResolver persistentEntityItemDtoResolver;
-	@Autowired private PEItemDtoListResolver persistentEntityItemDtoListResolver;
 	
+	@Autowired
+	private CustomProperties customSettings;
 	
+	@Autowired
+	private RepoConverter repoConverter;
+	
+	@Autowired
+	private ItemConverterFactory itemConverterFactory;
+	
+	@Autowired
+	private PEItemDtoResolver persistentEntityItemDtoResolver;
+	
+	@Autowired
+	private PEItemDtoListResolver persistentEntityItemDtoListResolver;
+
 	// =================================================================================================================
 	// Configuration
 	// =================================================================================================================
-	
+
 	@Override
 	protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.add(persistentEntityItemDtoResolver);
 		argumentResolvers.add(persistentEntityItemDtoListResolver);
 		argumentResolvers.add(pageableResolver());
 	}
-	
+
 	@Override
 	protected void addFormatters(FormatterRegistry registry) {
 		registry.addConverter(repoConverter);
-		
+
 		// TODO I don't think we're even using this anymore. [WLW]
-//		registry.addConverterFactory(itemConverterFactory);
+		// registry.addConverterFactory(itemConverterFactory);
 	}
-	
+
 	@Override
 	protected void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 		// @formatter:off
-		configurer
-				.favorPathExtension(false)
-				.favorParameter(false)
-				.ignoreAcceptHeader(false)
-				.useJaf(false)
+		configurer.favorPathExtension(false).favorParameter(false).ignoreAcceptHeader(false).useJaf(false)
 				.defaultContentType(MediaType.APPLICATION_JSON);
 		// @formatter:on
 	}
-	
+
 	@Override
 	protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.add(new ByteArrayHttpMessageConverter());
-		
+
 		val stringConverter = new StringHttpMessageConverter();
 		stringConverter.setWriteAcceptCharset(false);
 		converters.add(stringConverter);
-		
+
 		val jsonConverter = new MappingJackson2HttpMessageConverter();
 		jsonConverter.setObjectMapper(objectMapper());
 		converters.add(jsonConverter);
 	}
-	
+
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 	}
-	
+
 	@Override
 	protected void addViewControllers(ViewControllerRegistry registry) {
 		// Lifted from org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration. [WLW]
@@ -128,7 +131,7 @@ public class SeisoWebConfig extends WebMvcConfigurationSupport {
 	// =================================================================================================================
 	// Beans
 	// =================================================================================================================
-	
+
 	// Suppress suffix pattern matching since machine names can have periods. [WLW]
 	@Bean
 	@Override
@@ -140,7 +143,7 @@ public class SeisoWebConfig extends WebMvcConfigurationSupport {
 		mapping.setUseSuffixPatternMatch(false);
 		return mapping;
 	}
-	
+
 	@Bean
 	public PageableHandlerMethodArgumentResolver pageableResolver() {
 		val resolver = new PageableHandlerMethodArgumentResolver();
@@ -148,24 +151,24 @@ public class SeisoWebConfig extends WebMvcConfigurationSupport {
 		resolver.setOneIndexedParameters(false);
 		return resolver;
 	}
-	
+
 	// TODO Can I inject a multikey map instead of creating a bunch of SimplePropertyEntry beans?
 	// Maybe org.springframework.beans.factory.config.MapFactoryBean?
 	@Bean
 	public SimplePropertyEntry ipAddressRoleEntry() {
 		return new SimplePropertyEntry(RepoKeys.SERVICE_INSTANCES, "ip-address-roles", IpAddressRole.class);
 	}
-	
+
 	@Bean
 	public SimplePropertyEntry nodeIpAddressEntry() {
 		return new SimplePropertyEntry(RepoKeys.NODES, "ip-addresses", NodeIpAddress.class);
 	}
-	
+
 	@Bean
 	public SimplePropertyEntry serviceInstancePortEntry() {
 		return new SimplePropertyEntry(RepoKeys.SERVICE_INSTANCES, "ports", ServiceInstancePort.class);
 	}
-	
+
 	// ObjectMapper is an in-memory tree model parser.
 	@Bean
 	public ObjectMapper objectMapper() {
@@ -173,43 +176,32 @@ public class SeisoWebConfig extends WebMvcConfigurationSupport {
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		return objectMapper;
 	}
-	
+
 	@Bean
 	public ItemLinks itemLinks() throws Exception {
 		return new ItemLinks(getBaseUri());
 	}
-	
+
 	@Bean
 	public PageLinks pageLinks() throws Exception {
 		return new PageLinks(getBaseUri());
 	}
-	
+
 	@Bean
 	public InternalResourceViewResolver defaultViewResolver() {
 		// Need this so we can forward to index.html.
 		return new InternalResourceViewResolver();
 	}
-
-// TODO revisit custom validation annotation configurations
-//    @Override
-//    public Validator getValidator()
-//    {
-//        return new LocalValidatorFactoryBean();
-//    }
-//	
-//	@Bean
-//	public com.expedia.seiso.domain.repo.search.query.token.Validator searchQueryValidator() throws InstantiationException, IllegalAccessException {
-//	    return new com.expedia.seiso.domain.repo.search.query.token.Validator();    
-//	}
+	
 	
 	// =================================================================================================================
 	// Private
 	// =================================================================================================================
-	
+
 	private URI getBaseUri() throws Exception {
 		return new URI(slashifyUri(customSettings.getApiBaseUri()));
 	}
-	
+
 	private String slashifyUri(String uri) {
 		return uri.endsWith("/") ? uri : uri + "/";
 	}

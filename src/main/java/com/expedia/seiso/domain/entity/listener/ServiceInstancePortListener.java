@@ -34,42 +34,40 @@ import com.expedia.seiso.domain.repo.EndpointRepo;
  */
 @XSlf4j
 public class ServiceInstancePortListener {
-	
+
 	// Supports Mockito dependency injection.
 	private ApplicationContext appContext;
-	
+
 	@PostPersist
 	public void postPersist(@NonNull ServiceInstancePort port) {
-		
+
 		// For JPA, since v2.0 doesn't support dependency injection.
 		if (appContext == null) {
 			this.appContext = ApplicationContextProvider.getApplicationContext();
 		}
-		
+
 		val endpointRepo = appContext.getBean(EndpointRepo.class);
 		val creator = new EndpointCreator(endpointRepo);
 		creator.createEndpointsForPort(port);
 	}
-	
+
 	@AllArgsConstructor
 	static class EndpointCreator {
 		private EndpointRepo endpointRepo;
-		
+
 		public void createEndpointsForPort(ServiceInstancePort port) {
 			log.info("Post-processing port insertion: id={}", port.getId());
 			val nodes = port.getServiceInstance().getNodes();
-			
+
 			// For some reason, when we save the endpoint, it doesn't see the port ID (even though we're able to see it
 			// here). So we use a reference instead. [WLW]
 			val portRef = new ServiceInstancePort();
 			portRef.setId(port.getId());
-			
+
 			for (val node : nodes) {
 				val nodeIpAddresses = node.getIpAddresses();
 				for (val nodeIpAddress : nodeIpAddresses) {
-					val endpoint = new Endpoint()
-						.setIpAddress(nodeIpAddress)
-						.setPort(portRef);
+					val endpoint = new Endpoint().setIpAddress(nodeIpAddress).setPort(portRef);
 					log.info("Creating endpoint: {}", endpoint);
 					endpointRepo.save(endpoint);
 				}

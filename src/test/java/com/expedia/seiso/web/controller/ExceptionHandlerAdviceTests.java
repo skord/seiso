@@ -44,33 +44,35 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ExceptionHandlerAdviceTests {
-	
+
 	// Class under test
 	private ExceptionHandlerAdvice advice;
-	
+
 	// Test data
 	private InvalidRequestException invalidRequestException;
 	private ResourceNotFoundException resourceNotFoundException;
 	private JsonMappingException jsonMappingException;
 	private RuntimeException runtimeException;
 
-	@Mock private BindingResult bindingResult;
-	@Mock private WebRequest webRequest;
-	
+	@Mock
+	private BindingResult bindingResult;
+	@Mock
+	private WebRequest webRequest;
+
 	@Before
 	public void init() throws Exception {
 		this.advice = new ExceptionHandlerAdvice();
 		MockitoAnnotations.initMocks(this);
 		initTestData();
 	}
-	
+
 	private void initTestData() {
 		this.invalidRequestException = new InvalidRequestException("my-ire-message", bindingResult);
 		this.resourceNotFoundException = new ResourceNotFoundException("my-rnfe-message");
 		this.jsonMappingException = new JsonMappingException("my-jme-message");
 		this.runtimeException = new RuntimeException("my-re-message");
 	}
-	
+
 	@Test
 	public void handleInvalidRequestException() {
 		val result = advice.handleInvalidRequestException(invalidRequestException, webRequest);
@@ -78,7 +80,7 @@ public class ExceptionHandlerAdviceTests {
 		assertEquals(C.EC_INVALID_REQUEST, result.getCode());
 		assertEquals(invalidRequestException.getMessage(), result.getMessage());
 	}
-	
+
 	@Test
 	public void handleNoSuchItemException() {
 		val result = advice.handleNoSuchItemException(resourceNotFoundException, webRequest);
@@ -86,7 +88,7 @@ public class ExceptionHandlerAdviceTests {
 		assertEquals(C.EC_RESOURCE_NOT_FOUND, result.getCode());
 		assertNotNull(result.getMessage());
 	}
-	
+
 	@Test
 	public void handleJsonMappingException() {
 		val result = advice.handleJsonMappingException(jsonMappingException, webRequest);
@@ -94,7 +96,7 @@ public class ExceptionHandlerAdviceTests {
 		assertEquals(C.EC_INVALID_REQUEST_JSON_PAYLOAD, result.getCode());
 		assertNotNull(result.getMessage());
 	}
-	
+
 	@Test
 	public void handleRuntimeException() {
 		val result = advice.handleRuntimeException(runtimeException, webRequest);
@@ -102,18 +104,18 @@ public class ExceptionHandlerAdviceTests {
 		assertEquals(C.EC_INTERNAL_ERROR, result.getCode());
 		assertNotNull(result.getMessage());
 	}
-	
-	@Test
-    public void handleBindExceptionException() throws Exception {
-	    
-	    ObjectError expectedError = new ObjectError("name","message");
-	    ValidationErrorMap expected = new ValidationErrorMap();
-	    expected.addError( expectedError.getObjectName(), expectedError.getDefaultMessage() );
 
-	    BindException bindException = new BindException( this, "foo" );
-	    bindException.addError( expectedError );
-	    val actual = advice.handleBindException( bindException );
-	    
-	    Assert.assertEquals( expected.errorMap, actual.errorMap );
-    }
+	@Test
+	public void handleBindExceptionException() throws Exception {
+
+		ObjectError expectedError = new ObjectError("name", "message");
+		ValidationErrorMap expected = new ValidationErrorMap();
+		expected.addError(expectedError.getObjectName(), expectedError.getDefaultMessage());
+
+		BindException bindException = new BindException(this, "foo");
+		bindException.addError(expectedError);
+		val actual = advice.handleBindException(bindException);
+
+		Assert.assertEquals(expected.errorMap, actual.errorMap);
+	}
 }

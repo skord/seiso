@@ -34,42 +34,39 @@ import org.springframework.data.domain.Pageable;
 
 import com.expedia.seiso.domain.entity.Service;
 
-
 /**
  * @author Ken Van Eyk (kvaneyk@expedia.com)
  */
-public class ServiceRepoImplUnitTest
-{
-          private Set<String>       searchTokens;
-          private Pageable          pageable;
-    @Mock private EntityManager     entityManager;
-          private MockRepoImplUtils mockRepoImplUtils;
-          private Page<Service>     mockResultsPage;
-          private List<Service>     mockResultList;
+public class ServiceRepoImplTests {
+	private Set<String> searchTokens;
+	private Pageable pageable;
+	@Mock
+	private EntityManager entityManager;
+	private MockRepoImplUtils mockRepoImplUtils;
+	private Page<Service> mockResultsPage;
+	private List<Service> mockResultList;
 
-    @Before
-    public void setUp()
-    {
-        MockitoAnnotations.initMocks( this );
-        
-        this.searchTokens = new HashSet<String>();
-        searchTokens.add( "foo" );
-        this.pageable = new PageRequest( 1, 1 );
-        
-        this.mockResultList = new ArrayList<Service>();
-        this.mockResultsPage = new PageImpl<Service>( this.mockResultList );
-        this.mockRepoImplUtils = new MockRepoImplUtils( this.mockResultsPage );
-    }
-    
-    @Test
-    public void searchTest()
-    {
-        ServiceRepoImpl serviceRepoImpl = new ServiceRepoImpl( this.entityManager, this.mockRepoImplUtils );
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 
-        Page<Service> expected = this.mockResultsPage; 
-        Page<Service>   actual = serviceRepoImpl.search( this.searchTokens, pageable );
-        
-        Assert.assertEquals( expected, actual );
-    }
-    
+		this.searchTokens = new HashSet<String>();
+		searchTokens.add("foo");
+		this.pageable = new PageRequest(1, 1);
+
+		this.mockResultList = new ArrayList<Service>();
+		this.mockResultsPage = new PageImpl<Service>(this.mockResultList);
+		this.mockRepoImplUtils = new MockRepoImplUtils(this.mockResultsPage);
+	}
+
+	@Test
+	public void searchTest() {
+		ServiceRepoImpl serviceRepoImpl = new ServiceRepoImpl(this.entityManager, this.mockRepoImplUtils);
+
+		Page<Service> expected = this.mockResultsPage;
+		Page<Service> actual = serviceRepoImpl.search(this.searchTokens, pageable);
+
+		Assert.assertEquals(expected, actual);
+	}
+
 }

@@ -51,55 +51,49 @@ import com.expedia.seiso.web.dto.MapItemDto;
 @RestController
 @RequestMapping(Controllers.REQUEST_MAPPING_VERSION)
 @XSlf4j
-public class SearchController
-{
+public class SearchController {
 	private SearchEngine<? extends Item, ? extends Serializable> searchEngine;
-	
+
 	@Autowired
-	public SearchController( @NotNull SearchEngine<? extends Item, ? extends Serializable> searchEngine )
-	{
-	    this.searchEngine = searchEngine;
+	public SearchController(@NotNull SearchEngine<? extends Item, ? extends Serializable> searchEngine) {
+		this.searchEngine = searchEngine;
 	}
 
-	private  Map<String, List<MapItemDto>> convertPagedSearchResultsToNonPagedSearchResults( Map<String, PagedResources<MapItemDto>> pagedSearchResults )
-	{
-	    Map<String, List<MapItemDto>> searchResults = new LinkedHashMap<String, List<MapItemDto>>();
-	    
-	    for( Map.Entry<String, PagedResources<MapItemDto>> pagedSearchResultsEntry : pagedSearchResults.entrySet() )
-	    {
-	        searchResults.put( pagedSearchResultsEntry.getKey(), new ArrayList<MapItemDto>( pagedSearchResultsEntry.getValue().getContent() ) );
-	    }
-	    
-	    return searchResults;
+	private Map<String, List<MapItemDto>> convertPagedSearchResultsToNonPagedSearchResults(
+			Map<String, PagedResources<MapItemDto>> pagedSearchResults) {
+		Map<String, List<MapItemDto>> searchResults = new LinkedHashMap<String, List<MapItemDto>>();
+
+		for (Map.Entry<String, PagedResources<MapItemDto>> pagedSearchResultsEntry : pagedSearchResults.entrySet()) {
+			searchResults.put(pagedSearchResultsEntry.getKey(), new ArrayList<MapItemDto>(pagedSearchResultsEntry
+					.getValue().getContent()));
+		}
+
+		return searchResults;
 	}
-	
-    @Transactional
-    @RequestMapping( value = "/search",
-	                 method = RequestMethod.GET,
-	                 produces = MediaType.APPLICATION_JSON_VALUE )
-	public Map<String, List<MapItemDto>> search( @Valid 
-	                                             @ModelAttribute( "query" ) 
-	                                             @ValidationAnnotation 
-	                                             TokenizedSearchQuery tokenizedSearchQuery, 
-	                                             BindingResult bindingResult ) throws InstantiationException, IllegalAccessException, InterruptedException, ExecutionException
-	{
-        Map<String, List<MapItemDto>> searchResults =  null;
 
-        String searchQuery = ( tokenizedSearchQuery == null ? null : tokenizedSearchQuery.getQuery() );
-        log.trace( "search({}}", searchQuery );
+	@Transactional
+	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, List<MapItemDto>> search(
+			@Valid @ModelAttribute("query") @ValidationAnnotation TokenizedSearchQuery tokenizedSearchQuery,
+			BindingResult bindingResult) throws InstantiationException, IllegalAccessException, InterruptedException,
+			ExecutionException {
+		Map<String, List<MapItemDto>> searchResults = null;
 
-// TODO validator is not being invoked on search method call, so explicitly doing it here for now
-if( !new Validator().isValid( tokenizedSearchQuery, null ) )
-{
-    throw new RuntimeException( "invalid search query: " + searchQuery );
-}
+		String searchQuery = (tokenizedSearchQuery == null ? null : tokenizedSearchQuery.getQuery());
+		log.trace("search({}}", searchQuery);
 
-        // TODO revisit, for now non-paged api just uses a large page ;)
-        PageRequest pageRequest = new PageRequest( 1, 500 );
-        Map<String, PagedResources<MapItemDto>> pagedSearchResults = this.searchEngine.search( tokenizedSearchQuery, pageRequest );
-        searchResults = this.convertPagedSearchResultsToNonPagedSearchResults( pagedSearchResults );
-        
-        return searchResults;
+		// TODO validator is not being invoked on search method call, so explicitly doing it here for now
+		if (!new Validator().isValid(tokenizedSearchQuery, null)) {
+			throw new RuntimeException("invalid search query: " + searchQuery);
+		}
+
+		// TODO revisit, for now non-paged api just uses a large page ;)
+		PageRequest pageRequest = new PageRequest(1, 500);
+		Map<String, PagedResources<MapItemDto>> pagedSearchResults = this.searchEngine.search(tokenizedSearchQuery,
+				pageRequest);
+		searchResults = this.convertPagedSearchResultsToNonPagedSearchResults(pagedSearchResults);
+
+		return searchResults;
 	}
-    
+
 }

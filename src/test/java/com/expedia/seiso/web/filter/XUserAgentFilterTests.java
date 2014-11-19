@@ -35,16 +35,17 @@ import com.expedia.seiso.web.filter.XUserAgentFilter;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class XUserAgentFilterTests {
-	
+
 	// Class under test
 	private XUserAgentFilter filter;
-	
+
 	// Test data
 	private MockFilterConfig filterConfig;
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
-	@Mock private FilterChain filterChain;
-	
+	@Mock
+	private FilterChain filterChain;
+
 	@Before
 	public void setUp() throws Exception {
 		this.filter = new XUserAgentFilter();
@@ -52,26 +53,26 @@ public class XUserAgentFilterTests {
 		this.request = new MockHttpServletRequest();
 		this.response = new MockHttpServletResponse();
 	}
-	
+
 	@Test
 	public void init() throws Exception {
 		filter.init(filterConfig);
 	}
-	
+
 	@Test
 	public void doFilter() throws Exception {
 		request.addHeader("X-User-Agent", "Ruthless Villain");
 		filter.doFilter(request, response, filterChain);
 		verify(filterChain).doFilter(request, response);
 	}
-	
+
 	@Test
 	public void doFilterMissingHeader() throws Exception {
 		filter.doFilter(request, response, filterChain);
 		assertEquals(422, response.getStatus());
 		assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
 	}
-	
+
 	@Test
 	public void destroy() {
 		filter.destroy();

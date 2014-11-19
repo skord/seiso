@@ -30,10 +30,10 @@ import com.expedia.seiso.domain.entity.InfrastructureProvider;
  */
 @RestResource(path = RepoKeys.INFRASTRUCTURE_PROVIDERS)
 public interface InfrastructureProviderRepo extends CrudRepository<InfrastructureProvider, Long> {
-	
+
 	@Query("from InfrastructureProvider order by name")
 	List<InfrastructureProvider> findAll();
-	
+
 	@FindByKey
 	InfrastructureProvider findByKey(@Param("key") String key);
 }

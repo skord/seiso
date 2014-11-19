@@ -24,9 +24,13 @@ import com.expedia.seiso.domain.entity.ServiceInstancePort;
 @Data
 @RequiredArgsConstructor
 public class ServiceInstancePortKey implements ItemKey {
-	@NonNull private String serviceInstanceKey;
-	@NonNull private Integer number;
-	
+	@NonNull
+	private String serviceInstanceKey;
+	@NonNull
+	private Integer number;
+
 	@Override
-	public Class<?> getItemClass() { return ServiceInstancePort.class; }
+	public Class<?> getItemClass() {
+		return ServiceInstancePort.class;
+	}
 }

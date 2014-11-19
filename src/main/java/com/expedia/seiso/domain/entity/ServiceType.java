@@ -43,28 +43,28 @@ import com.expedia.seiso.domain.entity.key.SimpleItemKey;
 @EqualsAndHashCode(callSuper = false, of = "key")
 @ToString(of = { "key", "name" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION),
-	@Projection(cardinality = Cardinality.SINGLE, paths = {
-			"services.group",
-			"services.owner"
-	})
-})
+	@Projection(cardinality = Cardinality.SINGLE, paths = { "services.group", "services.owner" }) })
+//@formatter:on
 public class ServiceType extends AbstractItem {
-	
+
 	@Key
 	@Column(name = "ukey")
 	private String key;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	// Don't want cascading here. If we delete a service type, then the former members are simply orphaned rather than
 	// being deleted. [WLW]
 	@NonNull
 	@OneToMany(mappedBy = "type")
 	private List<Service> services = new ArrayList<>();
-	
+
 	@Override
-	public ItemKey itemKey() { return new SimpleItemKey(ServiceType.class, key); }
+	public ItemKey itemKey() {
+		return new SimpleItemKey(ServiceType.class, key);
+	}
 }

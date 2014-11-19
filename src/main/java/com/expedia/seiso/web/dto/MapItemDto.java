@@ -37,19 +37,20 @@ public class MapItemDto {
 	private String selfUri;
 	private Long id;
 	private Map<String, Object> content;
-	private AuditData auditData;
-	
+
 	@JsonProperty("_self")
 	@JsonInclude(Include.NON_NULL)
-	public String getSelfUri() { return selfUri; }
-	
+	public String getSelfUri() {
+		return selfUri;
+	}
+
 	@JsonProperty
-	public Long getId() { return id; }
-	
+	public Long getId() {
+		return id;
+	}
+
 	@JsonAnyGetter
-	public Map<String, Object> getContent() { return content; }
-	
-	@JsonProperty("audit")
-	@JsonInclude(Include.NON_NULL)
-	public AuditData getAuditData() { return auditData; }
+	public Map<String, Object> getContent() {
+		return content;
+	}
 }

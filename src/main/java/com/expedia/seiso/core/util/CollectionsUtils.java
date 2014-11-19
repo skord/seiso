@@ -25,15 +25,17 @@ import lombok.val;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class CollectionsUtils {
-	
+
 	public static Class<?> getElementClass(@NonNull List<?> list) {
 		return (list.isEmpty() ? null : list.get(0).getClass());
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List toList(Iterable iterable) {
 		val list = new ArrayList();
-		for (Object element : iterable) { list.add(element); }
+		for (Object element : iterable) {
+			list.add(element);
+		}
 		return list;
 	}
 }

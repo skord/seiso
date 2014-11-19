@@ -32,30 +32,31 @@ import com.expedia.seiso.web.controller.ItemController;
 // Based on SDR org.springframework.data.rest.webmvc.support.RepositoryLinkBuilder
 public class ItemLinkBuilder extends LinkBuilderSupport<ItemLinkBuilder> {
 	private ItemMeta itemMeta;
-	
+
 	private static UriComponentsBuilder buildBuilder(URI baseUri, ItemMeta itemMeta) {
-		val builder = (baseUri == null ?
-				ControllerLinkBuilder.linkTo(ItemController.class).toUriComponentsBuilder() :
-				UriComponentsBuilder.fromUri(baseUri));
+		val builder = (baseUri == null ? ControllerLinkBuilder.linkTo(ItemController.class).toUriComponentsBuilder()
+				: UriComponentsBuilder.fromUri(baseUri));
 		return builder.path(itemMeta.getRepoKey());
 	}
-	
+
 	public ItemLinkBuilder(URI baseUri, ItemMeta itemMeta) {
 		this(buildBuilder(baseUri, itemMeta), itemMeta);
 	}
-	
+
 	private ItemLinkBuilder(UriComponentsBuilder builder, ItemMeta itemMeta) {
 		super(builder);
 		this.itemMeta = itemMeta;
 	}
-	
+
 	@Override
 	protected ItemLinkBuilder createNewInstance(UriComponentsBuilder builder) {
 		return new ItemLinkBuilder(builder, itemMeta);
 	}
-	
+
 	// WTF?
 	@Override
-	protected ItemLinkBuilder getThis() { return this; }
+	protected ItemLinkBuilder getThis() {
+		return this;
+	}
 
 }

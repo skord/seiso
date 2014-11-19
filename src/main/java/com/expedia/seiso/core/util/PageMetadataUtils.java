@@ -18,7 +18,7 @@ package com.expedia.seiso.core.util;
 import org.springframework.hateoas.PagedResources.PageMetadata;
 
 public class PageMetadataUtils {
-	
+
 	// For some reason, pageMeta.getTotalPages() returns the number of *full* pages, excluding partials. This method
 	// corrects this flaw.
 	public static long getCorrectedTotalPages(PageMetadata pageMeta) {

@@ -32,16 +32,19 @@ import com.expedia.seiso.gateway.model.BulkNodeActionRequest;
  * @author Willie Wheeler (wwheeler@expedia.com)
  */
 public class ActionGatewayImplTests {
-	
+
 	// Class under test
-	@InjectMocks private ActionGatewayImpl gateway;
-	
+	@InjectMocks
+	private ActionGatewayImpl gateway;
+
 	// Dependencies
-	@Mock private AmqpTemplate amqpTemplate;
-	
+	@Mock
+	private AmqpTemplate amqpTemplate;
+
 	// Test data
-	@Mock private BulkNodeActionRequest request;
-	
+	@Mock
+	private BulkNodeActionRequest request;
+
 	@Before
 	public void setUp() throws Exception {
 		this.gateway = new ActionGatewayImpl();
@@ -49,19 +52,21 @@ public class ActionGatewayImplTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 	}
-	
+
 	private void initDependencies() {
 	}
-	
+
 	@Test
 	public void publish() {
 		gateway.publish(request);
 		verify(amqpTemplate).convertAndSend(anyString(), anyString(), eq(request));
 	}
-	
+
 	@Test(expected = NullPointerException.class)
-	public void publish_null() { gateway.publish(null); }
+	public void publish_null() {
+		gateway.publish(null);
+	}
 }

@@ -53,28 +53,39 @@ import com.expedia.seiso.domain.repo.adapter.SimpleItemRepoAdapter;
  */
 @XSlf4j
 public class ItemServiceImplTests {
-	
+
 	// Class under test
-	@InjectMocks private ItemServiceImpl itemService;
-	
+	@InjectMocks
+	private ItemServiceImpl itemService;
+
 	// Dependencies
-	@Mock private ItemMetaLookup itemMetaLookup;
-	@Mock private Repositories repositories;
-	@Mock private PersonRepo personRepo;
-	@Mock private RepoAdapters repoAdapters;
-	@Mock private SimpleItemRepoAdapter simpleItemRepoAdapter;
-	@Mock private ItemDeleter itemDeleter;
-	@Mock private ItemMerger itemMerger;
-	
+	@Mock
+	private ItemMetaLookup itemMetaLookup;
+	@Mock
+	private Repositories repositories;
+	@Mock
+	private PersonRepo personRepo;
+	@Mock
+	private RepoAdapters repoAdapters;
+	@Mock
+	private SimpleItemRepoAdapter simpleItemRepoAdapter;
+	@Mock
+	private ItemDeleter itemDeleter;
+	@Mock
+	private ItemMerger itemMerger;
+
 	// Test data
-	@Mock private ItemMeta personMeta;
-	@Mock private Pageable personPageable;
+	@Mock
+	private ItemMeta personMeta;
+	@Mock
+	private Pageable personPageable;
 	private Method personFindByKeyMethod;
 	private List<Person> people;
 	private Person person;
 	private SimpleItemKey personKey;
-	@Mock private Page<Person> personPage;
-	
+	@Mock
+	private Page<Person> personPage;
+
 	@Before
 	public void init() throws Exception {
 		this.itemService = new ItemServiceImpl();
@@ -82,37 +93,34 @@ public class ItemServiceImplTests {
 		initTestData();
 		initDependencies();
 	}
-	
+
 	private void initTestData() {
 		// @formatter:off
-		this.person = new Person()
-				.setUsername("wwheeler")
-				.setFirstName("Willie")
-				.setLastName("Wheeler");
+		this.person = new Person().setUsername("wwheeler").setFirstName("Willie").setLastName("Wheeler");
 		// @formatter:on
-		
+
 		this.people = new ArrayList<Person>();
 		people.add(person);
-		
+
 		this.personFindByKeyMethod = ReflectionUtils.findMethod(PersonRepo.class, "findByUsername", String.class);
 		log.trace("method={}", personFindByKeyMethod);
-		
+
 		when(personMeta.getRepositoryFindByKeyMethod()).thenReturn(personFindByKeyMethod);
-		
+
 		this.personKey = new SimpleItemKey(Person.class, person.getUsername());
 	}
-	
+
 	private void initDependencies() {
 		when(itemMetaLookup.getItemMeta(Person.class)).thenReturn(personMeta);
-		
+
 		when(repositories.getRepositoryFor(Person.class)).thenReturn(personRepo);
-		
+
 		when(personRepo.findAll(personPageable)).thenReturn(personPage);
-		
+
 		when(repoAdapters.getRepoAdapterFor(Person.class)).thenReturn(simpleItemRepoAdapter);
 		when(simpleItemRepoAdapter.find(personKey)).thenReturn(person);
 	}
-	
+
 	@Test
 	@SuppressWarnings("rawtypes")
 	public void findAll() {
@@ -120,52 +128,52 @@ public class ItemServiceImplTests {
 		assertNotNull(result);
 		verify(personRepo).findAll(personPageable);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void findAll_nullItemClass() {
 		itemService.findAll(null, personPageable);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void findAll_nullPageable() {
 		itemService.findAll(Person.class, null);
 	}
-	
+
 	@Test
 	public void find() {
 		val result = itemService.find(new SimpleItemKey(Person.class, person.getUsername()));
 		assertNotNull(result);
 		assertEquals(person, result);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void find_nullItemKey() {
 		itemService.find(null);
 	}
-	
+
 	@Test
 	public void delete() {
 		itemService.delete(person);
 		verify(itemDeleter, times(1)).delete(person);
 	}
-	
+
 	@Test
 	public void delete_item() {
 		itemService.delete(person);
 		verify(itemDeleter).delete(person);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void delete_nullItem() {
 		itemService.delete((Item) null);
 	}
-	
+
 	@Test
 	public void delete_itemKey() {
 		itemService.delete(personKey);
 		verify(itemDeleter).delete(person);
 	}
-	
+
 	@Test(expected = NullPointerException.class)
 	public void delete_nullItemKey() {
 		itemService.delete((ItemKey) null);

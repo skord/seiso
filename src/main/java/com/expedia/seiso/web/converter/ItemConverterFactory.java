@@ -31,20 +31,21 @@ import com.expedia.seiso.domain.service.ItemService;
  */
 @Component
 public class ItemConverterFactory implements ConverterFactory<String, Item> {
-	@Autowired private ItemService itemService;
-	
+	@Autowired
+	private ItemService itemService;
+
 	@Override
 	public <T extends Item> Converter<String, T> getConverter(Class<T> targetType) {
 		return new StringToItemConverter<T>(targetType);
 	}
-	
+
 	private final class StringToItemConverter<T extends Item> implements Converter<String, T> {
 		private Class<T> itemClass;
-		
+
 		public StringToItemConverter(Class<T> itemClass) {
 			this.itemClass = itemClass;
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public T convert(@NonNull String key) {

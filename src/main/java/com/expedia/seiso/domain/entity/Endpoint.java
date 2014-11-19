@@ -38,51 +38,55 @@ import com.expedia.seiso.domain.entity.key.ItemKey;
 @EqualsAndHashCode(callSuper = false, of = { "ipAddress", "port" })
 @ToString(callSuper = true, of = { "ipAddress", "port", "rotationStatus" })
 @Entity
+//@formatter:off
 @Projections({
 	@Projection(cardinality = Cardinality.COLLECTION, paths = {
 			"ipAddress.ipAddressRole",
 			"port",
 			"rotationStatus"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.COLLECTION, name = "nodeEndpoints", paths = {
 			"port",
 			"rotationStatus"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, paths = {
 			"ipAddress.ipAddressRole",
 			"port",
 			"rotationStatus"
-	}),
+			}),
 	@Projection(cardinality = Cardinality.SINGLE, name = "nodeEndpoint", paths = {
 			"port",
 			"rotationStatus"
+			})
 	})
-})
+//@formatter:on
 public class Endpoint extends AbstractItem {
-	
+
 	@ManyToOne
 	@JoinColumn(name = "node_ip_address_id")
 	private NodeIpAddress ipAddress;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "service_instance_port_id")
 	private ServiceInstancePort port;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "rotation_status_id")
 	private RotationStatus rotationStatus;
 
 	@Override
-	public ItemKey itemKey() { return new EndpointKey(getId()); }
-	
+	public ItemKey itemKey() {
+		return new EndpointKey(getId());
+	}
+
 	// TODO Adopt this pattern for bidirectional associations throughout. [WLW]
-//	public Endpoint setIpAddress(NodeIpAddress ipAddress) {
-//		this.ipAddress = ipAddress;
-//		if (ipAddress != null) {
-//			// TODO Use a Set instead of a List so we don't have to do this check. [WLW]
-//			val endpoints = ipAddress.getEndpoints();
-//			if (!endpoints.contains(this)) { endpoints.add(this); }
-//		}
-//		return this;
-//	}
+	// public Endpoint setIpAddress(NodeIpAddress ipAddress) {
+	// this.ipAddress = ipAddress;
+	// if (ipAddress != null) {
+	// // TODO Use a Set instead of a List so we don't have to do this check. [WLW]
+	// val endpoints = ipAddress.getEndpoints();
+	// if (!endpoints.contains(this)) { endpoints.add(this); }
+	// }
+	// return this;
+	// }
 }
