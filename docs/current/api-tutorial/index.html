@@ -17,7 +17,7 @@ docs_class: active
     <h1>1 Overview</h1>
   </header>
   <p>This tutorial explains how to use the API in a hands-on way. You can use any REST client you like. Here we'll use trusty old <tt>curl</tt> along with <tt>jsonlint</tt> for formatting purposes.</p>
-  <p>We assume that you've already set everything up, including the data. The examples below come from the sample data. If you're using real data just modify the examples accordingly.</p>
+  <p>We assume that you've already set everything up, including the sample data. The examples below are <em>not</em> exactly from the sample data (it's a TODO for me to update them), but it should be easy enough to figure out how to apply them to the sample data, or to real data if you're using that.</p>
 </section>
 
 <a id="get-items" class="anchor"></a>
@@ -137,7 +137,7 @@ docs_class: active
   <p>This type we used <code>Content-Type: application/json</code> to tell the API that we're submitting JSON. Assuming that the object is in fact new, the result will be HTTP <code>201 Created</code>.</p>
 
   <blockquote>
-    <p>Though we didn't indicate it above, currently <code>PUT</code> requests require basic authentication. We're still working through our approach to authentication and authorization, and we'll update the documentation as we have more information.</p>
+    <p>Though we didn't indicate it above, currently <code>PUT</code> requests require basic authentication. If you're using the sample data, you can use username <b>seiso-user</b> and password <b>seiso</b>. We're still working through our approach to authentication and authorization, and we'll update the documentation as we have more information.</p>
   </blockquote>
 </section>
 
@@ -155,7 +155,7 @@ docs_class: active
   "name": "Super Search Engine",
   "description": "A search engine that we like to think of as Google on steroids",
   "group": {
-    "_self":  "https://seiso.example.com/v1/service-groups/devops",
+    "_self": "https://seiso.example.com/v1/service-groups/devops",
     "key": "devops" <span class="label label-info">TEMPORARY</span>
   },
   "type": {
